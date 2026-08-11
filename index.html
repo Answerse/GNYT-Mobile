@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>桂农易通 - 农户首页</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <!-- ============ 绿渐变头图区，包含顶栏 + 统计卡（对应截图上半部分） ============ -->
+  <div class="hero-zone">
+    <div class="hero-zone__inner">
+      <!-- 顶栏 -->
+      <header class="topbar">
+        <div class="topbar__statusbar"></div>
+        <div class="topbar__nav">
+          <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通 农户版" width="98" height="40" />
+          <button class="topbar__wechat" type="button" aria-label="微信"></button>
+        </div>
+      </header>
+
+      <!-- 统计卡 -->
+      <section class="stat" aria-label="本月统计">
+        <img class="stat__deco" src="assets/images/stat-banner.png" alt="" width="200" height="180" onerror="this.style.display='none'" />
+        <div class="stat__content">
+          <div class="stat__label">本月总支出 <span class="stat__unit">(万元)</span></div>
+          <div class="stat__value">2300.92</div>
+          <div class="stat__pill"><span>本月共</span><strong>92</strong><span>单</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ 桂农码大卡（白底，顶部深绿弧形账户条，中间二维码，底部保存按钮） ============ -->
+  <main class="page">
+    <section class="guinong-card" aria-label="桂农码">
+      <!-- 顶部深绿弧形账户条 -->
+      <div class="guinong-card__header">
+        <div class="guinong-card__user">
+          <img class="guinong-card__avatar" src="assets/icons/avatar.svg" alt="头像" width="32" height="32" />
+          <div class="guinong-card__info">
+            <div class="guinong-card__name-row">
+              <span class="guinong-card__name">钱若霖</span>
+              <span class="guinong-card__badge">管理员</span>
+            </div>
+            <span class="guinong-card__phone">153 **** 0312</span>
+          </div>
+        </div>
+        <img class="guinong-card__corner" src="assets/icons/card-corner.svg" alt="" />
+      </div>
+
+      <!-- 二维码主体 -->
+      <div class="guinong-card__body">
+        <img class="guinong-card__qr" src="assets/icons/qr-code.svg" alt="桂农码二维码" />
+        <div class="guinong-card__qr-no">
+          <span class="guinong-card__qr-label">桂农码编号</span>
+          <span class="guinong-card__qr-code">2131341231234</span>
+        </div>
+      </div>
+
+      <!-- 底部保存按钮 -->
+      <div class="guinong-card__footer">
+        <button class="guinong-card__save" type="button">
+          <img class="icon" src="assets/icons/save-code.svg" alt="" />
+          <span>保存桂农码</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 功能卡 -->
+    <section class="func" aria-label="功能入口">
+      <article class="func__card">
+        <div class="func__text">
+          <strong>自产自销</strong>
+          <span>证明</span>
+        </div>
+        <img class="func__icon" src="assets/icons/file-1.svg" alt="" width="48" height="48" />
+      </article>
+      <article class="func__card">
+        <div class="func__text">
+          <span>查找附近的</span>
+          <strong>收购点</strong>
+        </div>
+        <img class="func__icon" src="assets/icons/store-1.svg" alt="" width="48" height="48" />
+      </article>
+    </section>
+
+    <!-- 授权条 -->
+    <section class="auth" aria-label="数农授权">
+      <span class="auth__text">授权银行卡自动收款，享受秒到账便捷服务</span>
+      <button class="auth__btn" type="button">立即授权</button>
+    </section>
+  </main>
+
+  <!-- 底栏 -->
+  <nav class="tabbar" aria-label="主导航">
+    <button class="tabbar__item tabbar__item--active" type="button">
+      <img class="tabbar__icon" src="assets/icons/tab-home.svg" alt="" width="24" height="24" />
+      <span class="tabbar__label">首页</span>
+    </button>
+    <button class="tabbar__item" type="button">
+      <img class="tabbar__icon" src="assets/icons/tab-order.svg" alt="" width="24" height="24" />
+      <span class="tabbar__label">订单</span>
+    </button>
+    <button class="tabbar__item" type="button">
+      <img class="tabbar__icon" src="assets/icons/tab-flow.svg" alt="" width="24" height="24" />
+      <span class="tabbar__label">收支</span>
+    </button>
+    <button class="tabbar__item" type="button">
+      <img class="tabbar__icon" src="assets/icons/tab-mine.svg" alt="" width="24" height="24" />
+      <span class="tabbar__label">我的</span>
+    </button>
+  </nav>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>

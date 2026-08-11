@@ -1,0 +1,333 @@
+/* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 + 真实截图修正） */
+
+:root {
+  --c-primary: #16A34A;
+  --c-primary-deep: #15803D;
+  --c-lime: #BEF264;
+  --c-bg: #EBF2FC;
+  --c-white: #FFFFFF;
+  --c-text: #111827;
+  --c-text-sub: #6B7280;
+  --c-green-50: #F0FDF4;
+  --c-border: #E5E7EB;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+
+/* ---------- 绿渐变头图区（通栏，含顶栏 + 统计卡） ---------- */
+.hero-zone {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #16A34A 0%, #EBF2FC 100%);
+  padding: 0 16px 80px;
+}
+.hero-zone__inner {
+  margin: 0 auto;
+}
+
+.topbar__statusbar { height: 44px; }
+.topbar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  margin-bottom: 8px;
+}
+.topbar__logo { width: 98px; height: 40px; }
+.topbar__wechat {
+  width: 75px; height: 25px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 9999px;
+  background: transparent;
+}
+
+/* ---------- 统计卡（位于渐变区） ---------- */
+.stat {
+  position: relative;
+  padding: 8px 0 0;
+}
+.stat__deco {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 200px;
+  height: 180px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.stat__content {
+  position: relative;
+  z-index: 1;
+}
+.stat__label {
+  font-size: 14px;
+  color: var(--c-white);
+  opacity: 0.95;
+}
+.stat__unit {
+  font-size: 12px;
+  margin-left: 2px;
+}
+.stat__value {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--c-white);
+  line-height: 1.1;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+.stat__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  padding: 5px 14px;
+  background: var(--c-lime);
+  border-radius: 9999px;
+  font-size: 14px;
+  color: var(--c-text);
+}
+.stat__pill strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ---------- 页面主体（桂农码卡压住渐变底部） ---------- */
+.page {
+  position: relative;
+  width: 100%;
+  margin: -56px auto 0;
+  padding: 0 16px 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- 桂农码大卡 ---------- */
+.guinong-card {
+  background: var(--c-white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.guinong-card__header {
+  position: relative;
+  background: var(--c-primary-deep);
+  padding: 16px;
+  overflow: hidden;
+}
+.guinong-card__corner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+.guinong-card__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.guinong-card__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.guinong-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.guinong-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.guinong-card__name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-white);
+}
+.guinong-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 8px;
+  background: var(--c-white);
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--c-primary-deep);
+}
+.guinong-card__badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--c-primary);
+  border-radius: 2px;
+}
+.guinong-card__phone {
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+}
+
+.guinong-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 12px;
+}
+.guinong-card__qr {
+  width: 216px;
+  height: 216px;
+}
+.guinong-card__qr-no {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 12px;
+}
+.guinong-card__qr-label {
+  font-size: 13px;
+  color: var(--c-text-sub);
+}
+.guinong-card__qr-code {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-text);
+  letter-spacing: 0.5px;
+}
+
+.guinong-card__footer {
+  padding: 0 16px 16px;
+}
+.guinong-card__save {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: var(--c-green-50);
+  border-radius: 8px;
+  color: var(--c-primary);
+  font-size: 14px;
+}
+.guinong-card__save .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--c-primary);
+}
+
+/* ---------- 功能卡 ---------- */
+.func {
+  display: flex;
+  gap: 12px;
+}
+.func__card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-white);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 80px;
+}
+.func__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--c-text);
+}
+.func__text strong {
+  font-weight: 600;
+}
+.func__icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* ---------- 授权条 ---------- */
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--c-white);
+  border-radius: 8px;
+  padding: 12px 12px 12px 16px;
+}
+.auth__text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--c-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.auth__btn {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  background: var(--c-primary);
+  border-radius: 4px;
+  color: var(--c-white);
+  font-size: 12px;
+}
+
+/* ---------- 底栏（Figma 539:41208 精确还原） ---------- */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px 10px 25px;
+  background: #FFFFFF;
+}
+.tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: rgba(16, 18, 21, 0.5);
+}
+.tabbar__item--active {
+  color: var(--c-primary);
+}
+.tabbar__icon {
+  width: 24px;
+  height: 24px;
+  color: inherit;
+  fill: currentColor;
+  stroke: none;
+}
+.tabbar__label {
+  font-size: 16px;
+  font-weight: 330;
+  line-height: 1.326;
+  color: inherit;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .hero-zone { margin: 0 auto; }
+}

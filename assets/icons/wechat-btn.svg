@@ -1,0 +1,7 @@
+<svg width="62" height="24" viewBox="0 0 62 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0.75" y="0.75" width="60.5" height="22.5" rx="11.25" fill="#16A34A" stroke="#FFFFFF"/>
+  <circle cx="13" cy="12" r="5" fill="#FFFFFF"/>
+  <circle cx="13" cy="10.5" r="1.4" fill="#16A34A"/>
+  <circle cx="13" cy="13.5" r="1.4" fill="#16A34A"/>
+  <text x="24" y="16" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">微信</text>
+</svg>
