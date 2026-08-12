@@ -4,6 +4,14 @@
 (function () {
   'use strict';
 
+  // 农民形象图占位兜底：加载失败时隐藏，避免在 HTML 写行内 style
+  var statDeco = document.querySelector('.stat__deco');
+  if (statDeco) {
+    statDeco.addEventListener('error', function () {
+      statDeco.classList.add('stat__deco--hidden');
+    });
+  }
+
   var tabItems = document.querySelectorAll('.tabbar__item');
   tabItems.forEach(function (item) {
     item.addEventListener('click', function () {

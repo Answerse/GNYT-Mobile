@@ -14,14 +14,14 @@
       <header class="topbar">
         <div class="topbar__statusbar"></div>
         <div class="topbar__nav">
-          <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通 农户版" width="98" height="40" />
+          <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通 农户版" />
           <button class="topbar__wechat" type="button" aria-label="微信"></button>
         </div>
       </header>
 
       <!-- 统计卡 -->
       <section class="stat" aria-label="本月统计">
-        <img class="stat__deco" src="assets/images/stat-banner.png" alt="" width="200" height="180" onerror="this.style.display='none'" />
+        <img class="stat__deco" src="assets/images/stat-banner.png" alt="" />
         <div class="stat__content">
           <div class="stat__label">本月总支出 <span class="stat__unit">(万元)</span></div>
           <div class="stat__value">2300.92</div>
@@ -37,11 +37,14 @@
       <!-- 顶部深绿弧形账户条 -->
       <div class="guinong-card__header">
         <div class="guinong-card__user">
-          <img class="guinong-card__avatar" src="assets/icons/avatar.svg" alt="头像" width="32" height="32" />
+          <img class="guinong-card__avatar" src="assets/icons/avatar.svg" alt="头像" />
           <div class="guinong-card__info">
             <div class="guinong-card__name-row">
               <span class="guinong-card__name">钱若霖</span>
-              <span class="guinong-card__badge">管理员</span>
+              <span class="guinong-card__badge">
+                <img class="guinong-card__badge-icon" src="assets/icons/badge-broker.svg" alt="" />
+                管理员
+              </span>
             </div>
             <span class="guinong-card__phone">153 **** 0312</span>
           </div>
@@ -74,14 +77,20 @@
           <strong>自产自销</strong>
           <span>证明</span>
         </div>
-        <img class="func__icon" src="assets/icons/file-1.svg" alt="" width="48" height="48" />
+        <div class="func__illus">
+          <img class="func__illus-main" src="assets/icons/file-1.svg" alt="" />
+          <img class="func__illus-sub" src="assets/icons/file-2.svg" alt="" />
+        </div>
       </article>
       <article class="func__card">
         <div class="func__text">
           <span>查找附近的</span>
           <strong>收购点</strong>
         </div>
-        <img class="func__icon" src="assets/icons/store-1.svg" alt="" width="48" height="48" />
+        <div class="func__illus">
+          <img class="func__illus-main" src="assets/icons/store-1.svg" alt="" />
+          <img class="func__illus-sub" src="assets/icons/store-2.svg" alt="" />
+        </div>
       </article>
     </section>
 
@@ -95,19 +104,19 @@
   <!-- 底栏 -->
   <nav class="tabbar" aria-label="主导航">
     <button class="tabbar__item tabbar__item--active" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-home.svg" alt="" width="24" height="24" />
+      <img class="tabbar__icon" src="assets/icons/tab-home.svg" alt="" />
       <span class="tabbar__label">首页</span>
     </button>
     <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-order.svg" alt="" width="24" height="24" />
+      <img class="tabbar__icon" src="assets/icons/tab-order.svg" alt="" />
       <span class="tabbar__label">订单</span>
     </button>
     <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-flow.svg" alt="" width="24" height="24" />
+      <img class="tabbar__icon" src="assets/icons/tab-flow.svg" alt="" />
       <span class="tabbar__label">收支</span>
     </button>
     <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-mine.svg" alt="" width="24" height="24" />
+      <img class="tabbar__icon" src="assets/icons/tab-mine.svg" alt="" />
       <span class="tabbar__label">我的</span>
     </button>
   </nav>

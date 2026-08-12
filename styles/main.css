@@ -65,6 +65,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   object-fit: contain;
   pointer-events: none;
 }
+.stat__deco--hidden {
+  display: none;
+}
 .stat__content {
   position: relative;
   z-index: 1;
@@ -107,10 +110,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   position: relative;
   width: 100%;
   margin: -56px auto 0;
-  padding: 0 16px 90px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* ---------- 桂农码大卡 ---------- */
@@ -161,21 +164,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   color: var(--c-white);
 }
 .guinong-card__badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 1px 8px;
-  background: var(--c-white);
-  border-radius: 4px;
-  font-size: 10px;
-  color: var(--c-primary-deep);
-}
-.guinong-card__badge::before {
-  content: "";
-  width: 8px;
-  height: 8px;
+  gap: 2px;
+  padding: 1px 4px 1px 14px;
   background: var(--c-primary);
-  border-radius: 2px;
+  border-radius: 0 4px 4px 0;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--c-white);
+}
+.guinong-card__badge-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(-5.5px);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
 }
 .guinong-card__phone {
   font-size: 12px;
@@ -234,7 +241,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 /* ---------- 功能卡 ---------- */
 .func {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 .func__card {
   flex: 1;
@@ -242,7 +249,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   justify-content: space-between;
   background: var(--c-white);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 16px;
   min-height: 80px;
 }
@@ -250,16 +257,42 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 15px;
   line-height: 1.3;
   color: var(--c-text);
 }
-.func__text strong {
+/* 自产自销证明：中文/中文小号文本 14px */
+.func__card:nth-child(1) .func__text {
+  font-size: 14px;
+}
+.func__card:nth-child(1) .func__text strong {
   font-weight: 600;
 }
-.func__icon {
-  width: 48px;
-  height: 48px;
+/* 查找附近的收购点：中文/中文常规文本 16px */
+.func__card:nth-child(2) .func__text {
+  font-size: 16px;
+}
+.func__card:nth-child(2) .func__text strong {
+  font-weight: 600;
+}
+.func__illus {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+.func__illus-main {
+  position: absolute;
+  inset: 0;
+  width: 72px;
+  height: 72px;
+}
+.func__illus-sub {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
 }
 
 /* ---------- 授权条 ---------- */
@@ -298,8 +331,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   display: flex;
   justify-content: center;
   gap: 15px;
-  padding: 10px 10px 25px;
+  padding: 8px 8px 16px;
   background: #FFFFFF;
+  backdrop-filter: blur(20px);
 }
 .tabbar__item {
   flex: 1;
@@ -308,12 +342,29 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   justify-content: center;
   gap: 5px;
+  position: relative;
   color: rgba(16, 18, 21, 0.5);
+}
+/* 选中态选项背景块（Figma 539:41164 选项背景 60×57 圆角10 + 毛玻璃） */
+.tabbar__item--active::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 57px;
+  background: transparent;
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  z-index: 0;
 }
 .tabbar__item--active {
   color: var(--c-primary);
 }
 .tabbar__icon {
+  position: relative;
+  z-index: 1;
   width: 24px;
   height: 24px;
   color: inherit;
@@ -321,6 +372,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   stroke: none;
 }
 .tabbar__label {
+  position: relative;
+  z-index: 1;
   font-size: 16px;
   font-weight: 330;
   line-height: 1.326;
