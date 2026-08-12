@@ -7,91 +7,135 @@
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
-  <!-- ============ 绿渐变头图区，包含顶栏 + 统计卡（对应截图上半部分） ============ -->
+  <!-- ============ 绿色渐变头图区（状态栏 + 导航 + 本月统计 + 插画） ============ -->
   <div class="hero-zone">
     <div class="hero-zone__inner">
       <!-- 顶栏 -->
       <header class="topbar">
         <div class="topbar__statusbar"></div>
         <div class="topbar__nav">
-          <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通 农户版" />
-          <button class="topbar__wechat" type="button" aria-label="微信"></button>
+          <div class="topbar__logo-wrap">
+            <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通" />
+            <span class="topbar__tag">农户版</span>
+          </div>
+          <button class="topbar__wechat" type="button" aria-label="微信">
+            <img class="topbar__wechat-icon" src="assets/icons/wechat-btn.svg" alt="" />
+          </button>
         </div>
       </header>
 
-      <!-- 统计卡 -->
-      <section class="stat" aria-label="本月统计">
-        <img class="stat__deco" src="assets/images/stat-banner.png" alt="" />
-        <div class="stat__content">
-          <div class="stat__label">本月总支出 <span class="stat__unit">(万元)</span></div>
-          <div class="stat__value">2300.92</div>
-          <div class="stat__pill"><span>本月共</span><strong>92</strong><span>单</span></div>
-        </div>
-      </section>
+      <!-- 本月统计 -->
+      <div class="stat">
+        <div class="stat__label">本月总支出 <span class="stat__unit">(万元)</span></div>
+        <div class="stat__value">2300.92</div>
+        <div class="stat__pill"><span>本月共</span><strong>92</strong><span>单</span></div>
+      </div>
     </div>
+    <img class="illus" src="assets/images/illus-banner.png" alt="" />
   </div>
 
-  <!-- ============ 桂农码大卡（白底，顶部深绿弧形账户条，中间二维码，底部保存按钮） ============ -->
   <main class="page">
-    <section class="guinong-card" aria-label="桂农码">
-      <!-- 顶部深绿弧形账户条 -->
-      <div class="guinong-card__header">
-        <div class="guinong-card__user">
-          <img class="guinong-card__avatar" src="assets/icons/avatar.svg" alt="头像" />
-          <div class="guinong-card__info">
-            <div class="guinong-card__name-row">
-              <span class="guinong-card__name">钱若霖</span>
-              <span class="guinong-card__badge">
-                <img class="guinong-card__badge-icon" src="assets/icons/badge-broker.svg" alt="" />
-                管理员
-              </span>
-            </div>
-            <span class="guinong-card__phone">153 **** 0312</span>
+    <!-- 桂农码大卡：深绿账户条 + 创建订单 + 功能入口 -->
+    <section class="qr-card" aria-label="桂农码">
+      <!-- 顶部深绿账户条 -->
+      <div class="qr-card__user">
+        <img class="qr-card__avatar" src="assets/icons/avatar.png" alt="头像" />
+        <div class="qr-card__info">
+          <div class="qr-card__name-row">
+            <span class="qr-card__name">钱若霖</span>
+            <span class="qr-card__badge">
+              <img class="qr-card__badge-icon" src="assets/icons/badge-broker.svg" alt="" />
+              管理员
+            </span>
           </div>
+          <span class="qr-card__phone">153 **** 0312</span>
         </div>
-        <img class="guinong-card__corner" src="assets/icons/card-corner.svg" alt="" />
+        <img class="qr-card__corner" src="assets/icons/card-corner.svg" alt="" />
       </div>
 
-      <!-- 二维码主体 -->
-      <div class="guinong-card__body">
-        <img class="guinong-card__qr" src="assets/icons/qr-code.svg" alt="桂农码二维码" />
-        <div class="guinong-card__qr-no">
-          <span class="guinong-card__qr-label">桂农码编号</span>
-          <span class="guinong-card__qr-code">2131341231234</span>
+      <!-- 白底主体 -->
+      <div class="qr-card__body">
+        <!-- 创建订单 -->
+        <div class="create-order">
+          <div class="create-order__text">
+            <strong class="create-order__title">创建订单</strong>
+            <span class="create-order__sub">快速高效交易安心</span>
+          </div>
+          <img class="create-order__scan" src="assets/icons/scan.svg" alt="扫码" />
         </div>
-      </div>
 
-      <!-- 底部保存按钮 -->
-      <div class="guinong-card__footer">
-        <button class="guinong-card__save" type="button">
-          <img class="icon" src="assets/icons/save-code.svg" alt="" />
-          <span>保存桂农码</span>
-        </button>
+        <!-- 功能入口 -->
+        <div class="func-row">
+          <a class="func-row__item" href="#" aria-label="自产自销证明">
+            <svg class="func-row__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="func-file__fold" d="M15.2 18.4C15.2 17.5164 15.9163 16.8 16.8 16.8H21.4068C21.4781 16.8 21.5138 16.8862 21.4634 16.9366L15.3365 23.0635C15.2861 23.1139 15.2 23.0782 15.2 23.0069V18.4Z" />
+              <path class="func-file__body" fill-rule="evenodd" clip-rule="evenodd" d="M5.60002 0.800049C3.83271 0.800049 2.40002 2.23274 2.40002 4.00005V20C2.40002 21.7674 3.83271 23.2 5.60002 23.2H13.6C14.0419 23.2 14.4 22.8419 14.4 22.4V18.4C14.4 17.0746 15.4745 16 16.8 16H20.8C21.2419 16 21.6 15.6419 21.6 15.2V4.00005C21.6 2.23274 20.1673 0.800049 18.4 0.800049H5.60002ZM7.20002 5.60005C6.7582 5.60005 6.40002 5.95822 6.40002 6.40005C6.40002 6.84188 6.7582 7.20005 7.20002 7.20005H16.8C17.2419 7.20005 17.6 6.84188 17.6 6.40005C17.6 5.95822 17.2419 5.60005 16.8 5.60005H7.20002ZM7.20002 9.60005C6.7582 9.60005 6.40002 9.95822 6.40002 10.4C6.40002 10.8419 6.7582 11.2 7.20002 11.2H16.8C17.2419 11.2 17.6 10.8419 17.6 10.4C17.6 9.95822 17.2419 9.60005 16.8 9.60005H7.20002ZM7.20002 13.6C6.7582 13.6 6.40002 13.9582 6.40002 14.4C6.40002 14.8419 6.7582 15.2 7.20002 15.2H12C12.4419 15.2 12.8 14.8419 12.8 14.4C12.8 13.9582 12.4419 13.6 12 13.6H7.20002Z" />
+            </svg>
+            <span>自产自销证明</span>
+          </a>
+          <span class="func-row__divider" aria-hidden="true"></span>
+          <a class="func-row__item" href="#" aria-label="附近的收购点">
+            <svg class="func-row__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="func-store__awning" d="M3.91553 3.36889C4.45759 2.28478 5.56563 1.59998 6.7777 1.59998H17.2223C18.4344 1.59998 19.5424 2.28478 20.0844 3.36889L21.8211 6.84221C22.0871 7.37413 21.7003 7.99998 21.1056 7.99998H2.89442C2.29971 7.99998 1.91291 7.37413 2.17887 6.8422L3.91553 3.36889Z" />
+              <path class="func-store__body" d="M23.2 9.60005C23.2 9.15822 22.8419 8.80005 22.4 8.80005H1.60005C1.15822 8.80005 0.800049 9.15822 0.800049 9.60005V10.4C0.800049 10.7677 0.872473 11.1319 1.01319 11.4716C1.1539 11.8113 1.36015 12.1199 1.62015 12.3799C1.88015 12.64 2.18882 12.8462 2.52854 12.9869C2.86825 13.1276 3.23235 13.2 3.60005 13.2C3.96775 13.2 4.33185 13.1276 4.67156 12.9869C5.01127 12.8462 5.31994 12.64 5.57995 12.3799C5.5984 12.3615 5.61658 12.3428 5.63449 12.3239C5.81434 12.1337 6.05391 12 6.31566 12H6.48444C6.74619 12 6.98576 12.1337 7.16561 12.3239C7.18351 12.3428 7.2017 12.3615 7.22015 12.3799C7.48015 12.64 7.78882 12.8462 8.12853 12.9869C8.46825 13.1276 8.83235 13.2 9.20005 13.2C9.56775 13.2 9.93185 13.1276 10.2716 12.9869C10.6113 12.8462 10.9199 12.64 11.1799 12.3799C11.1984 12.3615 11.2166 12.3428 11.2345 12.3239C11.4143 12.1337 11.6539 12 11.9157 12H12.0844C12.3462 12 12.5858 12.1337 12.7656 12.3239C12.7835 12.3428 12.8017 12.3615 12.8202 12.3799C13.0802 12.64 13.3888 12.8462 13.7285 12.9869C14.0682 13.1276 14.4323 13.2 14.8 13.2C15.1678 13.2 15.5319 13.1276 15.8716 12.9869C16.2113 12.8462 16.5199 12.64 16.7799 12.3799C16.7984 12.3615 16.8166 12.3428 16.8345 12.3239C17.0143 12.1337 17.2539 12 17.5157 12H17.6844C17.9462 12 18.1858 12.1337 18.3656 12.3239C18.3835 12.3428 18.4017 12.3615 18.4201 12.3799C18.6802 12.64 18.9888 12.8462 19.3285 12.9869C19.6682 13.1276 20.0323 13.2 20.4 13.2C20.7678 13.2 21.1319 13.1276 21.4716 12.9869C21.8113 12.8462 22.1199 12.64 22.3799 12.3799C22.64 12.1199 22.8462 11.8113 22.9869 11.4716C23.1276 11.1319 23.2 10.7678 23.2 10.4V9.60005Z" />
+              <path class="func-store__body" fill-rule="evenodd" clip-rule="evenodd" d="M3.50802 13.999C2.95605 13.9848 2.40005 14.3735 2.40005 14.9256V19.2001C2.40005 20.9674 3.83274 22.4001 5.60005 22.4001H18.4C20.1674 22.4001 21.6 20.9674 21.6 19.2001V14.9256C21.6 14.3735 21.044 13.9848 20.4921 13.999C20.4614 13.9997 20.4307 14.0001 20.4 14.0001C19.9273 14.0001 19.4592 13.907 19.0224 13.7261C18.5856 13.5452 18.1888 13.28 17.8545 12.9457C17.716 12.8072 17.4841 12.8072 17.3456 12.9457C17.0113 13.28 16.6145 13.5452 16.1777 13.7261C15.7409 13.907 15.2728 14.0001 14.8 14.0001C14.3273 14.0001 13.8592 13.907 13.4224 13.7261C12.9856 13.5452 12.5888 13.28 12.2545 12.9457C12.116 12.8072 11.8841 12.8072 11.7456 12.9457C11.4113 13.28 11.0145 13.5452 10.5777 13.7261C10.1409 13.907 9.67281 14.0001 9.20005 14.0001C8.72729 14.0001 8.25916 13.907 7.82239 13.7261C7.38562 13.5452 6.98875 13.28 6.65446 12.9457C6.51597 12.8072 6.28413 12.8072 6.14563 12.9457C5.81134 13.28 5.41448 13.5452 4.97771 13.7261C4.54094 13.907 4.07281 14.0001 3.60005 14.0001C3.56935 14.0001 3.53867 13.9997 3.50802 13.999ZM10.4 17.6C9.95822 17.6 9.60005 17.9582 9.60005 18.4V20C9.60005 20.4419 9.95822 20.8 10.4 20.8H13.6C14.0419 20.8 14.4 20.4419 14.4 20V18.4C14.4 17.9582 14.0419 17.6 13.6 17.6H10.4Z" />
+            </svg>
+            <span>附近的收购点</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- 功能卡 -->
-    <section class="func" aria-label="功能入口">
-      <article class="func__card">
-        <div class="func__text">
-          <strong>自产自销</strong>
-          <span>证明</span>
-        </div>
-        <div class="func__illus">
-          <img class="func__illus-main" src="assets/icons/file-1.svg" alt="" />
-          <img class="func__illus-sub" src="assets/icons/file-2.svg" alt="" />
-        </div>
-      </article>
-      <article class="func__card">
-        <div class="func__text">
-          <span>查找附近的</span>
-          <strong>收购点</strong>
-        </div>
-        <div class="func__illus">
-          <img class="func__illus-main" src="assets/icons/store-1.svg" alt="" />
-          <img class="func__illus-sub" src="assets/icons/store-2.svg" alt="" />
-        </div>
-      </article>
+    <!-- 市场行情 -->
+    <section class="market" aria-label="农产品收购市场行情">
+      <div class="market__head">
+        <h2 class="market__title">农产品收购市场行情</h2>
+        <span class="market__unit">单位：元/吨</span>
+      </div>
+
+      <div class="market__tabs">
+        <button class="market__tab market__tab--active" type="button">蚕茧</button>
+        <button class="market__tab" type="button">陈皮</button>
+        <button class="market__tab" type="button">木材</button>
+        <button class="market__tab" type="button">其他</button>
+      </div>
+
+      <table class="market__table">
+        <thead>
+          <tr>
+            <th class="market__th market__th--time">时间</th>
+            <th class="market__th market__th--region">收购县区</th>
+            <th class="market__th market__th--price">收购单价</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="market__row market__row--hl">
+            <td class="market__time">06-18 15:32</td>
+            <td class="market__region">百色市西林县</td>
+            <td class="market__price"><span class="market__price-sym">¥</span><span class="market__price-num">345</span></td>
+          </tr>
+          <tr class="market__row">
+            <td class="market__time">06-18 15:18</td>
+            <td class="market__region">钦州市灵山县</td>
+            <td class="market__price"><span class="market__price-sym">¥</span><span class="market__price-num">522</span></td>
+          </tr>
+          <tr class="market__row market__row--hl">
+            <td class="market__time">06-18 14:12</td>
+            <td class="market__region">梧州市藤县</td>
+            <td class="market__price"><span class="market__price-sym">¥</span><span class="market__price-num">874</span></td>
+          </tr>
+          <tr class="market__row">
+            <td class="market__time">06-18 13:31</td>
+            <td class="market__region">桂林市资源县</td>
+            <td class="market__price"><span class="market__price-sym">¥</span><span class="market__price-num">956</span></td>
+          </tr>
+          <tr class="market__row market__row--hl">
+            <td class="market__time">06-18 12:32</td>
+            <td class="market__region">百色市右江区</td>
+            <td class="market__price"><span class="market__price-sym">¥</span><span class="market__price-num">207</span></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- 授权条 -->
@@ -110,6 +154,13 @@
     <button class="tabbar__item" type="button">
       <img class="tabbar__icon" src="assets/icons/tab-order.svg" alt="" />
       <span class="tabbar__label">订单</span>
+    </button>
+    <!-- 中间凸起"亮码卖货"主按钮 -->
+    <button class="tabbar__item tabbar__item--main" type="button">
+      <span class="tabbar__main-btn">
+        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
+      </span>
+      <span class="tabbar__label">亮码卖货</span>
     </button>
     <button class="tabbar__item" type="button">
       <img class="tabbar__icon" src="assets/icons/tab-flow.svg" alt="" />

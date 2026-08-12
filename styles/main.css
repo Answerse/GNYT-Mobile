@@ -1,4 +1,4 @@
-/* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 + 真实截图修正） */
+/* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 新版设计稿 + 渲染图修正） */
 
 :root {
   --c-primary: #16A34A;
@@ -10,6 +10,11 @@
   --c-text-sub: #6B7280;
   --c-green-50: #F0FDF4;
   --c-border: #E5E7EB;
+  /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
+  --c-info: #3B82F6;          /* Colors.Blue.500（Info.Default） */
+  --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
+  --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
+  --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,54 +28,69 @@ body {
 
 img { display: block; }
 button { font: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
 
-/* ---------- 绿渐变头图区（通栏，含顶栏 + 统计卡） ---------- */
+/* ---------- 绿色渐变头图区（状态栏 + 导航 + 本月统计 + 插画） ---------- */
 .hero-zone {
   position: relative;
   width: 100%;
-  background: linear-gradient(180deg, #16A34A 0%, #EBF2FC 100%);
-  padding: 0 16px 80px;
+  height: 320px;
+  background: url("../assets/images/bg-head.png") no-repeat center top / 100% 100%;
 }
 .hero-zone__inner {
-  margin: 0 auto;
+  position: relative;
+  height: 100%;
+  padding: 0 16px;
+}
+/* 3D 插画横幅：内容位于图像右半幅，置于绿色头部下半部 */
+.illus {
+  position: absolute;
+  left: 0;
+  top: 90px;
+  width: 375px;
+  pointer-events: none;
 }
 
-.topbar__statusbar { height: 44px; }
+/* 顶栏 */
+.topbar__statusbar { height: 25px; }
 .topbar__nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 44px;
-  margin-bottom: 8px;
+  margin: 0 -16px;
+  padding: 16px;
+}
+.topbar__logo-wrap {
+  display: flex;
+  align-items: center;
 }
 .topbar__logo { width: 98px; height: 40px; }
+.topbar__tag {
+  margin-left: 9px;
+  height: 20px;
+  padding: 0 8px 1px;
+  display: flex;
+  align-items: center;
+  background: var(--c-green-50);
+  border-radius: 4px;
+  color: var(--c-primary);
+  font-size: 14px;
+  font-weight: 330;
+  line-height: 1.326;
+}
 .topbar__wechat {
-  width: 75px; height: 25px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 9999px;
-  background: transparent;
+  width: 76px;
+  height: 26px;
+}
+.topbar__wechat-icon {
+  width: 76px;
+  height: 26px;
 }
 
-/* ---------- 统计卡（位于渐变区） ---------- */
+/* 本月统计（白色文字 + 黄绿胶囊） */
 .stat {
-  position: relative;
-  padding: 8px 0 0;
-}
-.stat__deco {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 200px;
-  height: 180px;
-  object-fit: contain;
-  pointer-events: none;
-}
-.stat__deco--hidden {
-  display: none;
-}
-.stat__content {
-  position: relative;
-  z-index: 1;
+  margin-top: 38px;
+  padding-left: 16px;
 }
 .stat__label {
   font-size: 14px;
@@ -93,7 +113,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-top: 12px;
+  margin-top: 14px;
   padding: 5px 14px;
   background: var(--c-lime);
   border-radius: 9999px;
@@ -105,77 +125,73 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   font-weight: 700;
 }
 
-/* ---------- 页面主体（桂农码卡压住渐变底部） ---------- */
+/* ---------- 页面主体（桂农码大卡上压住绿色头部底部） ---------- */
 .page {
   position: relative;
   width: 100%;
-  margin: -56px auto 0;
-  padding: 8px;
+  margin: -48px auto 0;
+  padding: 0 8px 96px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 /* ---------- 桂农码大卡 ---------- */
-.guinong-card {
+.qr-card {
   background: var(--c-white);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
-.guinong-card__header {
+/* 顶部深绿账户条（Figma 306:12081：#15803D，上圆角 16，白色弧形边角） */
+.qr-card__user {
   position: relative;
-  background: var(--c-primary-deep);
-  padding: 16px;
-  overflow: hidden;
-}
-.guinong-card__corner {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  display: block;
-  pointer-events: none;
-}
-.guinong-card__user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  padding: 16px 24px 24px;
+  background: var(--c-primary-deep);
 }
-.guinong-card__avatar {
+.qr-card__avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
 }
-.guinong-card__info {
+.qr-card__info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: center;
 }
-.guinong-card__name-row {
+.qr-card__name-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
-.guinong-card__name {
-  font-size: 18px;
-  font-weight: 600;
+.qr-card__name {
+  font-size: 20px;
+  font-weight: 630;
+  line-height: 1.326;
   color: var(--c-white);
 }
-.guinong-card__badge {
+/* 管理员徽章：与名字同行、置于账户条右上角（Figma 306:12086） */
+.qr-card__badge {
   position: relative;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
+  height: 18px;
   padding: 1px 4px 1px 14px;
   background: var(--c-primary);
   border-radius: 0 4px 4px 0;
   font-size: 10px;
-  line-height: 1.6;
+  font-weight: 330;
+  line-height: 1.326;
   color: var(--c-white);
 }
-.guinong-card__badge-icon {
+.qr-card__badge-icon {
   position: absolute;
   left: 0;
   top: 0;
@@ -184,130 +200,220 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   height: 24px;
   border-radius: 4px;
 }
-.guinong-card__phone {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
-}
-
-.guinong-card__body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 16px 12px;
-}
-.guinong-card__qr {
-  width: 216px;
-  height: 216px;
-}
-.guinong-card__qr-no {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  margin-top: 12px;
-}
-.guinong-card__qr-label {
-  font-size: 13px;
-  color: var(--c-text-sub);
-}
-.guinong-card__qr-code {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--c-text);
-  letter-spacing: 0.5px;
-}
-
-.guinong-card__footer {
-  padding: 0 16px 16px;
-}
-.guinong-card__save {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px;
-  background: var(--c-green-50);
-  border-radius: 8px;
-  color: var(--c-primary);
+.qr-card__phone {
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
 }
-.guinong-card__save .icon {
-  width: 18px;
-  height: 18px;
-  color: var(--c-primary);
+/* 白色弧形边角（绿色条与白底交界装饰） */
+.qr-card__corner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+/* 白底主体（Figma 885:17763：下圆角 16，内边距 16） */
+.qr-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--c-white);
 }
 
-/* ---------- 功能卡 ---------- */
-.func {
-  display: flex;
-  gap: 8px;
-}
-.func__card {
-  flex: 1;
+/* 创建订单（Figma 885:17764：浅绿底、圆角 8、上下内边距 8、左右 16） */
+.create-order {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--c-white);
+  gap: 16px;
+  padding: 8px 16px;
+  background: var(--c-green-50);
   border-radius: 8px;
-  padding: 16px;
-  min-height: 80px;
 }
-.func__text {
+.create-order__text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  line-height: 1.3;
+  justify-content: center;
+  gap: 4px;
+}
+.create-order__title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.326;
   color: var(--c-text);
 }
-/* 自产自销证明：中文/中文小号文本 14px */
-.func__card:nth-child(1) .func__text {
+.create-order__sub {
   font-size: 14px;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
 }
-.func__card:nth-child(1) .func__text strong {
-  font-weight: 600;
-}
-/* 查找附近的收购点：中文/中文常规文本 16px */
-.func__card:nth-child(2) .func__text {
-  font-size: 16px;
-}
-.func__card:nth-child(2) .func__text strong {
-  font-weight: 600;
-}
-.func__illus {
-  position: relative;
-  width: 72px;
-  height: 72px;
+.create-order__scan {
+  width: 64px;
+  height: 64px;
   flex-shrink: 0;
 }
-.func__illus-main {
-  position: absolute;
-  inset: 0;
-  width: 72px;
-  height: 72px;
+
+/* 功能入口（自产自销证明 / 附近的收购点） */
+.func-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  padding: 8px 0;
 }
-.func__illus-sub {
-  position: absolute;
-  right: -4px;
-  bottom: -4px;
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+.func-row__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.func-row__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+/* 自产自销证明：蓝色文件图标（内联 SVG，颜色走语义 Token，不硬编码在 SVG 内） */
+.func-file__fold { fill: var(--c-info-soft); }
+.func-file__body { fill: var(--c-info); }
+/* 附近的收购点：橙色商店图标 */
+.func-store__awning { fill: var(--c-warning-soft); }
+.func-store__body { fill: var(--c-warning); }
+.func-row__item span {
+  font-size: 14px;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.func-row__divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(16, 18, 21, 0.1);
 }
 
-/* ---------- 授权条 ---------- */
+/* ---------- 市场行情（Figma 884:17507：白底、圆角 8、内边距 16） ---------- */
+.market {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--c-white);
+  border-radius: 8px;
+}
+.market__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.market__title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.326;
+  color: var(--c-text);
+}
+.market__unit {
+  font-size: 12px;
+  font-weight: 330;
+  color: var(--c-text-sub);
+  white-space: nowrap;
+}
+/* 分段控件：浅绿容器 + 选中绿色胶囊（选中白字，未选中绿字） */
+.market__tabs {
+  display: flex;
+  gap: 8px;
+  padding: 3px;
+  background: var(--c-green-50);
+  border-radius: 20px;
+}
+.market__tab {
+  flex: 1;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 330;
+  color: var(--c-primary);
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.market__tab--active {
+  background: var(--c-primary);
+  color: var(--c-white);
+}
+/* 表格 */
+.market__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  table-layout: fixed;
+}
+.market__th {
+  padding: 0 10px 4px;
+  font-size: 14px;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+  text-align: left;
+  white-space: nowrap;
+}
+.market__th--time { width: 33%; }
+.market__th--region { width: 34%; }
+.market__th--price { width: 33%; text-align: right; }
+.market__row td {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.market__row--hl td {
+  background: var(--c-green-50);
+}
+.market__row td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.market__row td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.market__region {
+  text-align: left;
+}
+.market__price {
+  text-align: right;
+}
+.market__price-sym {
+  font-size: 12px;
+  font-weight: 330;
+  color: var(--c-primary);
+}
+.market__price-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-primary);
+}
+
+/* ---------- 授权条（Figma 231:9723） ---------- */
 .auth {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  padding: 8px 8px 8px 16px;
   background: var(--c-white);
   border-radius: 8px;
-  padding: 12px 12px 12px 16px;
 }
 .auth__text {
   flex: 1;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 330;
   color: var(--c-text);
   white-space: nowrap;
   overflow: hidden;
@@ -315,14 +421,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 }
 .auth__btn {
   flex-shrink: 0;
-  padding: 5px 12px;
+  padding: 4px 8px;
   background: var(--c-primary);
   border-radius: 4px;
   color: var(--c-white);
   font-size: 12px;
+  font-weight: 330;
 }
 
-/* ---------- 底栏（Figma 539:41208 精确还原） ---------- */
+/* ---------- 底栏（Figma 539:41208 精确还原：5 项，含中间凸起"亮码卖货"主按钮）
+   高度 81px = 上内边距 8 + 内容 57 + 下内边距 16；项间距 15px；标签 中文/中文小号文本 14px */
 .tabbar {
   position: fixed;
   bottom: 0;
@@ -334,6 +442,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   padding: 8px 8px 16px;
   background: #FFFFFF;
   backdrop-filter: blur(20px);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02);
 }
 .tabbar__item {
   flex: 1;
@@ -362,23 +471,56 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .tabbar__item--active {
   color: var(--c-primary);
 }
+/* 图标 24×24，位于 32×32 图标区内（Figma 图标框 32×32、图标 24 居中） */
 .tabbar__icon {
   position: relative;
   z-index: 1;
   width: 24px;
   height: 24px;
+  margin: 4px 0;
   color: inherit;
   fill: currentColor;
   stroke: none;
 }
+/* 标签：14px；未选中 #6B7280，选中 #16A34A（与图标色分离） */
 .tabbar__label {
   position: relative;
   z-index: 1;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  font-size: 14px;
   font-weight: 330;
   line-height: 1.326;
-  color: inherit;
+  color: #6B7280;
   text-align: center;
+}
+.tabbar__item--active .tabbar__label {
+  color: var(--c-primary);
+}
+/* 中间"亮码卖货"主按钮：绿色圆形 60×60 + 4px 白描边 + 白色二维码 28×28，凸出底栏顶部 15px */
+.tabbar__item--main {
+  justify-content: flex-end;
+}
+.tabbar__main-btn {
+  position: absolute;
+  top: -23px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--c-primary);
+  border: 4px solid #FFFFFF;
+  border-radius: 50%;
+  z-index: 1;
+}
+.tabbar__main-icon {
+  width: 28px;
+  height: 28px;
 }
 
 @media (min-width: 768px) {

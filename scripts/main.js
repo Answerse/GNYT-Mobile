@@ -12,7 +12,8 @@
     });
   }
 
-  var tabItems = document.querySelectorAll('.tabbar__item');
+  // tab 切换：仅普通导航项参与，中间的"亮码卖货"主按钮不参与选中态切换
+  var tabItems = document.querySelectorAll('.tabbar__item:not(.tabbar__item--main)');
   tabItems.forEach(function (item) {
     item.addEventListener('click', function () {
       tabItems.forEach(function (el) {
