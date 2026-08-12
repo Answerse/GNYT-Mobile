@@ -1,4 +1,9 @@
-/* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 新版设计稿 + 渲染图修正） */
+/* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 新版设计稿 + 渲染图修正）
+   rem 适配：设计稿宽 375px，1rem = 100px @ 375 视口（设计 1px = 0.01rem） */
+
+html {
+  font-size: calc(100vw / 3.75);
+}
 
 :root {
   --c-primary: #16A34A;
@@ -21,6 +26,7 @@
 
 body {
   font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.16rem;
   background: var(--c-bg);
   color: var(--c-text);
   -webkit-font-smoothing: antialiased;
@@ -34,94 +40,94 @@ a { text-decoration: none; color: inherit; }
 .hero-zone {
   position: relative;
   width: 100%;
-  height: 320px;
+  height: 3.2rem;
   background: url("../assets/images/bg-head.png") no-repeat center top / 100% 100%;
 }
 .hero-zone__inner {
   position: relative;
   height: 100%;
-  padding: 0 16px;
+  padding: 0 0.16rem;
 }
 /* 3D 插画横幅：内容位于图像右半幅，置于绿色头部下半部 */
 .illus {
   position: absolute;
   left: 0;
-  top: 90px;
-  width: 375px;
+  top: 0.9rem;
+  width: 3.75rem;
   pointer-events: none;
 }
 
 /* 顶栏 */
-.topbar__statusbar { height: 25px; }
+.topbar__statusbar { height: 0.25rem; }
 .topbar__nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 -16px;
-  padding: 16px;
+  margin: 0 -0.16rem;
+  padding: 0.16rem;
 }
 .topbar__logo-wrap {
   display: flex;
   align-items: center;
 }
-.topbar__logo { width: 98px; height: 40px; }
+.topbar__logo { width: 0.98rem; height: 0.4rem; }
 .topbar__tag {
-  margin-left: 9px;
-  height: 20px;
-  padding: 0 8px 1px;
+  margin-left: 0.09rem;
+  height: 0.2rem;
+  padding: 0 0.08rem 0.01rem;
   display: flex;
   align-items: center;
   background: var(--c-green-50);
-  border-radius: 4px;
+  border-radius: 0.04rem;
   color: var(--c-primary);
-  font-size: 14px;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
 }
 .topbar__wechat {
-  width: 76px;
-  height: 26px;
+  width: 0.76rem;
+  height: 0.26rem;
 }
 .topbar__wechat-icon {
-  width: 76px;
-  height: 26px;
+  width: 0.76rem;
+  height: 0.26rem;
 }
 
 /* 本月统计（白色文字 + 黄绿胶囊） */
 .stat {
-  margin-top: 38px;
-  padding-left: 16px;
+  margin-top: 0.38rem;
+  padding-left: 0.16rem;
 }
 .stat__label {
-  font-size: 14px;
+  font-size: 0.14rem;
   color: var(--c-white);
   opacity: 0.95;
 }
 .stat__unit {
-  font-size: 12px;
-  margin-left: 2px;
+  font-size: 0.12rem;
+  margin-left: 0.02rem;
 }
 .stat__value {
-  font-size: 48px;
+  font-size: 0.48rem;
   font-weight: 700;
   color: var(--c-white);
   line-height: 1.1;
-  margin-top: 2px;
-  letter-spacing: 1px;
+  margin-top: 0.02rem;
+  letter-spacing: 0.01rem;
 }
 .stat__pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 14px;
-  padding: 5px 14px;
+  gap: 0.04rem;
+  margin-top: 0.14rem;
+  padding: 0.05rem 0.14rem;
   background: var(--c-lime);
-  border-radius: 9999px;
-  font-size: 14px;
+  border-radius: 99.99rem;
+  font-size: 0.14rem;
   color: var(--c-text);
 }
 .stat__pill strong {
-  font-size: 18px;
+  font-size: 0.18rem;
   font-weight: 700;
 }
 
@@ -129,32 +135,32 @@ a { text-decoration: none; color: inherit; }
 .page {
   position: relative;
   width: 100%;
-  margin: -48px auto 0;
-  padding: 0 8px 96px;
+  margin: -0.48rem auto 0;
+  padding: 0 0.08rem 0.96rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.08rem;
 }
 
 /* ---------- 桂农码大卡 ---------- */
 .qr-card {
   background: var(--c-white);
-  border-radius: 16px;
+  border-radius: 0.16rem;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0.04rem 0.16rem rgba(0, 0, 0, 0.04);
 }
 /* 顶部深绿账户条（Figma 306:12081：#15803D，上圆角 16，白色弧形边角） */
 .qr-card__user {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 24px 24px;
+  gap: 0.16rem;
+  padding: 0.16rem 0.24rem 0.24rem;
   background: var(--c-primary-deep);
 }
 .qr-card__avatar {
-  width: 32px;
-  height: 32px;
+  width: 0.32rem;
+  height: 0.32rem;
   border-radius: 50%;
 }
 .qr-card__info {
@@ -167,10 +173,10 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 0.08rem;
 }
 .qr-card__name {
-  font-size: 20px;
+  font-size: 0.2rem;
   font-weight: 630;
   line-height: 1.326;
   color: var(--c-white);
@@ -181,12 +187,12 @@ a { text-decoration: none; color: inherit; }
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  height: 18px;
-  padding: 1px 4px 1px 14px;
+  gap: 0.04rem;
+  height: 0.18rem;
+  padding: 0.01rem 0.04rem 0.01rem 0.14rem;
   background: var(--c-primary);
-  border-radius: 0 4px 4px 0;
-  font-size: 10px;
+  border-radius: 0 0.04rem 0.04rem 0;
+  font-size: 0.1rem;
   font-weight: 330;
   line-height: 1.326;
   color: var(--c-white);
@@ -195,13 +201,13 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   left: 0;
   top: 0;
-  transform: translateY(-5.5px);
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
+  transform: translateY(-0.055rem);
+  width: 0.24rem;
+  height: 0.24rem;
+  border-radius: 0.04rem;
 }
 .qr-card__phone {
-  font-size: 14px;
+  font-size: 0.14rem;
   color: rgba(255, 255, 255, 0.85);
 }
 /* 白色弧形边角（绿色条与白底交界装饰） */
@@ -217,8 +223,8 @@ a { text-decoration: none; color: inherit; }
 .qr-card__body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: 0.16rem;
+  padding: 0.16rem;
   background: var(--c-white);
 }
 
@@ -227,32 +233,32 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 8px 16px;
+  gap: 0.16rem;
+  padding: 0.08rem 0.16rem;
   background: var(--c-green-50);
-  border-radius: 8px;
+  border-radius: 0.08rem;
 }
 .create-order__text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 0.04rem;
 }
 .create-order__title {
-  font-size: 20px;
+  font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
   color: var(--c-text);
 }
 .create-order__sub {
-  font-size: 14px;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
   color: var(--c-text);
 }
 .create-order__scan {
-  width: 64px;
-  height: 64px;
+  width: 0.64rem;
+  height: 0.64rem;
   flex-shrink: 0;
 }
 
@@ -260,19 +266,19 @@ a { text-decoration: none; color: inherit; }
 .func-row {
   display: flex;
   align-items: stretch;
-  gap: 16px;
-  padding: 8px 0;
+  gap: 0.16rem;
+  padding: 0.08rem 0;
 }
 .func-row__item {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.08rem;
 }
 .func-row__icon {
-  width: 24px;
-  height: 24px;
+  width: 0.24rem;
+  height: 0.24rem;
   flex-shrink: 0;
 }
 /* 自产自销证明：蓝色文件图标（内联 SVG，颜色走语义 Token，不硬编码在 SVG 内） */
@@ -282,41 +288,91 @@ a { text-decoration: none; color: inherit; }
 .func-store__awning { fill: var(--c-warning-soft); }
 .func-store__body { fill: var(--c-warning); }
 .func-row__item span {
-  font-size: 14px;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
   color: var(--c-text);
   white-space: nowrap;
 }
 .func-row__divider {
-  width: 1px;
+  width: 0.01rem;
   align-self: stretch;
   background: rgba(16, 18, 21, 0.1);
+}
+
+/* ---------- 集采广告（Figma 886:23599：359×106，白→浅绿渐变，圆角 16） ---------- */
+.ad {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 1.06rem;
+  border-radius: 0.16rem;
+  overflow: hidden;
+  background: linear-gradient(133deg, #FFFFFF 0%, #DCFCE7 100%);
+}
+.ad__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  padding-left: 0.2rem;
+}
+.ad__title {
+  font-size: 0.24rem;
+  font-weight: 630;
+  line-height: 1.326;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.ad__btn {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.04rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+}
+.ad__btn-icon {
+  width: 0.16rem;
+  height: 0.16rem;
+}
+.ad__img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.4rem;
+  height: 1.06rem;
+  pointer-events: none;
 }
 
 /* ---------- 市场行情（Figma 884:17507：白底、圆角 8、内边距 16） ---------- */
 .market {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: 0.16rem;
+  padding: 0.16rem;
   background: var(--c-white);
-  border-radius: 8px;
+  border-radius: 0.08rem;
 }
 .market__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 0.08rem;
 }
 .market__title {
-  font-size: 20px;
+  font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
   color: var(--c-text);
 }
 .market__unit {
-  font-size: 12px;
+  font-size: 0.12rem;
   font-weight: 330;
   color: var(--c-text-sub);
   white-space: nowrap;
@@ -324,19 +380,19 @@ a { text-decoration: none; color: inherit; }
 /* 分段控件：浅绿容器 + 选中绿色胶囊（选中白字，未选中绿字） */
 .market__tabs {
   display: flex;
-  gap: 8px;
-  padding: 3px;
+  gap: 0.08rem;
+  padding: 0.03rem;
   background: var(--c-green-50);
-  border-radius: 20px;
+  border-radius: 0.2rem;
 }
 .market__tab {
   flex: 1;
-  height: 26px;
+  height: 0.26rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 40px;
-  font-size: 14px;
+  border-radius: 0.4rem;
+  font-size: 0.14rem;
   font-weight: 330;
   color: var(--c-primary);
   white-space: nowrap;
@@ -350,12 +406,12 @@ a { text-decoration: none; color: inherit; }
 .market__table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 3px;
+  border-spacing: 0 0.03rem;
   table-layout: fixed;
 }
 .market__th {
-  padding: 0 10px 4px;
-  font-size: 14px;
+  padding: 0 0.1rem 0.04rem;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
   color: var(--c-text);
@@ -366,9 +422,9 @@ a { text-decoration: none; color: inherit; }
 .market__th--region { width: 34%; }
 .market__th--price { width: 33%; text-align: right; }
 .market__row td {
-  height: 36px;
-  padding: 0 10px;
-  font-size: 14px;
+  height: 0.36rem;
+  padding: 0 0.1rem;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
   color: var(--c-text);
@@ -378,10 +434,10 @@ a { text-decoration: none; color: inherit; }
   background: var(--c-green-50);
 }
 .market__row td:first-child {
-  border-radius: 8px 0 0 8px;
+  border-radius: 0.08rem 0 0 0.08rem;
 }
 .market__row td:last-child {
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 0.08rem 0.08rem 0;
 }
 .market__region {
   text-align: left;
@@ -390,12 +446,12 @@ a { text-decoration: none; color: inherit; }
   text-align: right;
 }
 .market__price-sym {
-  font-size: 12px;
+  font-size: 0.12rem;
   font-weight: 330;
   color: var(--c-primary);
 }
 .market__price-num {
-  font-size: 20px;
+  font-size: 0.2rem;
   font-weight: 700;
   color: var(--c-primary);
 }
@@ -405,14 +461,14 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 8px 8px 8px 16px;
+  gap: 0.08rem;
+  padding: 0.08rem 0.08rem 0.08rem 0.16rem;
   background: var(--c-white);
-  border-radius: 8px;
+  border-radius: 0.08rem;
 }
 .auth__text {
   flex: 1;
-  font-size: 14px;
+  font-size: 0.14rem;
   font-weight: 330;
   color: var(--c-text);
   white-space: nowrap;
@@ -421,16 +477,16 @@ a { text-decoration: none; color: inherit; }
 }
 .auth__btn {
   flex-shrink: 0;
-  padding: 4px 8px;
+  padding: 0.04rem 0.08rem;
   background: var(--c-primary);
-  border-radius: 4px;
+  border-radius: 0.04rem;
   color: var(--c-white);
-  font-size: 12px;
+  font-size: 0.12rem;
   font-weight: 330;
 }
 
 /* ---------- 底栏（Figma 539:41208 精确还原：5 项，含中间凸起"亮码卖货"主按钮）
-   高度 81px = 上内边距 8 + 内容 57 + 下内边距 16；项间距 15px；标签 中文/中文小号文本 14px */
+   高度 0.81rem = 上内边距 0.08 + 内容 0.57 + 下内边距 0.16；项间距 0.15；标签 14px */
 .tabbar {
   position: fixed;
   bottom: 0;
@@ -438,11 +494,11 @@ a { text-decoration: none; color: inherit; }
   right: 0;
   display: flex;
   justify-content: center;
-  gap: 15px;
-  padding: 8px 8px 16px;
+  gap: 0.15rem;
+  padding: 0.08rem 0.08rem 0.16rem;
   background: #FFFFFF;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(0.2rem);
+  box-shadow: 0 -0.02rem 0.1rem rgba(0, 0, 0, 0.02);
 }
 .tabbar__item {
   flex: 1;
@@ -450,7 +506,7 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 0.05rem;
   position: relative;
   color: rgba(16, 18, 21, 0.5);
 }
@@ -461,11 +517,11 @@ a { text-decoration: none; color: inherit; }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 57px;
+  width: 0.6rem;
+  height: 0.57rem;
   background: transparent;
-  border-radius: 10px;
-  backdrop-filter: blur(20px);
+  border-radius: 0.1rem;
+  backdrop-filter: blur(0.2rem);
   z-index: 0;
 }
 .tabbar__item--active {
@@ -475,9 +531,9 @@ a { text-decoration: none; color: inherit; }
 .tabbar__icon {
   position: relative;
   z-index: 1;
-  width: 24px;
-  height: 24px;
-  margin: 4px 0;
+  width: 0.24rem;
+  height: 0.24rem;
+  margin: 0.04rem 0;
   color: inherit;
   fill: currentColor;
   stroke: none;
@@ -489,8 +545,8 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20px;
-  font-size: 14px;
+  height: 0.2rem;
+  font-size: 0.14rem;
   font-weight: 330;
   line-height: 1.326;
   color: #6B7280;
@@ -505,22 +561,22 @@ a { text-decoration: none; color: inherit; }
 }
 .tabbar__main-btn {
   position: absolute;
-  top: -23px;
+  top: -0.23rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 0.6rem;
+  height: 0.6rem;
   background: var(--c-primary);
-  border: 4px solid #FFFFFF;
+  border: 0.04rem solid #FFFFFF;
   border-radius: 50%;
   z-index: 1;
 }
 .tabbar__main-icon {
-  width: 28px;
-  height: 28px;
+  width: 0.28rem;
+  height: 0.28rem;
 }
 
 @media (min-width: 768px) {
