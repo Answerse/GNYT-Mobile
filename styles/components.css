@@ -19,6 +19,15 @@
   font-style: normal;
   font-display: swap;
 }
+/* Banner/页面标题装饰字体（字形较粗、有装饰感，用于突出展示） */
+@font-face {
+  font-family: "ZmWH";
+  src: url("../assets/fonts/ZmWHXh3VLRxO.woff2") format("woff2"),
+       url("../assets/fonts/ZmWHXh3VLRxO.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ---------- 色板 Token ---------- */
 :root {
@@ -240,6 +249,7 @@ a { text-decoration: none; color: inherit; }
 .od-topbar__title {
   flex: 1;
   text-align: center;
+  font-family: "ZmWH", serif;
   font-size: 0.17rem;
   font-weight: 500;
   color: #1D2129;
@@ -283,6 +293,7 @@ a { text-decoration: none; color: inherit; }
 .oc-topbar__back svg { width: 100%; height: 100%; }
 .oc-topbar__title {
   position: absolute; left: 50%; transform: translateX(-50%);
+  font-family: "ZmWH", serif;
   font-size: 0.17rem;
   font-weight: 500;
   color: #101215;

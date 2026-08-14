@@ -190,6 +190,7 @@ body {
   gap: 0.04rem;
 }
 .create-order__title {
+  font-family: "ZmWH", serif;
   font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
@@ -268,6 +269,7 @@ body {
   padding-left: 0.2rem;
 }
 .ad__title {
+  font-family: "ZmWH", serif;
   font-size: 0.24rem;
   font-weight: 630;
   line-height: 1.326;
@@ -303,6 +305,7 @@ body {
   gap: 0.08rem;
 }
 .market__title {
+  font-family: "ZmWH", serif;
   font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
@@ -1660,6 +1663,7 @@ body {
   flex-shrink: 0;
 }
 .mine-broker__title {
+  font-family: "ZmWH", serif;
   font-size: 0.16rem;
   font-weight: 700;
   color: #14532D;
