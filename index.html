@@ -4,34 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>桂农易通 - 农户首页</title>
+  <link rel="stylesheet" href="styles/components.css" />
   <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/tabbar.css" />
+  <link rel="stylesheet" href="styles/badge.css" />
 </head>
 <body>
+  <!-- ============ 首页 ============ -->
+  <div class="page" id="page-home">
   <!-- ============ 绿色渐变头图区（状态栏 + 导航 + 本月统计 + 插画） ============ -->
   <div class="hero-zone">
     <div class="hero-zone__inner">
-      <!-- 顶栏 -->
-      <header class="topbar">
-        <div class="topbar__statusbar"></div>
-        <div class="topbar__nav">
-          <div class="topbar__logo-wrap">
-            <img class="topbar__logo" src="assets/icons/logo.svg" alt="桂农易通" />
-            <span class="topbar__tag">农户版</span>
-          </div>
-          <button class="topbar__wechat" type="button" aria-label="微信">
-            <img class="topbar__wechat-icon" src="assets/icons/wechat-btn.svg" alt="" />
-          </button>
-        </div>
-      </header>
+      <!-- 顶栏（Header 组件：首页导航，含农户版/企业版切换按钮，由 PageHeader.mount 渲染） -->
+      <div class="header-mount" data-header="home"></div>
 
-      <!-- 本月统计 -->
-      <div class="stat">
+      <!-- 农户版：本月统计（Figma 65:5095；切换企业版时隐藏） -->
+      <div class="stat stat--farm">
         <div class="stat__label">本月总支出 <span class="stat__unit">(万元)</span></div>
         <div class="stat__value">2300.92</div>
         <div class="stat__pill"><span>本月共</span><strong>92</strong><span>单</span></div>
       </div>
+      <!-- 企业版：头部无统计数字，仅插画（Figma 231:9724） -->
     </div>
-    <img class="illus" src="assets/images/illus-banner.png" alt="" />
+    <!-- 农户版插画（Figma 65:5095） -->
+    <img class="illus illus--farm" src="assets/images/illus-banner.png" alt="" />
+    <!-- 企业版插画（Figma 231:9724：增长卷轴 + 箭头 + 金币） -->
+    <img class="illus illus--enterprise" src="assets/images/illus-enterprise.png" alt="" hidden />
   </div>
 
   <main class="page">
@@ -43,10 +41,7 @@
         <div class="qr-card__info">
           <div class="qr-card__name-row">
             <span class="qr-card__name">钱若霖</span>
-            <span class="qr-card__badge">
-              <img class="qr-card__badge-icon" src="assets/icons/badge-broker.svg" alt="" />
-              管理员
-            </span>
+            <span class="badge" data-badge="admin"></span>
           </div>
           <span class="qr-card__phone">153 **** 0312</span>
         </div>
@@ -56,13 +51,13 @@
       <!-- 白底主体 -->
       <div class="qr-card__body">
         <!-- 创建订单 -->
-        <div class="create-order">
+        <a class="create-order" href="order-create.html" aria-label="创建订单">
           <div class="create-order__text">
             <strong class="create-order__title">创建订单</strong>
             <span class="create-order__sub">快速高效交易安心</span>
           </div>
           <img class="create-order__scan" src="assets/icons/scan.svg" alt="扫码" />
-        </div>
+        </a>
 
         <!-- 功能入口 -->
         <div class="func-row">
@@ -86,17 +81,17 @@
       </div>
     </section>
 
-    <!-- 集采广告 -->
-    <section class="ad" aria-label="集采活动">
+    <!-- 集采广告（点击进入集采活动页 jicai.html） -->
+    <a class="ad" href="jicai.html" aria-label="集采活动">
       <div class="ad__content">
         <h2 class="ad__title">集采活动报名啦</h2>
-        <button class="ad__btn" type="button">
+        <span class="text-arrow">
           我要参加
-          <img class="ad__btn-icon" src="assets/icons/forward.svg" alt="" />
-        </button>
+          <span class="text-arrow__icon" aria-hidden="true"></span>
+        </span>
       </div>
       <img class="ad__img" src="assets/images/ad-megaphone.png" alt="" />
-    </section>
+    </a>
 
     <!-- 市场行情 -->
     <section class="market" aria-label="农产品收购市场行情">
@@ -157,32 +152,666 @@
     </section>
   </main>
 
-  <!-- 底栏 -->
-  <nav class="tabbar" aria-label="主导航">
-    <button class="tabbar__item tabbar__item--active" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-home.svg" alt="" />
-      <span class="tabbar__label">首页</span>
-    </button>
-    <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-order.svg" alt="" />
-      <span class="tabbar__label">订单</span>
-    </button>
-    <!-- 中间凸起"亮码卖货"主按钮 -->
-    <button class="tabbar__item tabbar__item--main" type="button">
-      <span class="tabbar__main-btn">
-        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
-      </span>
-      <span class="tabbar__label">亮码卖货</span>
-    </button>
-    <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-flow.svg" alt="" />
-      <span class="tabbar__label">收支</span>
-    </button>
-    <button class="tabbar__item" type="button">
-      <img class="tabbar__icon" src="assets/icons/tab-mine.svg" alt="" />
-      <span class="tabbar__label">我的</span>
-    </button>
-  </nav>
+  </div><!-- /#page-home -->
+
+  <!-- ============ 订单页 ============ -->
+  <div class="page" id="page-order" hidden>
+    <!-- 页头组件（Figma 910:13227 顶栏 + 621:6341 筛选栏，固定在页头） -->
+    <div class="header-mount" data-header="order"></div>
+
+    <!-- 订单列表 -->
+    <div class="order-list">
+      <!-- 卡片 1：广西春林农贸责任有限公司 · 已完成 · 有收果明细 -->
+      <article class="order-card" data-status="done">
+        <span class="order-status order-status--done">已完成</span>
+        <p class="order-card__name">广西春林农贸责任有限公司</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品数量：</span>
+            <span class="order-info__value order-info__value--num">4</span>
+            <button class="order-goods__toggle text-arrow text-arrow--muted" type="button" data-toggle="od1" aria-expanded="true">
+              明细
+              <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="order-card__detail is-open" id="od1">
+            <div class="order-detail__row">
+              <span class="order-detail__idx">1</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">601</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9513.67</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">2</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">522</span><span class="order-detail__unit">公斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9054.27</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">3</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">418</span><span class="order-detail__unit">方</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8947.56</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">4</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">734</span><span class="order-detail__unit">斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8015.36</span></span>
+            </div>
+          </div>
+
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <button class="order-foot__btn" type="button">发票</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+
+      <!-- 卡片 2：李娉 · 待支付 · 无明细（商品名称 + 采购数量） -->
+      <article class="order-card" data-status="pending">
+        <span class="order-status order-status--pending">待支付</span>
+        <p class="order-card__name">李娉</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品名称：</span>
+            <span class="order-info__value">桂糖10/2022</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">采购数量：</span>
+            <span class="order-info__value">4 吨</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+
+      <!-- 卡片 3：郭明 · 待支付 · 有收果明细 -->
+      <article class="order-card" data-status="pending">
+        <span class="order-status order-status--pending">待支付</span>
+        <p class="order-card__name">郭明</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品数量：</span>
+            <span class="order-info__value order-info__value--num">4</span>
+            <button class="order-goods__toggle text-arrow text-arrow--muted" type="button" data-toggle="od3" aria-expanded="false">
+              明细
+              <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="order-card__detail" id="od3">
+            <div class="order-detail__row">
+              <span class="order-detail__idx">1</span>
+              <span class="order-detail__name">粤糖93/159</span>
+              <span class="order-detail__weight"><span class="order-detail__num">601</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9513.67</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">2</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">522</span><span class="order-detail__unit">公斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9054.27</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">3</span>
+              <span class="order-detail__name">新台糖28号</span>
+              <span class="order-detail__weight"><span class="order-detail__num">418</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8947.56</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">4</span>
+              <span class="order-detail__name">桂糖10/2022</span>
+              <span class="order-detail__weight"><span class="order-detail__num">734</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8015.36</span></span>
+            </div>
+          </div>
+
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+    </div>
+  </div><!-- /#page-order -->
+
+  <!-- ============ 收支页 ============ -->
+  <div class="page" id="page-flow" hidden>
+    <!-- 页头组件（顶栏固定在页头） -->
+    <div class="header-mount" data-header="flow"></div>
+
+    <!-- 内容区：撑满剩余高度，内部滚动 -->
+    <div class="page-content">
+      <!-- 日历卡片（筛选栏已移至页头 Header，由 PageHeader.mount 渲染） -->
+    <div class="flow-calcard">
+      <!-- 年月 + 左右切换 -->
+      <div class="flow-calhead">
+        <button class="flow-calhead__arrow" type="button" aria-label="上一项">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <span class="flow-calhead__title" data-range="month">2025</span>
+        <button class="flow-calhead__arrow" type="button" aria-label="下一项">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- 月视图：12 个月 -->
+      <div class="flow-calgrid flow-calgrid--month" data-view="month">
+        <button class="cal-cell" type="button"><span class="cal-cell__num">1 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">3 月</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">4 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">5 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">6 月</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">7 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">8 月</span><span class="cal-cell__amt">+6233310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">9 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">10 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">11 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">12 月</span><span class="cal-cell__none">暂无</span></button>
+      </div>
+
+      <!-- 年视图：9 个年份 -->
+      <div class="flow-calgrid flow-calgrid--year" data-view="year" hidden>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2017</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2018</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">2019</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2020</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2021</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">2022</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2023</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">2024</span><span class="cal-cell__amt">+87523310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2025</span><span class="cal-cell__none">暂无</span></button>
+      </div>
+
+      <!-- 日视图：日历（按 Figma 1:1 布局） -->
+      <div class="flow-calgrid flow-calgrid--day" data-view="day" hidden>
+        <div class="flow-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">1</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">3</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">4</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">5</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">6</span><span class="cal-cell__amt">+9876</span></button>
+
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">7</span><span class="cal-cell__amt">+13152</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">8</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">9</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">10</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">11</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">12</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">13</span><span class="cal-cell__amt">+113343</span></button>
+
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">14</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">15</span><span class="cal-cell__amt">+13121</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">16</span><span class="cal-cell__amt">+23310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">17</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">18</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">19</span><span class="cal-cell__none">暂无</span></button>
+
+        <button class="cal-cell" type="button"><span class="cal-cell__num">20</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">21</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">22</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">23</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">24</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">25</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">26</span><span class="cal-cell__none">暂无</span></button>
+
+        <button class="cal-cell" type="button"><span class="cal-cell__num">27</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">28</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">29</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">30</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">31</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell" type="button" disabled></button>
+      </div>
+    </div>
+
+    <!-- 统计卡片：收入统计 -->
+    <p class="flow-statcard__date flow-statcard__date--outside" data-range="month">2025-07</p>
+    <div class="flow-statcard">
+      <!-- 缺角背景（Figma 230:4324：359x118 右上切角，叠在卡片顶部，遮挡插画底部） -->
+      <img class="flow-statcard__bg" src="assets/flow-bg-notched.svg" alt="" aria-hidden="true" />
+      <p class="flow-statcard__title">收入统计</p>
+      <img class="flow-statcard__deco" src="assets/flow-money-deco.svg" alt="" aria-hidden="true" />
+      <div class="flow-statcard__grid">
+        <div class="flow-stat">
+          <p class="flow-stat__label">订单总数</p>
+          <p class="flow-stat__value" data-month="43" data-year="233" data-day="7">43</p>
+        </div>
+        <div class="flow-stat">
+          <p class="flow-stat__label">总重量(公斤)</p>
+          <p class="flow-stat__value" data-month="3201" data-year="923411" data-day="201">3201</p>
+        </div>
+        <div class="flow-stat">
+          <p class="flow-stat__label">合计金额 (元)</p>
+          <p class="flow-stat__value flow-stat__value--green" data-month="¥6233310" data-year="¥87523310" data-day="¥23310">¥6233310</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 明细卡片（月视图数据：何炜 / 李世海 / 郑文锦） -->
+    <div class="flow-detail" data-range="month">
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">何炜</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">89<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7836.59<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李世海</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">418<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7214.83<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">郑文锦</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">345<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9513.67<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+
+    <!-- 明细卡片（日视图数据：赵明辉 / 何炜 / 李世海 / 郑文锦） -->
+    <div class="flow-detail" data-range="day" hidden>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">赵明辉</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">418<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8947.56<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">何炜</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">89<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7836.59<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李世海</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">106<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8345.66<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">郑文锦</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">123<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9234.77<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+
+    <!-- 明细卡片（年视图数据：周琎 / 李豫卓 / 冯艺莲） -->
+    <div class="flow-detail" data-range="year" hidden>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">周琎</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">874<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9054.27<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李豫卓</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">92<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8947.56<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">冯艺莲</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">522<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8015.36<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+    </div><!-- /.page-content -->
+  </div><!-- /#page-flow -->
+
+  <!-- ============ 我的页 ============ -->
+  <div class="page" id="page-mine" hidden>
+    <!-- 顶栏（Header 组件：变体1 深色 + Logo + 微信按钮，由 PageHeader.mount 渲染） -->
+    <div class="header-mount" data-header="mine"></div>
+
+    <!-- 背景头图（Figma 573:7077：绿→EBF2FC 渐变铺底，直角——画板圆角属装饰已去除） -->
+    <div class="mine-head" aria-hidden="true">
+      <img class="mine-head__img" src="assets/icons/mine-head.svg" alt="" />
+    </div>
+
+    <!-- 个人信息（Figma 573:7085：头像 + 信息列[姓名行 + 电话]，透明叠头图；固定不随内容滚动） -->
+    <section class="mine-usercard">
+      <div class="mine-usercard__top">
+        <img class="mine-avatar" src="assets/icons/mine-avatar.svg" alt="头像" />
+        <div class="mine-usercard__meta">
+          <div class="mine-username-row">
+            <p class="mine-username">侯庆山</p>
+            <div class="mine-tags">
+              <span class="badge" data-badge="real"></span>
+              <span class="badge" data-badge="broker"></span>
+            </div>
+          </div>
+          <p class="mine-phone">18174741232</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mine-content">
+      <!-- 钱包（Figma 573:7119：切角背景 bg-notched + 右上角余额明细按钮 + 余额/提现） -->
+      <section class="mine-wallet">
+        <img class="mine-wallet__notched" src="assets/icons/mine-bg-notched.svg" alt="" aria-hidden="true" />
+        <!-- 余额明细（Figma 929:51091：透明底、白字、白箭头，叠在卡片右上缺口；文字+箭头统一用 text-arrow 组件） -->
+        <button class="mine-wallet__balance text-arrow text-arrow--white" type="button">
+          余额明细
+          <span class="text-arrow__icon" aria-hidden="true"></span>
+        </button>
+        <div class="mine-wallet__main">
+          <div class="mine-wallet__info">
+            <p class="mine-wallet__label">钱包余额 (元)</p>
+            <p class="mine-wallet__amount"><span class="mine-wallet__currency">¥</span><span class="mine-wallet__amount-num">50000.00</span></p>
+          </div>
+          <button class="mine-wallet__withdraw" type="button">提现</button>
+        </div>
+      </section>
+
+      <!-- 交易统计（Figma 573:7133：统计两项容器 + ECharts 图表 + 今日订单数） -->
+      <section class="mine-stats">
+        <div class="mine-stats__row">
+          <div class="mine-stats__item">
+            <p class="mine-stats__label">今日订单总额 (元)</p>
+            <p class="mine-stats__value">¥30230.22</p>
+          </div>
+          <div class="mine-stats__item mine-stats__item--right">
+            <p class="mine-stats__label">累计收款 (元)</p>
+            <p class="mine-stats__value">¥323234.23</p>
+          </div>
+        </div>
+
+        <div class="mine-chart">
+          <div class="mine-chart__canvas" id="mineTrendChart" role="img" aria-label="近7日交易趋势"></div>
+          <p class="mine-chart__title">近7日交易趋势</p>
+        </div>
+
+        <button class="mine-stats__order" type="button">
+          <span class="mine-stats__order-label">今日订单数:</span>
+          <span class="mine-stats__order-num">320 单</span>
+          <span class="mine-stats__order-view text-arrow text-arrow--primary">查看
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </span>
+        </button>
+      </section>
+
+      <!-- 功能方块（并排）：贸易订单 / 银行卡管理（Figma 573:7168：图标无背景、38/40px、文字 16） -->
+      <section class="mine-grid">
+        <button class="mine-grid__item" type="button">
+          <span class="mine-grid__icon"><img src="assets/icons/mine-order-file.svg" alt="" /></span>
+          <span class="mine-grid__label">贸易订单</span>
+        </button>
+        <button class="mine-grid__item" type="button">
+          <span class="mine-grid__icon"><img src="assets/icons/mine-bankcard.svg" alt="" /></span>
+          <span class="mine-grid__label">银行卡管理</span>
+        </button>
+      </section>
+
+      <!-- 经纪人认证 banner（Figma 573:7177：渐变底 + 服务图标 40×40 + 立刻认证标签） -->
+      <section class="mine-broker">
+        <img class="mine-broker__icon" src="assets/icons/mine-service.svg" alt="" />
+        <div class="mine-broker__text">
+          <p class="mine-broker__title">认证成为经纪人</p>
+          <p class="mine-broker__sub">对接市场、整合资源</p>
+        </div>
+        <button class="mine-broker__btn" type="button">立刻认证</button>
+      </section>
+
+      <!-- 联系客服 / 设置 -->
+      <section class="mine-list">
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/service.svg" alt="" /></span>
+          <span class="mine-list__label">联系客服</span>
+          <span class="text-arrow__icon text-arrow__icon--lg text-arrow--faint" aria-hidden="true"></span>
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/setting.svg" alt="" /></span>
+          <span class="mine-list__label">设置</span>
+          <span class="text-arrow__icon text-arrow--faint" aria-hidden="true"></span>
+        </button>
+      </section>
+    </div>
+  </div><!-- /#page-mine -->
+
+  <!-- ============ 亮码卖货页（身份码，Figma 65:5894） ============ -->
+  <div class="page" id="page-code" hidden>
+    <!-- 顶栏（Header 组件：变体1 深色 + Logo + 微信按钮，由 PageHeader.mount 渲染） -->
+    <div class="header-mount" data-header="code"></div>
+    <main class="code-main">
+      <!-- 用户信息条 -->
+      <section class="code-user">
+        <div class="code-user__info">
+          <span class="code-user__name">陈婉彤</span>
+          <span class="code-user__phone">159 **** 0047</span>
+        </div>
+        <img class="code-user__curve" src="assets/icons/card-corner.svg" alt="" />
+      </section>
+      <!-- 二维码卡片 -->
+      <section class="code-card" aria-label="数农码">
+        <div class="code-card__qr">
+          <img class="code-card__qr-img" src="assets/icons/qr-code-2.svg" alt="数农码" />
+        </div>
+        <div class="code-card__serial">
+          <span class="code-card__serial-label">数农码编号</span>
+          <span class="code-card__serial-number">2131341231234</span>
+        </div>
+        <div class="code-card__fund">
+          <span class="code-card__fund-label">资金来源</span>
+          <div class="code-card__fund-banks">
+            <img class="code-card__fund-logo" src="assets/icons/logo-bohai-bank.svg" alt="渤海银行" />
+            <img class="code-card__fund-logo" src="assets/icons/logo-wezhong-bank.svg" alt="微众银行" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow--faint" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+      <!-- 统计卡片 -->
+      <section class="code-stats" aria-label="今日数据">
+        <div class="code-stats__item">
+          <div class="code-stats__top">
+            <span class="code-stats__label">今日订单 (单)</span>
+            <div class="code-stats__value">
+              <span class="code-stats__value-num">3</span>
+            </div>
+          </div>
+          <button class="code-stats__btn" type="button">
+            <img class="code-stats__btn-icon" src="assets/icons/icon-order-line.svg" alt="" />
+            <span>查看订单</span>
+            <span class="text-arrow__icon text-arrow--white" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="code-stats__item">
+          <div class="code-stats__top">
+            <span class="code-stats__label">今日收款 (元)</span>
+            <div class="code-stats__value">
+              <span class="code-stats__value-sym">¥</span>
+              <span class="code-stats__value-num">73134</span>
+            </div>
+          </div>
+          <button class="code-stats__btn" type="button">
+            <img class="code-stats__btn-icon" src="assets/icons/icon-notebook-line.svg" alt="" />
+            <span>收款账本</span>
+            <span class="text-arrow__icon text-arrow--white" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div><!-- /#page-code -->
+
+  <!-- 底栏组件：由 scripts/tabbar.js 注入 -->
+  <script src="scripts/tabbar.js"></script>
+  <script>
+  Tabbar.mount({ active: 'home' });
+  </script>
+
+  <!-- 微信按钮组件：自动适配背景明暗 -->
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  WechatButton.mount();
+  </script>
+
+  <!-- 徽章组件：配置化渲染（管理员/经纪人等） -->
+  <script src="scripts/badge.js"></script>
+  <script>
+  Badge.mount();
+  </script>
+
+  <!-- 页头组件：顶栏 + 筛选栏，固定在页头（Figma 910:13227 / 621:6341），订单页 / 收支页复用 -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="order"]'),
+    topbar: {
+      left: 'logo',
+      tabs: [
+        { label: '买入', value: 'buy', active: true },
+        { label: '卖出', value: 'sell' }
+      ],
+      right: 'wechat'
+    },
+    filter: {
+      tabs: [
+        { label: '全部', value: 'all', count: 0, active: true },
+        { label: '待支付', value: 'pending', count: 0 },
+        { label: '已完成', value: 'done', count: 10 },
+        { label: '已取消', value: 'cancel', count: 0 }
+      ],
+      search: true,
+      onTab: function (value) {
+        document.querySelectorAll('#page-order .order-card').forEach(function (card) {
+          if (value === 'all' || card.dataset.status === value) {
+            card.removeAttribute('hidden');
+          } else {
+            card.setAttribute('hidden', '');
+          }
+        });
+      }
+    }
+  });
+  // 收支页（Figma 230:4345：顶栏 + 筛选栏[收入/支出 + 日/月/年]；筛选栏由 Header 统一渲染）
+  PageHeader.mount({
+    container: document.querySelector('[data-header="flow"]'),
+    topbar: {
+      left: 'logo',
+      tabs: [
+        { label: '收购', value: 'buy', active: true },
+        { label: '交易', value: 'sell' }
+      ],
+      right: 'wechat'
+    },
+    filter: {
+      type: 'segments',
+      groups: [
+        { cls: 'flow-seg--income', key: 'seg', items: [
+          { label: '收入', value: 'income', active: true },
+          { label: '支出', value: 'expense' }
+        ] },
+        { cls: 'flow-seg--range', key: 'range', items: [
+          { label: '日', value: 'day' },
+          { label: '月', value: 'month', active: true },
+          { label: '年', value: 'year' }
+        ] }
+      ],
+      onSeg: function (key, value) {
+        if (key !== 'range') return;
+        var page = document.getElementById('page-flow');
+        if (!page) return;
+        page.querySelectorAll('.flow-calgrid').forEach(function (g) { g.hidden = g.dataset.view !== value; });
+        page.querySelectorAll('.flow-detail').forEach(function (d) { d.hidden = d.dataset.range !== value; });
+        page.querySelectorAll('.flow-stat__value').forEach(function (v) { v.textContent = v.getAttribute('data-' + value); });
+        var dateEl = page.querySelector('.flow-statcard__date--outside');
+        var headEl = page.querySelector('.flow-calhead__title');
+        if (value === 'month') { dateEl.textContent = '2025-07'; headEl.textContent = '2025'; }
+        if (value === 'year') { dateEl.textContent = '2024年'; headEl.textContent = '2017 - 2025'; }
+        if (value === 'day') { dateEl.textContent = '2025-07-16'; headEl.textContent = '2025-07'; }
+      }
+    }
+  });
+  // 首页（Figma 247:10080 导航：深色 + Logo + 农户版标签 + 企业版切换按钮 + 微信按钮）
+  PageHeader.mount({
+    container: document.querySelector('[data-header="home"]'),
+    topbar: { variant: 'nav', right: 'wechat' }
+  });
+  // 我的（变体1：深色 + Logo + 微信按钮，叠在绿色头图上）
+  PageHeader.mount({
+    container: document.querySelector('[data-header="mine"]'),
+    topbar: { variant: 'mine', right: 'wechat' }
+  });
+  // 亮码（变体1：深色 + Logo + 微信按钮）
+  PageHeader.mount({
+    container: document.querySelector('[data-header="code"]'),
+    topbar: { variant: 'code', right: 'wechat' }
+  });
+  </script>
+
+  <!-- ECharts（我的页交易趋势图） -->
+  <script src="assets/vendor/echarts.min.js"></script>
 
   <script src="scripts/main.js"></script>
 </body>

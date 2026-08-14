@@ -1,0 +1,453 @@
+/* =====================================================================
+   通用组件样式表（全站共享，单源维护 —— DESIGN.md 强制）
+   包含：基础重置 / 字体 / 色板 Token / 页头组件 / 顶栏全部变体 / 微信按钮
+   各页面统一先引入本文件，再引入页面专属 CSS（页面 CSS 仅覆盖设计稿特殊变体）
+   ===================================================================== */
+
+/* ---------- 字体（DINish Condensed：项目英文/数字统一使用，SIL OFL v1.1 本地嵌入） ---------- */
+@font-face {
+  font-family: "DINish Condensed";
+  src: url("../assets/fonts/DINishCondensed-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DINish Condensed";
+  src: url("../assets/fonts/DINishCondensed-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- 色板 Token ---------- */
+:root {
+  --c-primary: #16A34A;
+  --c-primary-deep: #15803D;
+  --c-lime: #BEF264;
+  --c-bg: #EBF2FC;
+  --c-bg-1: #FFFFFF;          /* Figma variables bg-1（分段控件按钮底） */
+  --c-white: #FFFFFF;
+  --c-text: #111827;
+  --c-text-sub: #6B7280;
+  --c-green-50: #F0FDF4;
+  --c-border: #E5E7EB;
+  /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
+  --c-info: #3B82F6;          /* Colors.Blue.500（Info.Default） */
+  --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
+  --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
+  --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
+}
+
+/* ---------- 基础重置 ---------- */
+html {
+  font-size: calc(100vw / 3.75);   /* 375 设计稿等比缩放，1rem = 100px @375 */
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* body 基础（页面专属的背景/高度/滚动策略由各页面 CSS 覆盖） */
+body {
+  font-family: "DINish Condensed", "MiSans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* =====================================================================
+   页头组件（顶栏 + 可选子栏插槽，Figma 910:13227 / 621:6341）
+   结构由 scripts/topbar.js + scripts/page-header.js 生成，页面只放挂载点
+   ===================================================================== */
+.page-header {
+  flex-shrink: 0;
+}
+.header-mount {
+  flex-shrink: 0;
+}
+
+/* =====================================================================
+   顶栏组件（scripts/topbar.js 渲染，4 变体）
+   高度统一 72px（0.72rem），内容垂直居中；仅背景明暗 / 左右内容不同
+   ===================================================================== */
+
+/* ---- 变体 1：首页导航（Logo + 农户版 tag + 右侧操作/微信） ---- */
+.topbar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.16rem;
+}
+.topbar__logo-wrap {
+  display: flex;
+  align-items: center;
+}
+.topbar__logo { width: 0.98rem; height: 0.4rem; }
+.topbar__tag {
+  margin-left: 0.09rem;
+  height: 0.2rem;
+  padding: 0 0.08rem 0.01rem;
+  display: flex;
+  align-items: center;
+  background: var(--c-green-50);
+  border-radius: 0.04rem;
+  color: var(--c-primary);
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+}
+/* 首页导航变体（Figma 247:10080）、我的页（Figma 573:7074）与亮码页（Figma 65:5894）：标签小尺寸 */
+.topbar--nav .topbar__tag,
+.mine-topbar .topbar__tag,
+.code-topbar .topbar__tag {
+  height: 0.16rem;
+  margin-left: 0.04rem;
+  padding: 0 0.04rem 0.01rem;
+  font-size: 0.12rem;
+}
+.topbar__nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+}
+.topbar__switch {
+  display: flex;
+  align-items: center;
+  gap: 0.04rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.12rem;
+  font-weight: 330;
+  line-height: 1.326;
+}
+.topbar__switch-icon {
+  width: 0.16rem;
+  height: 0.16rem;
+  display: block;
+}
+
+/* ---- 微信按钮（Figma 微信按钮组件：75×25、圆角 20、描边胶囊 + 微信图标）
+      仅两种样式：--on-dark（白描边 10% + 白图标 50%，Figma 247:10083）
+                --on-light（深描边 10% + 深图标 50%，Figma 230:3779）
+      背景透明、无边框，自包含不依赖页面级 reset ---- */
+.topbar__wechat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.76rem;
+  height: 0.26rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.125rem;
+  background: none;
+  flex-shrink: 0;
+}
+.topbar__wechat-icon {
+  width: 0.76rem;
+  height: 0.26rem;
+}
+
+/* ---- 变体 2：app 顶栏（订单 / 收支主模块：Logo 或返回 + 标签 + 微信按钮） ---- */
+.app-topbar {
+  background: #EBF2FC;
+}
+.app-topbar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.1rem;
+  height: 0.72rem;
+  padding: 0 0.16rem;
+}
+.app-topbar__logo {
+  flex-shrink: 0;
+  margin-right: auto;
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+.app-topbar__back {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: auto;
+  color: #1F2937;
+}
+.app-topbar__back svg {
+  width: 0.24rem;
+  height: 0.24rem;
+}
+.app-topbar__tabs {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.1rem;
+  height: 0.3rem;
+}
+.app-topbar__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 0.08rem;
+  font-size: 0.16rem;
+  font-weight: 400;
+  color: #9CA3AF;
+  background: none;
+}
+.app-topbar__tab.is-active {
+  color: var(--c-primary);
+  font-weight: 630;
+}
+.app-topbar__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 0.3rem;
+  height: 0.04rem;
+  border-radius: 0.02rem;
+  background: var(--c-primary);
+}
+
+/* ---- 变体 4：od 顶栏（二级页面浅色：返回 + 居中标题 + 右侧动作/微信） ---- */
+.od-topbar__nav {
+  height: 0.72rem;
+  border-bottom: 0.005rem solid #E5E6EB;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  padding: 0 0.16rem;   /* 与全站顶栏变体一致：水平 16px，左右不贴视口边缘 */
+}
+.od-topbar__back {
+  width: 0.4rem;
+  height: 0.72rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1D2129;
+  flex-shrink: 0;
+}
+/* 返回图标：复用图标库 chevron-left.svg（Figma 932:68725 向左-线性，18×16 填充） */
+.od-topbar__back-icon {
+  width: 0.18rem;
+  height: 0.16rem;
+}
+.od-topbar__title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.17rem;
+  font-weight: 500;
+  color: #1D2129;
+}
+.od-topbar__spacer { width: 0.4rem; height: 0.72rem; flex-shrink: 0; }
+
+/* ---- 变体 4a：od 顶栏 · 透明悬浮态（集采活动页 Figma 932:68725：透明叠在渐变头上） ---- */
+.od-topbar--ghost .od-topbar__nav {
+  background: transparent;
+  border-bottom: none;
+}
+.od-topbar--ghost .od-topbar__back {
+  color: #101215;
+}
+.od-topbar--ghost .od-topbar__title {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+
+/* ---- 变体 5：oc 顶栏（创建订单流程，sticky，Figma 65:6236 系） ---- */
+.oc-topbar {
+  background: #EBF2FC;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.oc-topbar__nav {
+  height: 0.72rem;                 /* 顶栏高度以首页为标准 72 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.16rem;
+}
+.oc-topbar__back {
+  width: 0.24rem; height: 0.24rem;
+  display: flex; align-items: center; justify-content: center;
+  color: #101215;
+}
+.oc-topbar__back svg { width: 100%; height: 100%; }
+.oc-topbar__title {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  font-size: 0.17rem;
+  font-weight: 500;
+  color: #101215;
+}
+.oc-topbar__capsule {
+  display: flex;
+  align-items: center;
+  height: 0.32rem;
+  background: #FFFFFF;
+  border: 0.005rem solid rgba(0,0,0,0.08);
+  border-radius: 0.16rem;
+  padding: 0 0.10rem;
+  gap: 0.12rem;
+}
+.oc-topbar__capsule-dot {
+  display: flex; gap: 0.03rem;
+}
+.oc-topbar__capsule-dot span {
+  width: 0.05rem; height: 0.05rem;
+  background: #101215;
+  border-radius: 50%;
+}
+.oc-topbar__capsule-record {
+  width: 0.16rem; height: 0.16rem;
+  border: 0.015rem solid #101215;
+  border-radius: 50%;
+  position: relative;
+}
+.oc-topbar__capsule-record::after {
+  content: "";
+  position: absolute; left: 50%; top: 50%;
+  width: 0.06rem; height: 0.06rem;
+  background: #101215;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---- 我的页顶栏（复用首页结构：logo + 农户版 + 微信按钮，悬浮于渐变头上） ---- */
+.mine-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+.mine-topbar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.16rem;
+}
+.mine-topbar__right { pointer-events: auto; }
+
+/* ---- 亮码页顶栏（绿色背景 + 返回 / 标题 / 更多，Figma 65:5894） ---- */
+.code-topbar {
+  flex-shrink: 0;
+  background: #16A34A;
+}
+.code-topbar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 0.72rem;
+  padding: 0 0.16rem;
+}
+.code-topbar__right {
+  display: flex;
+  align-items: center;
+}
+.code-topbar__back {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  width: 0.75rem;
+  height: 0.3rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.code-topbar__back-icon {
+  height: 0.3rem;
+  width: auto;
+}
+.code-topbar__title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1;
+  color: #FFFFFF;
+}
+.code-topbar__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.26rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.code-topbar__actions-icon {
+  height: 0.26rem;
+  width: auto;
+}
+
+/* =====================================================================
+   文字+箭头按钮组件（全站统一：查看/更多/详情/余额明细/明细等，DESIGN.md 强制）
+   结构固定：文字 + 统一箭头图标（assets/icons/chevron-right.svg）
+   仅 3 个维度可变：颜色（text-arrow--*）、尺寸（text-arrow__icon--*）、风向（text-arrow__icon--left/up/down）
+   箭头经 CSS mask 引用 chevron-right.svg 并填充 currentColor，颜色/尺寸由 CSS 控制
+   ===================================================================== */
+.text-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.04rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 统一箭头：复用 assets/icons/chevron-right.svg（mask 取形 + currentColor 着色），默认 12px 向右 */
+.text-arrow__icon {
+  display: inline-block;
+  width: 0.12rem;
+  height: 0.12rem;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+  mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+}
+/* 尺寸变体：默认 12px；大号 16px（明细展开等紧凑行） */
+.text-arrow__icon--lg {
+  width: 0.16rem;
+  height: 0.16rem;
+}
+/* 风向变体：默认向右；向左/向上/向下 */
+.text-arrow__icon--left { transform: scaleX(-1); }
+.text-arrow__icon--up { transform: rotate(-90deg); }
+.text-arrow__icon--down { transform: rotate(90deg); }
+/* 三角图标变体：无中间一横的纯三角/chevron（明细展开等，默认向下），
+   与箭头图标（chevron-right.svg 带中间一横）区分 */
+.text-arrow__icon--triangle {
+  -webkit-mask: url("../assets/icons/oc-chevron-down.svg") no-repeat center / contain;
+  mask: url("../assets/icons/oc-chevron-down.svg") no-repeat center / contain;
+}
+/* 小尺寸变体：12px 文字（紧凑行/卡片内，如订单详情"查看帮助/查看资质"） */
+.text-arrow--sm {
+  font-size: 0.12rem;
+}
+/* 颜色变体 */
+.text-arrow--primary { color: var(--c-primary); }
+.text-arrow--white { color: #FFFFFF; }
+.text-arrow--muted { color: var(--c-text-sub); }
+.text-arrow--faint { color: #C4C9D0; }   /* 列表行尾浅灰箭头 */
+.text-arrow--blue { color: #4080FF; }

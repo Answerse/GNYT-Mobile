@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>订单详情 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/order-detail.css" />
+</head>
+<body>
+  <div class="od-page">
+
+    <!-- ==================== 顶栏（Header 组件：变体4 浅色 + 返回 + 标题） ==================== -->
+    <div class="header-mount" data-header="od"></div>
+
+    <!-- ==================== 滚动内容 ==================== -->
+    <main class="od-scroll">
+
+      <!-- 订单状态头 -->
+      <section class="od-orderhead">
+        <div class="od-orderhead__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="#F53F3F"/><path d="M15 15l18 18M33 15L15 33" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="od-orderhead__main">
+          <div class="od-orderhead__status">已取消</div>
+          <div class="od-orderhead__desc">您的订单已取消，如有疑问请联系客服</div>
+          <a class="od-orderhead__help text-arrow text-arrow--sm text-arrow--blue" href="javascript:void(0)">查看帮助<span class="text-arrow__icon" aria-hidden="true"></span></a>
+        </div>
+      </section>
+
+      <!-- 商品信息 -->
+      <section class="od-card od-goods">
+        <div class="od-goods__shop">
+          <div class="od-goods__shop-icon">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="2" y="2" width="36" height="36" rx="8" fill="#22C55E"/><path d="M13 25V16a3 3 0 0 1 6 0v9M19 22v-3a3 3 0 0 1 6 0v6M25 21v-2a3 3 0 0 1 6 0v8" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 28v1a2 2 0 0 1-2 2h-1" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </div>
+          <div class="od-goods__shop-name">乐源合作社</div>
+          <a class="od-goods__shop-qual text-arrow text-arrow--sm text-arrow--blue" href="javascript:void(0)">查看资质<span class="text-arrow__icon" aria-hidden="true"></span></a>
+        </div>
+
+        <div class="od-goods__item">
+          <img class="od-goods__thumb" src="assets/icons/goods-veg.svg" alt="商品" />
+          <div class="od-goods__info">
+            <div class="od-goods__title">桂糖 42 号甘蔗（切断）</div>
+            <div class="od-goods__spec">规格：一级 / 含杂率 ≤ 5%</div>
+          </div>
+          <div class="od-goods__num">
+            <div class="od-goods__weight">200.00 斤</div>
+            <div class="od-goods__price">¥ 1.20</div>
+          </div>
+        </div>
+
+        <div class="od-goods__divider"></div>
+
+        <div class="od-goods__row">
+          <span class="od-goods__row-label">商品金额</span>
+          <span class="od-goods__row-value">¥240.00</span>
+        </div>
+        <div class="od-goods__row">
+          <span class="od-goods__row-label">运费</span>
+          <span class="od-goods__row-value">¥0.00</span>
+        </div>
+        <div class="od-goods__total">
+          <span class="od-goods__total-label">共 1 件</span>
+          <span class="od-goods__total-value">合计 ¥240.00</span>
+        </div>
+      </section>
+
+      <!-- 支付信息 -->
+      <section class="od-card od-pay">
+        <div class="od-card__title">支付信息</div>
+        <div class="od-pay__row">
+          <span class="od-pay__label">支付方式</span>
+          <span class="od-pay__value">余额支付</span>
+        </div>
+        <div class="od-pay__row">
+          <span class="od-pay__label">收款方</span>
+          <span class="od-pay__value">乐源合作社</span>
+        </div>
+        <div class="od-pay__row">
+          <span class="od-pay__label">交易单号</span>
+          <span class="od-pay__value">20250116123456789012</span>
+        </div>
+        <div class="od-pay__row">
+          <span class="od-pay__label">创建时间</span>
+          <span class="od-pay__value">2025-01-16 14:30:00</span>
+        </div>
+        <div class="od-pay__row">
+          <span class="od-pay__label">付款时间</span>
+          <span class="od-pay__value">2025-01-16 14:30:25</span>
+        </div>
+      </section>
+
+      <!-- 物流信息 -->
+      <section class="od-card od-logi">
+        <div class="od-card__title">物流信息</div>
+        <div class="od-logi__row">
+          <span class="od-logi__label">配送方式</span>
+          <span class="od-logi__value">自提</span>
+        </div>
+        <div class="od-logi__row">
+          <span class="od-logi__label">提货人</span>
+          <span class="od-logi__value">张伟</span>
+        </div>
+        <div class="od-logi__row">
+          <span class="od-logi__label">联系电话</span>
+          <span class="od-logi__value">138****8888</span>
+        </div>
+        <div class="od-logi__row">
+          <span class="od-logi__label">提货地址</span>
+          <span class="od-logi__value">南宁市青秀区民族大道 188 号</span>
+        </div>
+        <div class="od-logi__row">
+          <span class="od-logi__label">提货时间</span>
+          <span class="od-logi__value">2025-01-16 至 2025-01-17</span>
+        </div>
+      </section>
+
+      <div class="od-safe-bottom"></div>
+    </main>
+
+    <!-- ==================== 底部栏 ==================== -->
+    <footer class="od-bottombar">
+      <div class="od-bottombar__total">
+        <span class="od-bottombar__total-label">合计：</span>
+        <span class="od-bottombar__total-value">¥240.00</span>
+      </div>
+      <div class="od-bottombar__btns">
+        <button class="od-bottombar__btn" type="button">联系商家</button>
+        <button class="od-bottombar__btn od-bottombar__btn--danger" type="button">删除订单</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Header 组件（顶栏变体4：返回 + 居中标题） -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="od"]'),
+    topbar: { variant: 'od', title: '订单详情' }
+  });
+  </script>
+</body>
+</html>

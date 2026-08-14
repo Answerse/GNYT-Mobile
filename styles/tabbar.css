@@ -1,0 +1,115 @@
+/* 桂农易通 底部标签栏组件样式（配合 components/tabbar.html + scripts/tabbar.js）
+   固定底部，z-index 最高，保证不被页面其他元素遮挡；组件自包含，任何页面引入即生效 */
+
+:root {
+  --c-primary: #16A34A;
+}
+
+/* 底栏（5 项：首页 / 订单 / 亮码卖货 / 收支 / 我的）
+   三部分布局中作为 body 末尾固定块：flex-shrink 0 固定高度，不随内容滚动；z-index 9999 高于页面内所有层级（最高为 6） */
+.tabbar {
+  flex-shrink: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.08rem 0.08rem 0.16rem;
+  background: #FFFFFF;
+  backdrop-filter: blur(0.2rem);
+  box-shadow: 0 -0.02rem 0.1rem rgba(0, 0, 0, 0.02);
+  transform: translateZ(0);
+}
+.tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  position: relative;
+  color: rgba(16, 18, 21, 0.5);
+}
+/* 选中态选项背景块（Figma 539:41164 选项背景 60×57 圆角10 + 毛玻璃） */
+.tabbar__item--active::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.6rem;
+  height: 0.57rem;
+  background: transparent;
+  border-radius: 0.1rem;
+  backdrop-filter: blur(0.2rem);
+  z-index: 0;
+}
+.tabbar__item--active {
+  color: var(--c-primary);
+}
+/* 图标 24×24，位于 32×32 图标区内（Figma 图标框 32×32、图标 24 居中）。
+   设计稿中 normal（线性/空心）与 active（面性/实心）是两套独立的矢量 SVG，
+   颜色已内置（normal #101215@50%，active #16A34A），直接切换显示，无需 mask 染色。 */
+.tabbar__icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.24rem;
+  height: 0.24rem;
+  margin: 0.04rem 0;
+}
+.tabbar__icon-img {
+  width: 0.24rem;
+  height: 0.24rem;
+  display: block;
+}
+.tabbar__icon-img--active {
+  display: none;
+}
+.tabbar__item--active .tabbar__icon-img--normal {
+  display: none;
+}
+.tabbar__item--active .tabbar__icon-img--active {
+  display: block;
+}
+/* 标签：14px；未选中 #6B7280，选中 #16A34A（与图标色分离） */
+.tabbar__label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.2rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #6B7280;
+  text-align: center;
+}
+.tabbar__item--active .tabbar__label {
+  color: var(--c-primary);
+}
+/* 中间"亮码卖货"主按钮：绿色圆形 60×60 + 4px 白描边 + 白色二维码 28×28，凸出底栏顶部 15px */
+.tabbar__item--main {
+  justify-content: flex-end;
+}
+.tabbar__main-btn {
+  position: absolute;
+  top: -0.23rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--c-primary);
+  border: 0.04rem solid #FFFFFF;
+  border-radius: 50%;
+  z-index: 1;
+}
+.tabbar__main-icon {
+  width: 0.28rem;
+  height: 0.28rem;
+}

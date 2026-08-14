@@ -1,252 +1,290 @@
-# 桂农易通 V1.0 — DESIGN.md 设计规约
+# 桂农易通 设计规范（Design Spec）
 
-> 来源：Figma 文件 `桂农易通 V1.0`（fileKey: `1GzVU8vVsFMDNVK44UFWRs`）
-> 数据来源说明：本文档的 **Design Tokens（颜色 / 间距 / 圆角 / 描边 / 文字 / 遮罩）**
-> 提取自 Figma Variables 导出文件 `variables-export-2026-08-11.json`。
-> **字体、阴影、布局系统、页面路由、组件清单、交互动效、图标资源** 因 Figma MCP
-> 读取受阻（token 403 / 请求超时）暂未获取，已在对应章节标注 `[Figma 节点树未读取，待补]`，
-> 待 MCP 权限恢复或补充导出后补全，**禁止编造**。
+> 本文件是页面开发的设计基准。新增页面、组件必须遵循以下约定，除非设计稿明确特殊说明。
 
 ---
 
-## 0. 设计 Token 总览（语义层 → 源色层）
+## 1. 页面布局模式（强制）
 
-Figma 采用两层变量结构：
+页面分为 **两种互斥布局模式**，由页面类型决定，禁止混合使用。
 
-- **语义层（ Semantic ）**：`桂农易通` 集合（Fill / Stroke / Text / Icon / Background / Overlay / Spacing / Radius），
-  用于组件与页面引用，便于主题切换。
-- **源色层（ Primitives ）**：`Colors` 集合（Green / Lime / Blue / Violet / Orange / Red / Gray / Neutral / Neutral-R），
-  存放真实 hex，被语义层别名引用。
+### 1.1 App Shell 模式（Tab 内页 / 二级页）
 
-> 引用写法示例：`Fill.Primary.Default` → 别名 `{Colors.Green.500}` → 真实 `#22c55e`。
-> 后续代码统一引用**语义层** token，不要直接写源色 hex。
+用于：订单、收支、我的、亮码、所有二级页面。
+
+```
+body（height:100vh, overflow:hidden，不整体滚动）
+├── .page（flex column, flex:1, overflow:hidden）
+│   ├── Header（flex-shrink:0，高度由 Topbar + 子栏决定）
+│   │     ├── Topbar（必选，4 种变体之一，高 72px）
+│   │     └── 子栏插槽区（可选 0~N 个）
+│   └── Container（flex:1, min-height:0, overflow-y:auto，内部滚动）
+└── Tabbar（flex-shrink:0，仅主模块页存在；二级页 DOM 中不存在）
+```
+
+规则：
+- **body 不滚动**，滚动只发生在 Container
+- Header / Tabbar 由 flex 自然锁定在视口内，不使用 `position:fixed`
+- 二级页不显示 Tabbar 时，DOM 中不渲染 `.tabbar`，不预留高度
+
+### 1.2 首页 Full Scroll 模式（视觉型页面）
+
+用于：首页。
+
+```
+body（height:auto, overflow:auto，整体滚动）
+├── Header（position:absolute → 滚动后切换为 fixed）
+├── Hero Banner
+└── 页面内容区
+```
+
+规则：
+- 不使用 `.page` 的 `overflow:hidden` 结构
+- Header 初始 `position:absolute`，背景透明，覆盖在 Hero Banner 上
+- JS 监听滚动，当 Banner 完全离开视口后，Header 添加 `is-fixed`
+  - `is-fixed` 时：`position:fixed; top:0; background:var(--header-bg)`，出现底部阴影
+- Header 由 `PageHeader` 渲染，变体为 `home`
+- 为防止内容跳动，Header 脱离文档流时用占位元素补位
+
+### 1.3 布局模式选择表（强制）
+
+| 页面 | 布局模式 |
+|----|----|
+| 首页 | Full Scroll |
+| 订单、收支、我的、亮码 | App Shell |
+| 所有二级页（详情、表单） | App Shell |
+
+> 布局模式由 **页面类型** 决定，不由组件决定。  
+> 同一个页面不允许部分区域用 fixed、部分用 flex。
 
 ---
 
-## 1. Design Tokens
+## 2. 页面结构规则（App Shell 模式，强制）
 
-### 1.1 颜色 — 品牌主色（Fill.Primary）
+> 本章仅适用于 App Shell 模式页面（Tab 内页 / 二级页）。
 
-| 语义 Token | 映射源色 | HEX | Tailwind 建议 class |
-|---|---|---|---|
-| `Fill.Primary.Default` | Colors.Green.500 | `#22c55e` | `bg-primary-500` / `text-primary-500` |
-| `Fill.Primary.Hover` | Colors.Green.600 | `#16a34a` | `hover:bg-primary-600` |
-| `Fill.Primary.Active` | Colors.Green.700 | `#15803d` | `active:bg-primary-700` |
-| `Fill.Primary.Subtle` | Colors.Green.50 | `#f0fdf4` | `bg-primary-50` |
-| `Fill.Primary.Weak` | Colors.Green.100 | `#dcfce7` | `bg-primary-100` |
-| `Fill.Primary.Strong` | Colors.Green.700 | `#15803d` | `bg-primary-700` |
+所有页面严格采用 **页头 Header + 内容 Container + 底部标签栏 Tabbar** 三层结构：
 
-### 1.2 颜色 — 中性色（Fill.Neutral / Background）
+- **页头 Header**：必须由 `PageHeader` 组件渲染（Topbar 变体 + 可选子栏插槽）；**内边距必须为 0**，左右与视口边缘对齐（顶栏内容从 x=0 开始，不得留边）。
+- **底部标签栏 Tabbar**：必须由 `Tabbar` 组件渲染；**内边距必须为 0**，左右与视口边缘对齐。
+- **内容区 Container**：默认内边距 `0.16rem 0.08rem`（上下 16px、左右 8px）；无设计稿明确说明禁止改默认值。内容在 Container 内部滚动。
+- **组件复用（强制）**：Header / Tabbar 一律复用组件（`PageHeader.mount` / `Tabbar.mount`），禁止在页面内手写顶栏 / 标签栏结构、禁止自造状态栏 / 内边距，禁止复制组件样式。二级页若无底部标签栏，则省略 Tabbar 层，仅 Header + Container。
 
-| 语义 Token | 映射源色 | HEX | Tailwind 建议 class |
-|---|---|---|---|
-| `Fill.Neutral.Default` | Colors.Gray.100 | `#f3f4f6` | `bg-neutral-100` |
-| `Fill.Neutral.Hover` | Colors.Gray.200 | `#e5e7eb` | `hover:bg-neutral-200` |
-| `Fill.Neutral.Active` | Colors.Gray.300 | `#d1d5db` | `active:bg-neutral-300` |
-| `Fill.Neutral.Subtle` | Colors.Neutral.10 | `rgba(16,18,21,0.05)` | `bg-neutral-10` |
-| `Fill.Neutral.Weak` | Colors.Neutral.40 | `rgba(16,18,21,0.20)` | `bg-neutral-40` |
-| `Fill.Neutral.Strong` | Colors.Neutral.80 | `rgba(16,18,21,0.40)` | `bg-neutral-80` |
+- 页面切换用 `hidden` 属性 + `tabbar.js` 的 `switchPage`（选择器 `.page[id]`，勿匹配无 id 的内层元素）。
 
-| 语义 Token | 映射源色 | HEX | 说明 |
-|---|---|---|---|
-| `Background.Bg-1` | Colors.Neutral.0 | `#ffffff` | 页面主背景（白） |
-| `Background.Bg-2` | Colors.Neutral.3 | `rgba(16,18,21,0.02)` | 次级背景 |
-| `Background.Bg-3` | Colors.Neutral.6 | `rgba(16,18,21,0.03)` | 卡片/区块背景 |
-| `Background.Bg-4` | Colors.Neutral.10 | `rgba(16,18,21,0.05)` | 凹陷/禁用背景 |
+---
 
-### 1.3 颜色 — 文字色（Text）
+## 3. 顶栏（Topbar）组件：4 种变体（强制）
 
-| 语义 Token | 映射 | 值 | 用途 |
-|---|---|---|---|
-| `Text.Primary` | Colors.Gray.900 | `#111827` | 主标题/正文 |
-| `Text.Secondary` | Colors.Gray.600 | `#4b5563` | 次要文字 |
-| `Text.Tertiary` | Colors.Gray.400 | `#9ca3af` | 占位/辅助 |
-| `Text.Info` | Colors.Green.700 | `#15803d` | 信息强调 |
-| `Text.On-Primary` | Colors.Neutral-R.100 | `rgba(255,255,255,0.96)` | 主色按钮上的文字（白） |
-| `Text.Status.Success` | Colors.Green.700 | `#15803d` | 成功状态文字 |
-| `Text.Status.Warning` | Colors.Orange.700 | `#c2410c` | 警告状态文字 |
-| `Text.Status.Danger` | Colors.Red.700 | `#b91c1c` | 危险状态文字 |
-| `Text.Status.Info` | Colors.Blue.700 | `#1d4ed8` | 信息状态文字 |
+顶栏是页头的基础组件，按「背景明暗 × 左侧内容」共 4 种变体：
 
-### 1.4 颜色 — 图标色（Icon）
+| 变体 | 背景 | 左侧 | 右侧 | 适用 |
+|---|---|---|---|---|
+| 1 | 深色（品牌绿 `#16A34A` 系） | 系统 Logo | 微信按钮（on-dark） | 主模块：**首页、我的、亮码** |
+| 2 | 浅色（`#EBF2FC` / 白） | 系统 Logo | 微信按钮（on-light） | 主模块：**订单、收支** |
+| 3 | 深色（品牌绿系） | 返回图标 + 居中标题 | 动作（更多 / 胶囊等） | 二级页面 |
+| 4 | 浅色（`#FFFFFF` / `#EBF2FC`） | 返回图标 + 居中标题 | 动作（更多 / 胶囊等） | 二级页面 |
 
-| 语义 Token | 映射 | 值 |
+- **高度统一 72px（0.72rem）**，以首页为标准；内容垂直居中，水平 padding 16px。
+- 主模块页（变体 1/2）右侧放微信按钮，按背景明暗传 `data-wechat-bg="dark|light"`。
+- 二级页面（变体 3/4）左侧为返回图标，中间居中显示页面标题（如"订单详情""身份码"），右侧为动作按钮。
+- 变体 3 深色用于品牌强调的二级页；一般二级页用变体 4 浅色。
+
+---
+
+## 4. 页头（Header）统一组件（强制）
+
+**所有页面（含二级页）的 Header 统一为一个组件**，结构固定为：`Topbar（必选） + 子栏插槽区（可选，可空置）`，由 `PageHeader.mount()` 统一渲染。
+
+```
+Header（统一组件）
+├── Topbar（4 变体之一，高度固定 72px）
+└── 子栏插槽区（0~N 个，依次排在顶栏下方；无子栏则空置）
+      ├── 空置（无子栏，纯顶栏）
+      ├── 标签栏（如首页顶栏内嵌：买入 / 卖出）
+      ├── 搜索栏
+      └── 筛选栏（筛选标签 + 搜索，如订单页：全部/待支付/已完成/已取消 + 搜索）
+```
+
+- **禁止脱离 Header 组件单独手写顶栏/子栏**；新增页面一律通过挂载点 `data-header` + `PageHeader.mount()` 组合。
+- 挂载点：
+
+```html
+<div class="header-mount" data-header="order"></div>
+```
+
+- 子栏插槽通过 `PageHeader.mount` 的 `slots`（或 `filter` 等具名配置）传入，可空置。
+- 示例：订单页 Header = 变体 2 Topbar（浅色 + Logo + 微信按钮）+ 筛选栏（筛选 + 搜索）。
+- Header 总高度 = Topbar 72px + 子栏高度（子栏高度不设死），**禁止手写 Header 总高**。
+- **sticky 顶栏场景**（顶栏需随页面滚动粘住，如订单创建页）：用 `wrap: false, prepend: true` 直接挂到内容区首部，避免固定高包装层破坏 sticky（容器传内容区元素，如 `document.getElementById('oc-step-1')`）。
+
+### Header 定位规则（强制）
+
+- **App Shell 页**：Header 不参与滚动，不使用 `position:fixed`，由 flex 布局自然锁定在视口顶部。
+- **首页（Full Scroll）**：Header 初始 `position:absolute`，位于 Hero Banner 内，背景透明；滚动超过 Banner 高度后，JS 添加 `is-fixed`，切换为 `position:fixed` + 实色背景 + 阴影；同时用占位元素避免内容跳动。
+- **禁止**：全站统一 `position:fixed`；手写 `calc(100vh - …)` 等高度计算；用 `padding-top` 强行补位。
+
+### 页头组件用法
+
+```html
+<div class="header-mount" data-header="order"></div>
+```
+
+```js
+PageHeader.mount({
+  container: document.querySelector('[data-header="order"]'),
+  topbar: {
+    left: 'logo',   // 变体1/2：主模块页展示 Logo；变体3/4：二级页 { type: 'back', href: '...' } + 居中标题
+    tabs: [{ label: '买入', value: 'buy', active: true }, { label: '卖出', value: 'sell' }],
+    right: 'wechat' // 变体3/4 二级页可传 'actions'（更多 / 胶囊）
+  },
+  filter: {         // 可选：筛选标签栏（参考订单页）
+    tabs: [{ label: '全部', value: 'all', count: 0, active: true }],
+    search: true,
+    onTab: fn
+  },
+  onTab: fn
+});
+```
+
+---
+
+## 5. 卡片默认样式（强制）
+
+**无特殊说明时，所有卡片（白底内容块）默认**：
+
+- 圆角：**8px**（`border-radius: 0.08rem`）
+- 描边：**无**（不加 border；需要分隔时用背景色或内部上边框）
+- 内边距：参考 Figma 对应设计稿（常见 16px）
+- 背景：`#FFFFFF`
+
+如需其他圆角/描边，必须由设计稿明确标注，并在代码注释注明 Figma 节点。
+
+---
+
+## 6. 复用组件（新增页面优先复用，禁止重造）
+
+**通用组件样式单源化（强制）：所有组件样式统一放在 `styles/components.css`（基础重置 / 字体 / 色板 Token / 页头 / 顶栏全部变体 / 微信按钮），各页面在页面 CSS 之前先引入 `components.css`，页面 CSS 只允许写页面专属样式与设计稿特殊变体的覆盖，禁止复制组件样式到页面 CSS。**
+
+**图标资源复用（强制）：以下通用图标已有现成资源，禁止再从设计稿下载、禁止另造图标，统一引用 `assets/icons/` 下资源：**
+
+| 用途 | 资源 | 说明 |
 |---|---|---|
-| `Icon.Primary` | Colors.Green.500 | `#22c55e` |
-| `Icon.Secondary` | Colors.Gray.500 | `#6b7280` |
-| `Icon.Tertiary` | Colors.Gray.400 | `#9ca3af` |
-| `Icon.On-Primary` | Colors.Neutral-R.100 | `rgba(255,255,255,0.96)` |
+| 二级页面页头返回箭头 | `assets/icons/chevron-left.svg` | 18×16 填充左箭头，Figma 932:68725 向左-线性 |
+| 文字+箭头按钮的箭头（查看/更多/详情/余额明细等） | `assets/icons/chevron-right.svg` | 16×16 填充右箭头（**带中间一横的箭头图标**，与无横的三角图标区分）；经 CSS mask 填充 `currentColor`，颜色/尺寸由 CSS 控制；日历"上/下一项"与返回箭头不在此列 |
+| 三角图标（明细展开等） | `assets/icons/oc-chevron-down.svg` | 16×16 描边下三角（**无中间一横的三角图标**，与日历上/下一项同风格） |
 
-### 1.5 颜色 — 描边 / 边框（Stroke）
+### 三角图标 vs 箭头图标 语义（强制）
 
-| 语义 Token | 映射源色 | HEX | 用途 |
+**三角图标（无中间一横）＝ 状态性**：切换、收缩/伸展、上一个/下一个。
+**箭头图标（有中间一横）＝ 方向性**：前往、后退、向上/向下。
+
+| 场景 | 图标类型 | 资源 |
+|---|---|---|
+| 查看 / 更多 / 详情 / 余额明细 / 去充值 / 我要参加（前往） | 箭头 | `chevron-right.svg` |
+| 页头返回 / 后退 | 箭头 | `chevron-left.svg` |
+| 明细展开 / 收起（收缩/伸展） | 三角 | `oc-chevron-down.svg` |
+| 日历上 / 下一项（上一个/下一个） | 三角 | 内联描边 chevron |
+| 选填信息展开、表单下拉（切换/伸展） | 三角 | 内联描边 chevron |
+
+### 文字+箭头按钮组件（text-arrow，强制）
+
+**所有"文字 + 箭头"按钮（查看 / 更多 / 详情 / 余额明细 / 查看帮助 / 查看资质 / 去充值 / 我要参加 等）必须统一使用本组件，禁止在页面 CSS 中另写样式。**
+
+- 组件样式单源：`styles/components.css` 中的 `.text-arrow` / `.text-arrow__icon` 及变体类。
+- **结构固定（禁止变更）**：按钮（`button`/`a`）上挂 `text-arrow` 类，内容为文字 + 一个箭头图标；箭头必须带 `text-arrow__icon` 类并使用**统一箭头资源 `assets/icons/chevron-right.svg`**（见上文图标资源复用表），禁止内联 SVG、禁止更换资源。
+- **仅 3 个维度可变**：颜色（变体类）、尺寸（图标尺寸变体）、风向（图标风向变体）；文字内容直接写在元素内。
+  - 颜色变体（作用于按钮或图标）：`text-arrow--primary`（绿）、`--white`（白，深底）、`--muted`（灰 6B7280）、`--faint`（浅灰 C4C9D0，列表行尾）、`--blue`（蓝 4080FF，查看帮助/资质）。
+  - 尺寸变体：`text-arrow--sm`（文字 12px，紧凑场景如"查看帮助/查看资质"）；默认 14px。图标尺寸：`text-arrow__icon--lg`（16px）；默认 12px。
+  - 风向变体：`text-arrow__icon--left`（向左）、`--up`（向上）、`--down`（向下）；默认向右。
+  - 三角图标变体：`text-arrow__icon--triangle`（无横三角，明细展开等，默认向下；展开时旋转 180° 向上）。
+
+标准结构：
+
+```html
+<button class="text-arrow text-arrow--primary" type="button">查看
+  <span class="text-arrow__icon" aria-hidden="true"></span>
+</button>
+```
+
+| 组件 | 文件 | 用途 |
+|---|---|---|
+| 底部标签栏 | `components/tabbar.html` + `scripts/tabbar.js` + `styles/tabbar.css` | `Tabbar.mount({ active: 'home' })` |
+| 页头（顶栏+筛选） | `scripts/page-header.js` + `scripts/topbar.js` + `styles/components.css` | `PageHeader.mount(...)` |
+| 微信按钮 | `scripts/wechat-button.js` + `styles/components.css` | `<button data-wechat data-wechat-bg="dark|light">`，仅明暗两种样式 |
+| 徽章 | `scripts/badge.js` + `styles/badge.css` | `<span class="badge" data-badge="admin">`，类型在 CONFIG 注册 |
+| 文字+箭头按钮 | `styles/components.css` 的 `.text-arrow` | 查看/详情/余额明细/更多等，见上文规范 |
+
+### 徽章组件规范（强制）
+
+徽章一律通过组件渲染，**禁止在 HTML 硬编码**图标/文字/颜色 class：
+
+```html
+<span class="badge" data-badge="real"></span>   <!-- 由 Badge.mount() 注入 .badge--xxx 类、图标与文字 -->
+```
+
+- 图标、文字由 `badge.js` 的 `CONFIG` 按 `data-badge` 类型注册；颜色由 `badge.css` 的 `.badge--xxx` 变体定义。
+- 已注册类型（复用前查此表，勿新造）：
+
+| data-badge | 文字 | 图标 | 背景色 |
 |---|---|---|---|
-| `Stroke.Primary.Default` | Colors.Green.500 | `#22c55e` | 主色描边 |
-| `Stroke.Primary.Subtle` | Colors.Green.50 | `#f0fdf4` | 主色浅描边 |
-| `Stroke.Secondary.Default` | Colors.Lime.500 | `#84cc16` | 次色描边（Lime） |
-| `Stroke.Secondary.Subtle` | Colors.Lime.50 | `#f7fee7` | 次色浅描边 |
-| `Stroke.Neutral.Default` | Colors.Gray.200 | `#e5e7eb` | 默认边框 |
-| `Stroke.Neutral.Strong` | Colors.Gray.300 | `#d1d5db` | 强调边框 |
+| `admin` | 管理员 | `badge-broker.svg` | `#16A34A` |
+| `real` | 已实名 | `shield-check.svg` | `#84CC16` |
+| `broker` | 经纪人 | `broker-tag.svg` | `#22C55E` |
 
-> 边框宽度（border width）[Figma 变量未读取，待补]。建议默认 `1px`，强边框 `1.5px`/`2px`。
+- 新增徽章类型：在 `CONFIG` 注册（label 必填、icon 可选）+ `badge.css` 添加 `.badge--xxx` 背景变体，不要改动其他类型。
+- 圆角统一 4px、左上角 6px（`border-radius: 0.06rem 0.04rem 0.04rem 0.04rem`）；图标 24×24 左侧上凸 5.5px。
 
-### 1.6 颜色 — 状态色（Status）
+### 亮码卖货页-用户信息条（Figma 65:5897，强制）
 
-| 语义 Token | 映射源色 | HEX | Tailwind class |
-|---|---|---|---|
-| `Fill.Status.Success.Default` | Colors.Green.500 | `#22c55e` | `bg-success-500` |
-| `Fill.Status.Success.Subtle` | Colors.Green.50 | `#f0fdf4` | `bg-success-50` |
-| `Fill.Status.Warning.Default` | Colors.Orange.500 | `#f97316` | `bg-warning-500` |
-| `Fill.Status.Warning.Subtle` | Colors.Orange.50 | `#fff7ed` | `bg-warning-50` |
-| `Fill.Status.Danger.Default` | Colors.Red.500 | `#ef4444` | `bg-danger-500` |
-| `Fill.Status.Danger.Subtle` | Colors.Red.50 | `#fef2f2` | `bg-danger-50` |
-| `Fill.Status.Info.Default` | Colors.Blue.500 | `#3b82f6` | `bg-info-500` |
-| `Fill.Status.Info.Subtle` | Colors.Blue.50 | `#eff6ff` | `bg-info-50` |
+深绿条 + 底部白色切角曲线，**结构与素材复用首页 `qr-card__user`**（切角一律用 `assets/icons/card-corner.svg`，贴底铺满）：
 
-### 1.7 颜色 — 遮罩（Overlay）
+- 背景：`var(--c-primary-deep)`（`#15803D`）
+- 圆角：上 16px（`0.16rem 0.16rem 0 0`），底部直角衔接白色卡片
+- 内边距：16 / 24 / 24（`0.16rem 0.24rem 0.24rem`），不设固定高度
+- 姓名：中文常规文本（MiSans 330，16px，白）
+- 电话：西文5级标题（DINish Condensed 700，20px，白）
+- 切角曲线：`position:absolute; left:0; bottom:0; width:100%; height:auto`
 
-| 语义 Token | 值（alpha） | 用途 |
-|---|---|---|
-| `Overlay.Black.20` | `rgba(0,0,0,0.20)` | 浅遮罩 |
-| `Overlay.Black.30` | `rgba(0,0,0,0.30)` | 弹窗遮罩 |
-| `Overlay.Black.40` | `rgba(0,0,0,0.40)` | 强遮罩 |
-| `Overlay.Black.60` | `rgba(0,0,0,0.60)` | 暗化背景 |
-| `Overlay.Black.80` | `rgba(0,0,0,0.80)` | 接近全黑 |
-| `Overlay.White.20` | `rgba(255,255,255,0.20)` | 浅色遮罩（Light 反白） |
-| `Overlay.White.40` | `rgba(255,255,255,0.40)` | 浅色强遮罩 |
-| `Overlay.White.60` | `rgba(255,255,255,0.60)` | — |
-| `Overlay.White.80` | `rgba(255,255,255,0.80)` | — |
-| `Overlay.White.90` | `rgba(255,255,255,0.90)` | 接近全白 |
+### 亮码卖货页-今日数据统计卡片（Figma 65:5925，强制）
 
-### 1.8 间距（Spacing）
+两张**深绿卡**（`#15803D`、圆角 8、内边距 16、卡内纵向 gap 16、卡间 gap 16、距上 24）：
 
-> 单位：px。统一为 4 的倍数。
-
-| Token | 值 | 说明 |
-|---|---|---|
-| `Spacing.0` | `0` | 无间距 |
-| `Spacing.3Xs` | `2` | 极小 |
-| `Spacing.2Xs` | `4` | 超小 |
-| `Spacing.Xs` | `8` | 小 |
-| `Spacing.Sm` | `12` | 中小 |
-| `Spacing.Md` | `16` | 中（基础栅格单位） |
-| `Spacing.Lg` | `20` | 中大 |
-| `Spacing.Xl` | `24` | 大 |
-| `Spacing.2Xl` | `32` | 超大 |
-| `Spacing.3Xl` | `40` | — |
-| `Spacing.4Xl` | `48` | — |
-| `Spacing.5Xl` | `64` | 区块间距 |
-
-### 1.9 圆角（Radius）
-
-| Token | 值 | Tailwind class |
-|---|---|---|
-| `Radius.None` | `0` | `rounded-none` |
-| `Radius.Xxs` | `2` | `rounded-[2px]` |
-| `Radius.Xs` | `4` | `rounded` |
-| `Radius.Sm` | `6` | `rounded-md` |
-| `Radius.Md` | `8` | `rounded-lg` |
-| `Radius.Lg` | `12` | `rounded-xl` |
-| `Radius.Xl` | `16` | `rounded-2xl` |
-| `Radius.2Xl` | `20` | `rounded-[20px]` |
-| `Radius.3Xl` | `24` | `rounded-3xl` |
-| `Radius.4Xl` | `28` | `rounded-[28px]` |
-| `Radius.5Xl` | `32` | `rounded-[32px]` |
-| `Radius.6Xl` | `36` | `rounded-[36px]` |
-| `Radius.Full` | `9999` | `rounded-full` |
-
-### 1.10 字体（Typography）
-
-> [Figma 变量未读取，待补] — 变量导出文件中未包含 FontSize / FontWeight / LineHeight 变量。
-> 待从 Figma 节点树或 typography 变量集合补全。建议补充：字号阶梯 12/14/16/20/24/32/40，
-> 字重 400/500/600/700，行高对应比例。
-
-### 1.11 阴影（Shadow / Elevation）
-
-> [Figma 变量未读取，待补] — 导出文件中无 Shadow / Effect 变量。
-> 待从 Figma 节点树补全 card / modal / toast 各档 shadow。
-
-### 1.12 边框（Border）
-
-- 边框色见 §1.5（Stroke.Neutral.Default = `#e5e7eb` 等）。
-- 边框宽度 [Figma 变量未读取，待补]，建议默认 `1px`。
-- 边框圆角见 §1.9（Radius）。
+- 标签：中文小号文本（MiSans 330，14px，`#F3F4F6`），内容居中
+- 数值：西文3级标题（DINish Condensed 700，**30px**，`#F3F4F6`）；`¥` 为独立 14px 元素，与数值基线对齐（gap 2）
+- 按钮：**透明底**（无填充），图标 20×20 白、文字 16px `#F3F4F6`、行尾白箭头（text-arrow--white），gap 8，内容左对齐
 
 ---
 
-## 2. 布局系统
+## 7. 通用约束
 
-> [Figma 节点树未读取，待补]
-> 待补：容器最大宽度、栅格栏数、gutter、页面 margin、断点（mobile / tablet / desktop）。
-> 已知项目为 **Mobile** 端（仓库名 GNYT-Mobile），推测以移动端单列布局为主，
-> 具体断点定义需从 Figma 框架确认。
-
----
-
-## 3. 页面与路由映射
-
-> [Figma 节点树未读取，待补]
-> Figma MCP 读取受阻，无法列出 Page / Frame 与路由。待权限恢复后补全：
-> 列出所有 Page/Frame、推断路由路径（如 `/home`、`/login`、`/profile`）、
-> 标注每个页面核心区块（Header / Hero / Content / Footer）。
-
----
-
-## 4. 组件清单
-
-> [Figma 节点树未读取，待补]
-> 待列：Button / Input / Card / Nav / Modal / TabBar 等可复用组件，
-> 标注 Figma 节点 id、变体（variant）、状态（default/hover/active/disabled），
-> 建议组件路径（React + TypeScript + Tailwind 约定，如 `src/components/ui/Button.tsx`）。
+- 尺寸单位用 **rem**（根字号 = 视口宽 / 3.75，375 设计稿等比缩放）；仅用户/设计明确指定固定值的元素可用 px（如 logo 40px）。
+- **边距、间隔（padding / margin / gap）以 375 设计稿为准、用 rem 表达**：结构性间距按 8 的倍数（0.08rem 的倍数：8 / 16 / 24 / 32 @375）；**小图标、小徽章等元素内部允许 2 / 4 / 6 px 等小值**（设计稿如此，无需强归 8 倍数）。非 375 视口下 rem 等比缩放（如 8px 显示为 9px）属正常适配，不是误差；禁止因此改用固定 px 破坏整体等比。
+- **顶栏高度统一 72px（0.72rem）**，以首页为标准；所有模块/二级页面顶栏保持一致，禁止另设高度。
+- HTML **禁止硬编码行内样式**（`style="..."`）；JS 通过 `classList` 切换状态，不写 `element.style`。
+- 字体：中文 MiSans / PingFang SC；**英文与数字统一使用 DINish Condensed**（开源字体 SIL OFL v1.1，本地嵌入 `assets/fonts/DINishCondensed-Regular.woff2`、`DINishCondensed-SemiBold.woff2`，字重 400 / 600）。
+  - CSS 中只使用以下两个 token：
+    ```css
+    .font-body { font-family: var(--font-body); }
+    .font-mono { font-family: var(--font-mono); }
+    ```
+  - 禁止手写 `font-family`。
+- 状态切换（激活/选中/展开）统一用 `is-active`、`aria-expanded` 等语义类。
+- **布局**：除首页吸顶外，禁止 `position:fixed` 做布局。
+- **高度**：全部由 flex 控制，不允许手写 `calc(100vh - …)` 等高度计算。
+- **挂载点**：每个 `.header-mount` 只挂载一次，内部 DOM 完全由组件接管，页面 JS 不往里插子节点。
 
 ---
 
-## 5. 交互与动效
+## 8. 禁止行为速查表（强制）
 
-> [Figma 节点树未读取，待补]
-> 待补：hover/active/focus/disabled 样式差异、Smart Animate / Prototype 转场动画。
-> 已知交互语义：Primary 色含 Hover(600) / Active(700) 三态，见 §1.1。
+> 以下行为一律禁止，无论页面类型。
 
----
-
-## 6. 图标与资源
-
-> [Figma 节点树未读取，待补]
-> 待列：图标集、图片资源、存放路径建议（如 `src/assets/icons/`）。
-> 已知图标色 token 见 §1.4（Icon.Primary/Secondary/Tertiary/On-Primary）。
-
----
-
-## 7. 禁止事项（后续 AI 生成代码时必须遵守）
-
-1. **禁止硬编码颜色 hex / rgba** 散落在组件代码里。所有颜色必须引用语义 Token
-   （如 `bg-primary-500`、`text-neutral-600`、`bg-neutral-10`），仅在本 DESIGN.md
-   的 Token 表及必要的 Tailwind 配置中允许出现原始值。
-2. **禁止直接引用源色层**（如 `Colors.Green.500`）——必须走语义层
-   （`Fill.Primary.Default` 等），否则主题切换会失效。
-3. **禁止编造缺失信息**。凡标注 `[Figma 节点树未读取，待补]` 的章节
-   （字体、阴影、布局、页面、组件、交互、图标），在拿到真实数据前不得假定具体值。
-4. **禁止偏离间距/圆角档位**。间距只能用 §1.8 的 `Spacing.*`，圆角只能用 §1.9 的 `Radius.*`，
-   不得擅自使用其他数值。
-5. **禁止把语义色当状态色混用**。Primary/Neutral 用于品牌与中性，
-   Status(Success/Warning/Danger/Info) 仅用于状态语义。
-6. **禁止在 HTML/Vue template 写行内 style 属性**，样式一律放 `.css` / Tailwind class。
-   （项目硬性规则）
-
----
-
-## 8. 数据来源与待办
-
-- ✅ 已提取（来自 `variables-export-2026-08-11.json`）：颜色（品牌/中性/文字/图标/描边/状态/遮罩）、间距、圆角。
-- ⬜ 待补（需 Figma 节点树或补充导出）：
-  1. 字体（§1.10）
-  2. 阴影（§1.11）
-  3. 边框宽度（§1.12）
-  4. 布局系统 / 断点（§2）
-  5. 页面与路由映射（§3）
-  6. 组件清单（§4）
-  7. 交互与动效（§5）
-  8. 图标与资源（§6）
-
-> 补全流程：修复 Figma MCP token 权限（403）→ 调用 `get_figma_data` 读取节点树
-> （建议指定具体 Page/Frame 的 node-id 避免超时，如 `59:2267`）→ 回填上述待补章节。
+- ❌ 在页面 HTML 中手写 `<header>` / `.topbar` / `.filter-bar` 结构
+- ❌ 使用 `position:fixed` 做布局（首页吸顶除外）
+- ❌ 用 `style="..."` 写行内样式
+- ❌ 多个页面各自写一份 Header / Tabbar CSS
+- ❌ 二级页 DOM 中保留 `.tabbar` 但隐藏（`display:none`）
+- ❌ 计算 `height: calc(100vh - xxx)` 等手写高度
+- ❌ 手写 `font-family`
+- ❌ 混合使用两种布局模式（App Shell + Full Scroll 不共存于同一页面）

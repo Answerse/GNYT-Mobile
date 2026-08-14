@@ -1,0 +1,228 @@
+/* =====================================================================
+   集采活动页（Figma 932:68681  1.5.2 集采活动列表  1:1 还原 · 新版设计稿）
+   375×834；背景 #FFFFFF + 顶部绿色渐变头图(375×390 渐变到白)；
+   顶栏复用 Header 组件（变体4 od：返回 + 居中标题 + 右侧微信按钮，Figma 932:68725）
+   基础重置 / 字体 / 顶栏组件样式见 styles/components.css
+   ===================================================================== */
+
+body {
+  background: #FFFFFF;
+  height: 100vh;
+  overflow: hidden;   /* 三层结构：body 不滚动，内容在 container 内滚动（DESIGN.md 强制） */
+}
+
+.jc-page {
+  width: 3.75rem;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  z-index: 0;   /* 建立层叠上下文，使内部 z-index:-1 的头图显示在背景之上、内容之下 */
+}
+
+/* ===================== 顶部绿色渐变头图（Figma 932:68682 bg-head：375×390 渐变 213° #DCFCE7→#FFFFFF）
+   z-index:-1 使其铺在页面背景之上、所有内容之下（顶栏/内容无需再设层级） ===================== */
+.jc-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.9rem;
+  background: url("../assets/bg-head-jicai.svg") no-repeat center top / 100% 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ===================== 滚动内容（container 层：左右8px；上边距 = 设计稿内容 padding-top 88px - 顶栏 72px = 16px）
+   DESIGN.md 强制：container 默认左右 8px、上下 16px ===================== */
+.jc-scroll {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.16rem 0.08rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+/* ===================== 集采广告（Figma 933:69083：359×96 圆角16，无底色透明）
+   插图上溢 32/下溢 37 需完整显示，故不裁剪（设计稿 overflow visible，933:69087 y:-31.64 起） ===================== */
+.jc-ad {
+  position: relative;
+  height: 0.96rem;
+  border-radius: 0.16rem;
+  flex-shrink: 0;
+}
+/* 标题（设计稿 SVG 文字 933:69104）：271×52 @ (19,22.38) */
+.jc-ad__text {
+  position: absolute;
+  left: 0.19rem;
+  top: 0.22rem;
+  width: 2.71rem;
+  height: 0.52rem;
+  z-index: 1;
+}
+.jc-ad__text-img {
+  display: block;
+  width: 2.71rem;
+  height: 0.52rem;
+}
+/* 右侧商品图：151×164.73，上溢 32、右溢 13（Figma 933:69087） */
+.jc-ad__img {
+  position: absolute;
+  top: -0.32rem;
+  right: -0.13rem;
+  width: 1.51rem;
+  height: 1.65rem;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* ===================== 虚线分割线（Figma 939:69144：359 宽 1px #101215 10% 虚线 2 2） ===================== */
+.jc-divider {
+  flex-shrink: 0;
+  height: 0.02rem;
+  border-top: 0.01rem dashed rgba(16, 18, 21, 0.1);
+}
+
+/* ===================== 集采卡片（Figma 933:68925：白底圆角8 padding16 gap16） ===================== */
+.jc-card {
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  padding: 0.16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.16rem;
+  flex-shrink: 0;
+}
+/* 需求区：商品图 80 + 间距16 + 信息 231（Figma 933:68926 space-between） */
+.jc-card__req {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.16rem;
+}
+/* 商品图：80×80 圆角4、浅蓝底 #E1E8F2；图片 100×100 于 (-10,-10)（Figma 933:68927） */
+.jc-card__thumb-wrap {
+  position: relative;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.04rem;
+  background: #E1E8F2;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.jc-card__thumb {
+  position: absolute;
+  top: -0.1rem;
+  left: -0.1rem;
+  width: 1rem;
+  height: 1rem;
+  object-fit: cover;
+}
+.jc-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+/* 品名：中文常规（16/330 #111827） */
+.jc-card__name {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+/* 数量/价格行共用样式（设计稿 933:68931/933:68935 实际渲染：标签左、数据右，两端对齐）
+   数量行 = 标签 + 数字 + 单位；价格行 = 标签 + 价格块 —— 同一行结构，标签统一撑开 */
+.jc-card__row {
+  display: flex;
+  align-items: center;
+  gap: 0.02rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #6B7280;
+}
+/* 标签占满剩余空间，将后续数据推到行右端（数量行与价格行共用） */
+.jc-card__row .jc-card__label {
+  white-space: nowrap;
+  margin-right: auto;
+}
+/* 数量值：西文6级标题（DINish 16/700 #111827） */
+.jc-card__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-weight: 700;
+  font-size: 0.16rem;
+  line-height: 1.268;
+  color: #111827;
+}
+/* 价格展示块（Figma 933:68937 数据展示：baseline gap2 圆角10） */
+.jc-card__pricebox {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+  border-radius: 0.1rem;
+}
+.jc-card__sym {
+  font-family: "PingFang SC", sans-serif;
+  font-weight: 330;
+  font-size: 0.14rem;
+  line-height: 1.326;
+  color: #16A34A;
+}
+/* 价格值：西文5级标题（DINish 20/700 绿 #16A34A；行高收紧至设计实际盒高约21.5px） */
+.jc-card__price {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-weight: 700;
+  font-size: 0.2rem;
+  line-height: 1.075;
+  color: #16A34A;
+}
+/* 单位：中文说明（12/330 深 #111827） */
+.jc-card__unit {
+  font-size: 0.12rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+/* 底栏：报价截止(fill) + 立刻报价，间距16（Figma 933:68946） */
+.jc-card__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+}
+.jc-card__deadline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.02rem;   /* 时间行与数量/价格行不同：左对齐，标签+日期紧跟（设计稿 933:68947 flex-start），不做两端对齐 */
+  height: 0.28rem;
+}
+.jc-card__dlabel {
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+.jc-card__dnum {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  font-weight: 400;
+  line-height: 1.268;
+  color: #111827;
+}
+/* 立刻报价：绿底圆角40、padding 8/16、文字 16/330 白（Figma 70:9734 填充按钮） */
+.jc-card__btn {
+  padding: 0.08rem 0.16rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #16A34A;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>创建订单 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/order-create.css" />
+</head>
+<body>
+  <div class="oc-flow">
+
+    <!-- ==================== Step 1: 未输入 ==================== -->
+    <section class="oc-step is-active" id="oc-step-1">
+
+      <!-- 选择卖方 -->
+      <article class="oc-card">
+        <header class="oc-card__header">
+          <div class="oc-card__title"><span>*</span>选择卖方 <small class="oc-card__title-sub">（必填）</small></div>
+          <button class="oc-card__action" type="button">
+            <span>选择农户</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+          </button>
+        </header>
+        <div class="oc-seller__body">
+          <div class="oc-seller__inner">
+            <button class="oc-seller__scan" type="button" onclick="goStep(2)">
+              <div class="oc-seller__scan-main">
+                <span>点击扫描农户身份码</span>
+                <svg class="oc-seller__scan-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6H10a4 4 0 0 0-4 4v8M42 18V10a4 4 0 0 0-4-4h-8M30 42h8a4 4 0 0 0 4-4v-8M6 30v8a4 4 0 0 0 4 4h8"/></svg>
+              </div>
+              <span class="oc-seller__rescan">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6H10a4 4 0 0 0-4 4v8M42 18V10a4 4 0 0 0-4-4h-8M30 42h8a4 4 0 0 0 4-4v-8M6 30v8a4 4 0 0 0 4 4h8"/></svg>
+                重新扫描
+              </span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 称重信息空 -->
+      <article class="oc-card oc-card--empty">
+        <button class="oc-weigh-empty" type="button" onclick="goStep(2)">
+          <span>还没称重货物</span>
+          <svg class="oc-weigh-empty__icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22C55E"/><path d="M7 12h10M12 7v10" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="oc-weigh-empty__add">立刻添加</span>
+        </button>
+      </article>
+
+      <!-- 浮动继续称重 -->
+      <div class="oc-fab">
+        <button class="oc-fab__btn" type="button" onclick="goStep(2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+          继续称重
+        </button>
+      </div>
+
+      <!-- 底部栏 -->
+      <footer class="oc-bottombar">
+        <div class="oc-bottombar__summary">
+          <div class="oc-bottombar__count">
+            <span class="oc-bottombar__count-label">共</span>
+            <span class="oc-bottombar__count-value">1<span class="oc-bottombar__count-unit">件</span></span>
+          </div>
+          <div class="oc-bottombar__tax">
+            <div class="oc-bottombar__tax-row"><span>税前金额：</span><span>¥ 3500.00</span></div>
+            <div class="oc-bottombar__tax-row"><span>税额：¥ 0</span><span>税率：免税</span></div>
+          </div>
+          <div class="oc-bottombar__amount">
+            <span class="oc-bottombar__amount-label">采购金额</span>
+            <span class="oc-bottombar__amount-value">¥<span class="unit">3500.00</span></span>
+          </div>
+        </div>
+        <div class="oc-bottombar__actions">
+          <button class="oc-bottombar__btn" type="button">暂存</button>
+          <button class="oc-bottombar__btn oc-bottombar__btn--primary" type="button" onclick="goStep(3)">提交保存</button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ==================== Step 2: 已输入 ==================== -->
+    <section class="oc-step" id="oc-step-2">
+
+      <!-- 选择卖方 已填 -->
+      <article class="oc-card">
+        <header class="oc-card__header">
+          <div class="oc-card__title"><span>*</span>选择卖方 <small class="oc-card__title-sub">（必填）</small></div>
+          <button class="oc-card__action" type="button">
+            <span>选择农户</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+          </button>
+        </header>
+        <div class="oc-seller__body">
+          <div class="oc-seller__inner">
+            <div class="oc-seller__info">
+              <div class="oc-seller__info-col">
+                <span class="oc-seller__info-label">收款人</span>
+                <span class="oc-seller__info-value">张三</span>
+              </div>
+              <div class="oc-seller__info-col" style="align-items:flex-end;">
+                <span class="oc-seller__info-label">收款账号</span>
+                <span class="oc-seller__info-value--num">7060 **** **** 00</span>
+              </div>
+            </div>
+            <button class="oc-seller__rescan" type="button">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6H10a4 4 0 0 0-4 4v8M42 18V10a4 4 0 0 0-4-4h-8M30 42h8a4 4 0 0 0 4-4v-8M6 30v8a4 4 0 0 0 4 4h8"/></svg>
+              重新扫描
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 称重信息表单 -->
+      <article class="oc-card">
+        <div class="oc-weigh-form__header">
+          <div class="oc-weigh-form__tag">
+            <span>商品 1</span>
+          </div>
+          <div class="oc-weigh-form__actions">
+            <button class="oc-weigh-form__collapse" type="button">
+              <span>收起</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l4-4 4 4"/></svg>
+            </button>
+            <button class="oc-weigh-form__delete" type="button">删除</button>
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label">商品名称</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请选项类目或模版带入" />
+            <svg class="oc-weigh-form__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label oc-weigh-form__label--required">商品类目</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请选择商品类目" />
+            <svg class="oc-weigh-form__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label oc-weigh-form__label--required">商品单位</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请输入计量单位，千克、斤等" />
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label oc-weigh-form__label--required">采购单价</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请输入采购单价" />
+            <span class="oc-weigh-form__unit">元</span>
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label oc-weigh-form__label--required">采购数量</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请输入采购数量" />
+          </div>
+        </div>
+        <div class="oc-weigh-form__row">
+          <div class="oc-weigh-form__label oc-weigh-form__label--required">单品金额</div>
+          <div class="oc-weigh-form__field">
+            <input class="oc-weigh-form__input" type="text" placeholder="请输入单品金额" />
+            <span class="oc-weigh-form__unit">元</span>
+          </div>
+        </div>
+        <button class="oc-weigh-form__extra" type="button">
+          <span>选填信息</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+        </button>
+      </article>
+
+      <!-- 付款信息 -->
+      <article class="oc-card">
+        <div class="oc-payment__row">
+          <span class="oc-payment__label">税前金额</span>
+          <span class="oc-payment__value">¥ 3500.00</span>
+        </div>
+        <div class="oc-payment__row">
+          <span class="oc-payment__label">税额</span>
+          <span class="oc-payment__value">¥ 0</span>
+        </div>
+        <div class="oc-payment__row">
+          <span class="oc-payment__label">税率</span>
+          <span class="oc-payment__value">免税</span>
+        </div>
+        <div class="oc-payment__row">
+          <span class="oc-payment__label">采购金额</span>
+          <span class="oc-payment__value oc-payment__value--amount">¥ 3500.00</span>
+        </div>
+      </article>
+
+      <footer class="oc-bottombar">
+        <div class="oc-bottombar__summary">
+          <div class="oc-bottombar__count">
+            <span class="oc-bottombar__count-label">共</span>
+            <span class="oc-bottombar__count-value">1<span class="oc-bottombar__count-unit">件</span></span>
+          </div>
+          <div class="oc-bottombar__tax">
+            <div class="oc-bottombar__tax-row"><span>税前金额：</span><span>¥ 3500.00</span></div>
+            <div class="oc-bottombar__tax-row"><span>税额：¥ 0</span><span>税率：免税</span></div>
+          </div>
+          <div class="oc-bottombar__amount">
+            <span class="oc-bottombar__amount-label">采购金额</span>
+            <span class="oc-bottombar__amount-value">¥<span class="unit">3500.00</span></span>
+          </div>
+        </div>
+        <div class="oc-bottombar__actions">
+          <button class="oc-bottombar__btn" type="button">暂存</button>
+          <button class="oc-bottombar__btn oc-bottombar__btn--primary" type="button" onclick="goStep(3)">提交保存</button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ==================== Step 3: 确认订单 ==================== -->
+    <section class="oc-step" id="oc-step-3">
+
+      <!-- 卖方 -->
+      <article class="oc-card oc-seller--simple">
+        <header class="oc-card__header">
+          <div class="oc-card__title">卖方</div>
+        </header>
+        <div class="oc-seller__body">
+          <div class="oc-seller__inner">
+            <div class="oc-seller__info">
+              <div class="oc-seller__info-col">
+                <span class="oc-seller__info-label">收款人</span>
+                <span class="oc-seller__info-value">张三</span>
+              </div>
+              <div class="oc-seller__info-col" style="align-items:flex-end;">
+                <span class="oc-seller__info-label">收款账号</span>
+                <span class="oc-seller__info-value--num">7060 **** **** 00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 商品明细 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">商品明细</div>
+        <div class="oc-goods-item">
+          <span class="oc-goods-item__idx">1</span>
+          <div class="oc-goods-item__main">
+            <div class="oc-goods-item__name">桂糖42号 | 切断式联合收割 | 5%&lt; 含杂率≤8%</div>
+            <div class="oc-goods-item__meta">
+              <span class="oc-goods-item__weight">352 公斤</span>
+              <span class="oc-goods-item__price">¥3500.00<span class="unit">元</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="oc-goods-item">
+          <span class="oc-goods-item__idx">2</span>
+          <div class="oc-goods-item__main">
+            <div class="oc-goods-item__name">桂糖42号 | 切断式联合收割 | 5%&lt; 含杂率≤8%</div>
+            <div class="oc-goods-item__meta">
+              <span class="oc-goods-item__weight">352 公斤</span>
+              <span class="oc-goods-item__price">¥3500.00<span class="unit">元</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="oc-goods-item">
+          <span class="oc-goods-item__idx">3</span>
+          <div class="oc-goods-item__main">
+            <div class="oc-goods-item__name">桂糖42号 | 切断式联合收割 | 5%&lt; 含杂率≤8%</div>
+            <div class="oc-goods-item__meta">
+              <span class="oc-goods-item__weight">531 公斤</span>
+              <span class="oc-goods-item__price">¥2287.00<span class="unit">元</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="oc-goods-total">
+          <span class="oc-goods-total__label">合计：</span>
+          <div>
+            <span class="oc-goods-total__value">883<span class="unit">公斤</span></span>
+            <span class="oc-goods-total__price">¥5787.00<span class="unit">元</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 支付方式 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">支付方式</div>
+        <label class="oc-pay-method oc-pay-method--selected">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-check.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">余额支付</div>
+            <div class="oc-pay-method__desc">可用余额：¥35300.00 元</div>
+          </div>
+        </label>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">供应链资金支付</div>
+          </div>
+          <div class="oc-pay-method__extra"><span>查看</span></div>
+        </div>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">贷款额度支付</div>
+            <div class="oc-pay-method__desc">可用额度：¥38289123.00 元</div>
+          </div>
+        </div>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">现金支付</div>
+            <div class="oc-pay-method__cash">
+              <div class="oc-pay-method__cash-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>请输入金额</span><span style="margin-left:auto;">元</span></div>
+              <span class="oc-pay-method__cash-tag">全额现金</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 付款账户 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">付款账户</div>
+        <div class="oc-account-card">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-account-card__logo">
+            <svg viewBox="0 0 24 24" fill="#3B82F6"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="2" y="8" width="20" height="3" fill="#FFFFFF" opacity="0.35"/></svg>
+          </div>
+          <div class="oc-account-card__main">
+            <div class="oc-account-card__name">广西国之源贸易有限公司</div>
+            <div class="oc-account-card__no">3116 **** **** 363</div>
+          </div>
+          <div class="oc-account-card__action text-arrow text-arrow--primary"><span>去充值</span><span class="text-arrow__icon" aria-hidden="true"></span></div>
+        </div>
+        <div class="oc-account-card oc-account-card--selected">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-check.svg" alt="" />
+          <div class="oc-account-card__logo">
+            <svg viewBox="0 0 24 24" fill="#3B82F6"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="2" y="8" width="20" height="3" fill="#FFFFFF" opacity="0.35"/></svg>
+          </div>
+          <div class="oc-account-card__main">
+            <div class="oc-account-card__name">广西果品交易有限公司</div>
+            <div class="oc-account-card__no">6422 **** **** 321</div>
+          </div>
+          <div class="oc-account-card__action text-arrow text-arrow--primary"><span>去充值</span><span class="text-arrow__icon" aria-hidden="true"></span></div>
+        </div>
+      </section>
+
+      <footer class="oc-confirm-bar">
+        <div class="oc-confirm-bar__total">
+          <span class="oc-confirm-bar__label">合计：</span>
+          <span class="oc-confirm-bar__price">¥<span class="unit">5887.00</span></span>
+        </div>
+        <div class="oc-confirm-bar__btns">
+          <button class="oc-confirm-bar__btn" type="button" onclick="goStep(2)">取消</button>
+          <button class="oc-confirm-bar__btn oc-confirm-bar__btn--primary" type="button" onclick="goStep(4)">立刻支付</button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ==================== Step 4: 确认订单-充值 ==================== -->
+    <section class="oc-step" id="oc-step-4">
+
+      <!-- 商品明细 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">商品明细</div>
+        <div class="oc-goods-item">
+          <span class="oc-goods-item__idx">1</span>
+          <div class="oc-goods-item__main">
+            <div class="oc-goods-item__name">桂糖42号 | 切断式联合收割 | 5%&lt; 含杂率≤8%</div>
+            <div class="oc-goods-item__meta">
+              <span class="oc-goods-item__weight">352 公斤</span>
+              <span class="oc-goods-item__price">¥3500.00<span class="unit">元</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="oc-goods-item">
+          <span class="oc-goods-item__idx">2</span>
+          <div class="oc-goods-item__main">
+            <div class="oc-goods-item__name">桂糖42号 | 切断式联合收割 | 5%&lt; 含杂率≤8%</div>
+            <div class="oc-goods-item__meta">
+              <span class="oc-goods-item__weight">531 公斤</span>
+              <span class="oc-goods-item__price">¥2287.00<span class="unit">元</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="oc-goods-total">
+          <span class="oc-goods-total__label">合计：</span>
+          <div>
+            <span class="oc-goods-total__value">883<span class="unit">公斤</span></span>
+            <span class="oc-goods-total__price">¥5787.00<span class="unit">元</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 费用明细 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">费用明细</div>
+        <div class="oc-fee-item">
+          <span class="oc-fee-item__name">货款</span>
+          <span class="oc-fee-item__value">¥5787.00 元</span>
+        </div>
+        <div class="oc-fee-item">
+          <span class="oc-fee-item__name">支付服务费</span>
+          <span class="oc-fee-item__value">¥100.00 元</span>
+        </div>
+        <div class="oc-fee-item">
+          <span class="oc-fee-item__name">融资服务费</span>
+          <span class="oc-fee-item__status">待结算</span>
+        </div>
+        <div class="oc-fee-note">
+          <strong>说明</strong><br/>
+          1. 使用供应链资金支付货款，平台需收取货款的 1% 作为供应链支付服务费；<br/><br/>
+          2. 融资服务费根据资金还款周期计算。
+        </div>
+        <div class="oc-goods-total">
+          <span class="oc-goods-total__label">合计：</span>
+          <div>
+            <span class="oc-goods-total__value">883<span class="unit">公斤</span></span>
+            <span class="oc-goods-total__price">¥5887.00<span class="unit">元</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 支付方式 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">支付方式</div>
+        <label class="oc-pay-method oc-pay-method--selected">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-check.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">余额支付</div>
+            <div class="oc-pay-method__desc">可用余额：¥35300.00 元</div>
+          </div>
+        </label>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">供应链资金支付</div>
+          </div>
+          <div class="oc-pay-method__extra"><span>查看</span></div>
+        </div>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">贷款额度支付</div>
+            <div class="oc-pay-method__desc">可用额度：¥38289123.00 元</div>
+          </div>
+        </div>
+        <div class="oc-pay-method">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-pay-method__main">
+            <div class="oc-pay-method__title">现金支付</div>
+            <div class="oc-pay-method__cash">
+              <div class="oc-pay-method__cash-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>请输入金额</span><span style="margin-left:auto;">元</span></div>
+              <span class="oc-pay-method__cash-tag">全额现金</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 付款账户 -->
+      <section class="oc-card oc-confirm__section">
+        <div class="oc-section__title">付款账户</div>
+        <div class="oc-account-card">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-uncheck.svg" alt="" />
+          <div class="oc-account-card__logo">
+            <svg viewBox="0 0 24 24" fill="#3B82F6"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="2" y="8" width="20" height="3" fill="#FFFFFF" opacity="0.35"/></svg>
+          </div>
+          <div class="oc-account-card__main">
+            <div class="oc-account-card__name">广西国之源贸易有限公司</div>
+            <div class="oc-account-card__no">3116 **** **** 363</div>
+          </div>
+          <div class="oc-account-card__action text-arrow text-arrow--primary"><span>去充值</span><span class="text-arrow__icon" aria-hidden="true"></span></div>
+        </div>
+        <div class="oc-account-card oc-account-card--selected">
+          <img class="oc-pay-method__radio" src="assets/icons/oc-radio-check.svg" alt="" />
+          <div class="oc-account-card__logo">
+            <svg viewBox="0 0 24 24" fill="#3B82F6"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="2" y="8" width="20" height="3" fill="#FFFFFF" opacity="0.35"/></svg>
+          </div>
+          <div class="oc-account-card__main">
+            <div class="oc-account-card__name">广西果品交易有限公司</div>
+            <div class="oc-account-card__no">6422 **** **** 321</div>
+          </div>
+          <div class="oc-account-card__action text-arrow text-arrow--primary"><span>去充值</span><span class="text-arrow__icon" aria-hidden="true"></span></div>
+        </div>
+      </section>
+
+      <footer class="oc-confirm-bar">
+        <div class="oc-confirm-bar__total">
+          <span class="oc-confirm-bar__label">合计：</span>
+          <span class="oc-confirm-bar__price">¥<span class="unit">5887.00</span></span>
+        </div>
+        <div class="oc-confirm-bar__btns">
+          <button class="oc-confirm-bar__btn" type="button" onclick="goStep(3)">取消</button>
+          <button class="oc-confirm-bar__btn oc-confirm-bar__btn--primary" type="button" onclick="goStep(5)">立刻支付</button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ==================== Step 5: 支付成功 ==================== -->
+    <section class="oc-step" id="oc-step-5">
+
+      <main class="oc-success">
+        <div class="oc-success__card">
+          <img class="oc-success__icon" src="assets/icons/oc-check-circle.svg" alt="" />
+          <h2 class="oc-success__title">支付成功</h2>
+          <span class="oc-success__amount-label">支付金额</span>
+          <div class="oc-success__amount">¥<span class="unit">5887.00</span></div>
+        </div>
+        <div class="oc-success__btns">
+          <a class="oc-success__btn" href="index.html#page-order">查看订单</a>
+          <button class="oc-success__btn oc-success__btn--primary" type="button" onclick="goStep(1)">创建新订单</button>
+        </div>
+      </main>
+    </section>
+
+  </div>
+
+  <script>
+    function goStep(n) {
+      document.querySelectorAll('.oc-step').forEach(function(s){ s.classList.remove('is-active'); });
+      var el = document.getElementById('oc-step-' + n);
+      if (el) { el.classList.add('is-active'); window.scrollTo(0,0); }
+    }
+  </script>
+
+  <!-- Header 组件（顶栏变体4：返回 + 居中标题；wrap:false 保持 sticky 顶栏行为，Step 3~5 返回为"回上一步"） -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script>
+  PageHeader.mount({ container: document.getElementById('oc-step-1'), wrap: false, prepend: true, topbar: { variant: 'oc', title: '创建订单' } });
+  PageHeader.mount({ container: document.getElementById('oc-step-2'), wrap: false, prepend: true, topbar: { variant: 'oc', title: '创建订单' } });
+  PageHeader.mount({ container: document.getElementById('oc-step-3'), wrap: false, prepend: true, topbar: { variant: 'oc', title: '确认订单', left: { type: 'back', onBack: function () { goStep(2); } } } });
+  PageHeader.mount({ container: document.getElementById('oc-step-4'), wrap: false, prepend: true, topbar: { variant: 'oc', title: '确认订单', left: { type: 'back', onBack: function () { goStep(3); } } } });
+  PageHeader.mount({ container: document.getElementById('oc-step-5'), wrap: false, prepend: true, topbar: { variant: 'oc', title: '支付成功', left: { type: 'back', onBack: function () { goStep(4); } } } });
+  </script>
+</body>
+</html>

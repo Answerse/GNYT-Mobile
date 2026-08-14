@@ -1,44 +1,21 @@
 /* 桂农易通 农户首页 1:1 还原（基于 Figma 65:5095 新版设计稿 + 渲染图修正）
    rem 适配：设计稿宽 375px，1rem = 100px @ 375 视口（设计 1px = 0.01rem） */
 
-html {
-  font-size: calc(100vw / 3.75);
-}
-
-:root {
-  --c-primary: #16A34A;
-  --c-primary-deep: #15803D;
-  --c-lime: #BEF264;
-  --c-bg: #EBF2FC;
-  --c-white: #FFFFFF;
-  --c-text: #111827;
-  --c-text-sub: #6B7280;
-  --c-green-50: #F0FDF4;
-  --c-border: #E5E7EB;
-  /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
-  --c-info: #3B82F6;          /* Colors.Blue.500（Info.Default） */
-  --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
-  --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
-  --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* 三部分布局：页头(固定高) + 内容(flex:1 撑满剩余、内部滚动) + 底部标签栏(固定高)
+   body 不滚动，由各页内容区滚动；字体/重置/组件样式见 styles/components.css */
 body {
-  font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   font-size: 0.16rem;
   background: var(--c-bg);
-  color: var(--c-text);
-  -webkit-font-smoothing: antialiased;
 }
-
-img { display: block; }
-button { font: inherit; cursor: pointer; border: none; background: none; }
-a { text-decoration: none; color: inherit; }
 
 /* ---------- 绿色渐变头图区（状态栏 + 导航 + 本月统计 + 插画） ---------- */
 .hero-zone {
   position: relative;
+  flex-shrink: 0;                 /* 三部分布局：作为固定页头 */
   width: 100%;
   height: 3.2rem;
   background: url("../assets/images/bg-head.png") no-repeat center top / 100% 100%;
@@ -48,6 +25,10 @@ a { text-decoration: none; color: inherit; }
   height: 100%;
   padding: 0 0.16rem;
 }
+/* Header 挂载点：突破 hero 内边距，页头容器两端对齐视口边缘 */
+.hero-zone__inner > .header-mount {
+  margin: 0 -0.16rem;
+}
 /* 3D 插画横幅：内容位于图像右半幅，置于绿色头部下半部 */
 .illus {
   position: absolute;
@@ -56,47 +37,13 @@ a { text-decoration: none; color: inherit; }
   width: 3.75rem;
   pointer-events: none;
 }
-
-/* 顶栏 */
-.topbar__statusbar { height: 0.25rem; }
-.topbar__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 -0.16rem;
-  padding: 0.16rem;
-}
-.topbar__logo-wrap {
-  display: flex;
-  align-items: center;
-}
-.topbar__logo { width: 0.98rem; height: 0.4rem; }
-.topbar__tag {
-  margin-left: 0.09rem;
-  height: 0.2rem;
-  padding: 0 0.08rem 0.01rem;
-  display: flex;
-  align-items: center;
-  background: var(--c-green-50);
-  border-radius: 0.04rem;
-  color: var(--c-primary);
-  font-size: 0.14rem;
-  font-weight: 330;
-  line-height: 1.326;
-}
-.topbar__wechat {
-  width: 0.76rem;
-  height: 0.26rem;
-}
-.topbar__wechat-icon {
-  width: 0.76rem;
-  height: 0.26rem;
-}
+/* img{display:block} 会覆盖 UA 的 [hidden]，此处显式恢复隐藏 */
+.illus[hidden] { display: none; }
 
 /* 本月统计（白色文字 + 黄绿胶囊） */
 .stat {
   margin-top: 0.38rem;
-  padding-left: 0.16rem;
+  padding: 0 0.08rem;
 }
 .stat__label {
   font-size: 0.14rem;
@@ -135,12 +82,32 @@ a { text-decoration: none; color: inherit; }
 .page {
   position: relative;
   width: 100%;
-  margin: -0.48rem auto 0;
-  padding: 0 0.08rem 0.96rem;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+/* 首页外层容器：整体作为一个滚动区（hero 头图 + 内容一起滚动，内容上压 hero 底部，保持原设计） */
+#page-home {
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* 首页内容：恢复负 margin 上压 hero 底部（桂农码卡叠在绿色头图上）；
+   底部 padding 仅需避开亮码主按钮凸起 23px，取 32px 避免大段空白 */
+#page-home main.page {
+  flex: none;
+  min-height: auto;
+  overflow: visible;
+  margin: -0.48rem auto 0;
+  padding: 0 0.08rem 0.32rem;
   gap: 0.08rem;
 }
+.page[hidden] { display: none; }
+
 
 /* ---------- 桂农码大卡 ---------- */
 .qr-card {
@@ -159,8 +126,8 @@ a { text-decoration: none; color: inherit; }
   background: var(--c-primary-deep);
 }
 .qr-card__avatar {
-  width: 0.32rem;
-  height: 0.32rem;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 }
 .qr-card__info {
@@ -181,31 +148,7 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.326;
   color: var(--c-white);
 }
-/* 管理员徽章：与名字同行、置于账户条右上角（Figma 306:12086） */
-.qr-card__badge {
-  position: relative;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.04rem;
-  height: 0.18rem;
-  padding: 0.01rem 0.04rem 0.01rem 0.14rem;
-  background: var(--c-primary);
-  border-radius: 0 0.04rem 0.04rem 0;
-  font-size: 0.1rem;
-  font-weight: 330;
-  line-height: 1.326;
-  color: var(--c-white);
-}
-.qr-card__badge-icon {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform: translateY(-0.055rem);
-  width: 0.24rem;
-  height: 0.24rem;
-  border-radius: 0.04rem;
-}
+/* 管理员徽章：已抽离为独立组件 styles/badge.css + scripts/badge.js */
 .qr-card__phone {
   font-size: 0.14rem;
   color: rgba(255, 255, 255, 0.85);
@@ -237,6 +180,8 @@ a { text-decoration: none; color: inherit; }
   padding: 0.08rem 0.16rem;
   background: var(--c-green-50);
   border-radius: 0.08rem;
+  text-decoration: none;
+  color: inherit;
 }
 .create-order__text {
   display: flex;
@@ -307,9 +252,11 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: space-between;
   height: 1.06rem;
-  border-radius: 0.16rem;
+  border-radius: 0.08rem;
   overflow: hidden;
   background: linear-gradient(133deg, #FFFFFF 0%, #DCFCE7 100%);
+  text-decoration: none;
+  color: inherit;
 }
 .ad__content {
   position: relative;
@@ -327,19 +274,9 @@ a { text-decoration: none; color: inherit; }
   color: var(--c-text);
   white-space: nowrap;
 }
-.ad__btn {
-  display: inline-flex;
-  align-items: center;
+/* 我要参加：文字+箭头按钮，统一用 text-arrow 组件（styles/components.css），广告区内左对齐 */
+.ad__content .text-arrow {
   align-self: flex-start;
-  gap: 0.04rem;
-  font-size: 0.14rem;
-  font-weight: 330;
-  line-height: 1.326;
-  color: var(--c-text);
-}
-.ad__btn-icon {
-  width: 0.16rem;
-  height: 0.16rem;
 }
 .ad__img {
   position: absolute;
@@ -463,7 +400,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: space-between;
   gap: 0.08rem;
   padding: 0.08rem 0.08rem 0.08rem 0.16rem;
-  background: var(--c-white);
+  background: linear-gradient(90deg, var(--Fill-Primary-100, #DCFCE7) 0%, var(--Fill-Primary-50, #F0FDF4) 100%), var(--Background-Bg-1, #FFF);
   border-radius: 0.08rem;
 }
 .auth__text {
@@ -485,100 +422,1264 @@ a { text-decoration: none; color: inherit; }
   font-weight: 330;
 }
 
-/* ---------- 底栏（Figma 539:41208 精确还原：5 项，含中间凸起"亮码卖货"主按钮）
-   高度 0.81rem = 上内边距 0.08 + 内容 0.57 + 下内边距 0.16；项间距 0.15；标签 14px */
-.tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 0.15rem;
-  padding: 0.08rem 0.08rem 0.16rem;
-  background: #FFFFFF;
-  backdrop-filter: blur(0.2rem);
-  box-shadow: 0 -0.02rem 0.1rem rgba(0, 0, 0, 0.02);
+/* ---------- 底部标签栏：样式已抽离为独立组件 styles/tabbar.css ---------- */
+
+/* ---------- 亮码卖货页（1.3-卖货-身份码，Figma 65:5894，绿色主题） ---------- */
+#page-code {
+  margin-top: 0;                /* 顶栏从视口顶部开始 */
+  min-height: calc(100vh - 0.81rem); /* 减去底栏高度，确保底栏贴底 */
+  background: #16A34A;
 }
-.tabbar__item {
+/* 主体：撑满剩余高度内部滚动 */
+.code-main {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 0.16rem 0.4rem;
+}
+/* 用户信息条（Figma 65:5897：深绿 #15803D、上圆角16、内边距 16/24/24、底部白色切角曲线）
+   结构与首页 qr-card__user 一致，切角复用首页 card-corner.svg */
+.code-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.16rem 0.24rem 0.24rem;  /* 16 24 24 */
+  background: var(--c-primary-deep); /* #15803D */
+  border-radius: 0.16rem 0.16rem 0 0; /* 16 16 0 0 */
+}
+.code-user__info {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;                       /* 10 */
+}
+.code-user__name {
+  font-size: 0.16rem;                /* 16 中文常规文本 */
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-white);
+}
+.code-user__phone {
+  font-family: "DINish Condensed", "MiSans", sans-serif; /* 西文5级标题 */
+  font-size: 0.2rem;                 /* 20 */
+  font-weight: 700;
+  line-height: 1.268;
+  color: var(--c-white);
+}
+/* 白色切角曲线（复用首页素材 card-corner.svg，与 qr-card__corner 一致：贴底铺满） */
+.code-user__curve {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+/* 二维码卡片（Figma 65:5901：白底、下圆角16；上下内边距 17px） */
+.code-card {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 0 0 0.16rem 0.16rem;
+  padding-top: 0.17rem;            /* 17 */
+  padding-bottom: 0.17rem;         /* 17 */
+}
+.code-card__qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.24rem;            /* 24 */
+}
+.code-card__qr-img {
+  width: 2.16rem;                  /* 二维码 216 */
+  height: 2.16rem;
+  display: block;
+}
+.code-card__serial {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.05rem;
-  position: relative;
-  color: rgba(16, 18, 21, 0.5);
+  margin-top: 0.24rem;             /* 24 */
 }
-/* 选中态选项背景块（Figma 539:41164 选项背景 60×57 圆角10 + 毛玻璃） */
-.tabbar__item--active::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0.6rem;
-  height: 0.57rem;
-  background: transparent;
-  border-radius: 0.1rem;
-  backdrop-filter: blur(0.2rem);
-  z-index: 0;
+.code-card__serial-label {
+  font-size: 0.16rem;              /* 16 */
+  font-weight: 330;
+  line-height: 1;
+  color: #6B7280;
 }
-.tabbar__item--active {
-  color: var(--c-primary);
+.code-card__serial-number {
+  margin-top: 0.12rem;             /* 12 */
+  font-size: 0.24rem;              /* 24 */
+  font-weight: 700;
+  line-height: 1;
+  color: #101215;
 }
-/* 图标 24×24，位于 32×32 图标区内（Figma 图标框 32×32、图标 24 居中） */
-.tabbar__icon {
-  position: relative;
-  z-index: 1;
-  width: 0.24rem;
-  height: 0.24rem;
-  margin: 0.04rem 0;
-  color: inherit;
-  fill: currentColor;
-  stroke: none;
-}
-/* 标签：14px；未选中 #6B7280，选中 #16A34A（与图标色分离） */
-.tabbar__label {
-  position: relative;
-  z-index: 1;
+/* 资金来源行（Figma 65:5906：浅蓝 #F2F9FF、圆角8、内边距16、高64；
+   左右 margin 16 与底部（卡片 padding-bottom 16）保持等距，避免外边距折叠） */
+.code-card__fund {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 0.2rem;
-  font-size: 0.14rem;
+  justify-content: space-between;
+  height: 0.64rem;                 /* 64 */
+  margin: 0.16rem 0.16rem 0;       /* 16（左右与底部等距） */
+  padding: 0.16rem;                /* 16 */
+  background: #F2F9FF;             /* 资金来源浅蓝底 */
+  border-radius: 0.08rem;          /* 8 */
+}
+.code-card__fund-label {
+  font-size: 0.16rem;              /* 16 */
+  font-weight: 330;
+  line-height: 1;
+  color: #101215;
+}
+.code-card__fund-banks {
+  display: flex;
+  align-items: center;
+  gap: 0.04rem;                    /* 4 */
+}
+.code-card__fund-logo {
+  height: 0.24rem;                 /* 24 logo */
+  width: auto;
+}
+/* 资金来源行尾箭头：统一用 text-arrow 组件（text-arrow__icon + text-arrow--faint） */
+/* 今日数据统计卡片（Figma 65:5925：深绿 #15803D 卡 + 浅灰 #F3F4F6 字；卡内 column gap 16） */
+.code-stats {
+  display: flex;
+  gap: 0.16rem;                    /* 16 */
+  margin-top: 0.24rem;             /* 24 */
+}
+.code-stats__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.16rem;                    /* 16 */
+  padding: 0.16rem;                /* 16 */
+  background: #15803D;             /* 深绿卡 */
+  border-radius: 0.08rem;          /* 8 */
+}
+.code-stats__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;             /* 内容居中 */
+  gap: 0.08rem;                    /* 8 */
+}
+.code-stats__label {
+  font-size: 0.14rem;              /* 14 中文小号文本 */
   font-weight: 330;
   line-height: 1.326;
-  color: #6B7280;
-  text-align: center;
+  color: #F3F4F6;
 }
-.tabbar__item--active .tabbar__label {
-  color: var(--c-primary);
+.code-stats__value {
+  display: flex;
+  align-items: baseline;           /* ¥ 与数值基线对齐 */
+  gap: 0.02rem;                    /* 2 */
 }
-/* 中间"亮码卖货"主按钮：绿色圆形 60×60 + 4px 白描边 + 白色二维码 28×28，凸出底栏顶部 15px */
-.tabbar__item--main {
-  justify-content: flex-end;
+.code-stats__value-sym {
+  font-size: 0.14rem;              /* 14 */
+  font-weight: 330;
+  color: #F3F4F6;
 }
-.tabbar__main-btn {
-  position: absolute;
-  top: -0.23rem;
-  left: 50%;
-  transform: translateX(-50%);
+.code-stats__value-num {
+  font-family: "DINish Condensed", "MiSans", sans-serif; /* 西文3级标题 */
+  font-size: 0.3rem;               /* 30 */
+  font-weight: 700;
+  line-height: 1.268;
+  color: #F3F4F6;
+}
+.code-stats__btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 0.6rem;
-  height: 0.6rem;
-  background: var(--c-primary);
-  border: 0.04rem solid #FFFFFF;
-  border-radius: 50%;
-  z-index: 1;
+  justify-content: flex-start;
+  gap: 0.08rem;                    /* 8 */
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0.08rem;          /* 8 */
+  background: none;                /* 透明 */
+  color: #F3F4F6;
+  font-size: 0.16rem;              /* 16 */
+  font-weight: 330;
+  line-height: 1.326;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.tabbar__main-icon {
-  width: 0.28rem;
-  height: 0.28rem;
+.code-stats__btn-icon {
+  width: 0.2rem;                   /* 20 */
+  height: 0.2rem;
 }
+/* 按钮内箭头：统一用 text-arrow 组件（text-arrow__icon + text-arrow--white） */
 
 @media (min-width: 768px) {
   .hero-zone { margin: 0 auto; }
 }
+
+/* =====================================================================
+   订单页（Figma 230:3975  收购列表 1:1 还原）
+   375×812；顶栏 44 + 搜索/筛选条 + 卡片列表；底栏与首页共用
+   ===================================================================== */
+#page-order {
+  margin-top: 0;                /* 顶栏从视口顶部开始 */
+  gap: 0;
+  padding: 0;
+  background: #EBF2FC;
+}
+
+/* 内容区：撑满剩余高度，内部滚动（页头/顶栏组件样式见 styles/components.css） */
+.page-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* 收支页滚动区底部留白 24px，内容滚动到底不贴底 */
+#page-flow .page-content {
+  padding-bottom: 0.24rem;
+}
+
+/* ---------- 筛选标签 + 搜索（Figma 621:6341：胶囊标签、垂直分割线 + 搜索框） ---------- */
+.order-filterbar {
+  display: flex;
+  align-items: center;
+  gap: 0.08rem;
+  padding: 0 0.08rem 0.16rem;   /* 两端对齐视口：左右 8、上 0、下 16 */
+}
+/* 标签栏：胶囊标签，gap 8，fill 占满剩余空间；横向可拖动滚动（Figma 621:6341 overflowScroll x），隐藏滚动条 */
+.order-tabs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.08rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.order-tabs::-webkit-scrollbar {
+  display: none;
+}
+/* 胶囊标签：padding 4/12、圆角 24、文字 16；选中绿底白字、未选中白底深字 */
+.order-tab {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.04rem;
+  padding: 0.04rem 0.12rem;
+  border-radius: 0.24rem;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  background: #FFFFFF;
+  white-space: nowrap;
+}
+.order-tab.is-active {
+  background: var(--c-primary);
+  color: #FFFFFF;
+}
+.order-tab__count {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem;
+  font-weight: 400;
+}
+/* 垂直分割线：标签栏与搜索框之间 */
+.order-filterbar__divider {
+  width: 0.01rem;
+  align-self: stretch;
+  background: rgba(16, 18, 21, 0.1);
+}
+/* 搜索框：圆角 50、padding 4、放大镜 16 半透明 + 16px 文字 */
+.order-search {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.04rem;
+  padding: 0.04rem;
+  border-radius: 0.5rem;
+}
+.order-search__icon {
+  width: 0.16rem;
+  height: 0.16rem;
+  flex-shrink: 0;
+  opacity: 0.5;
+  color: #101215;
+}
+.order-search__text {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* ---------- 订单列表（内容区：撑满剩余高度内部滚动，gap 8、上 0、左右 8、下 24） ---------- */
+.order-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  padding: 0 0.08rem 0.24rem;
+}
+.order-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.16rem;
+  flex-shrink: 0;      /* 防止 flex 列表等比压缩卡片导致内容/按钮被裁剪 */
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  padding: 0.16rem;
+  overflow: hidden;   /* 裁剪右上角状态标签的直角，保持卡片圆角 */
+}
+
+/* 状态标签：右上角、左下角切角圆角（Figma 606:5109：0 0 0 8） */
+.order-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.24rem;
+  padding: 0 0.08rem;
+  border-radius: 0 0 0 0.08rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1;
+  color: #F9FAFB;
+}
+.order-status--done {
+  background: #16A34A;
+}
+.order-status--pending {
+  background: #F97316;
+}
+
+/* 名称：中文6级标题（16/630），右侧为状态标签让位 */
+.order-card__name {
+  font-size: 0.16rem;
+  font-weight: 630;
+  line-height: 1.326;
+  color: #111827;
+  padding-right: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 信息区（交易时间 / 商品数量 / 明细 / 订单金额） */
+.order-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.04rem;   /* 信息行纵向间隔 4px */
+}
+.order-info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.08rem;
+}
+.order-info__label {
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #6B7280;
+}
+.order-info__value {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem;
+  font-weight: 400;
+  line-height: 1.326;
+  color: #111827;
+}
+/* 数值值：西文6级标题（DIN 16/700，如商品数量，Figma 614:5669） */
+.order-info__value--num {
+  font-weight: 700;
+  line-height: 1.024;
+}
+/* 金额值：西文5级标题（20/700） */
+.order-info__value--amount {
+  margin-left: auto;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem;
+  font-weight: 700;
+  line-height: 1.024;
+}
+/* 金额符号：中文小号文本（14/330，Figma 614:5800） */
+.order-info__amount-sym {
+  font-family: "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  margin-right: 0.02rem;
+}
+
+/* 明细展开按钮（商品数量行右侧）：文字+箭头统一用 text-arrow 组件（--muted 灰字 + 图标大号向下）
+   此处仅保留行内定位与展开旋转动效 */
+.order-goods__toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.02rem;
+  height: 0.2rem;
+  background: none;
+}
+.order-goods__toggle .text-arrow__icon {
+  transition: transform 0.2s ease;
+}
+.order-goods__toggle[aria-expanded="true"] .text-arrow__icon {
+  transform: rotate(180deg);   /* 收起 ▽ → 展开 △ */
+}
+
+/* 明细区：上边框 + padding 8/4，行间 gap 4 + 1px 分割线（Figma 606:5095：gap 8、分割线 rgba(16,18,21,0.05)）
+   展开/收起动效：默认折叠（max-height 0），展开高度由 JS 测量写入 --detail-h，带缓动过渡 */
+.order-card__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.04rem;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 0.04rem;
+  max-height: 0;
+  opacity: 0;
+  border-top: 0 solid rgba(16, 18, 21, 0.1);
+  transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.32s ease,
+              margin 0.32s ease,
+              padding 0.32s ease,
+              border-top-width 0.32s ease;
+}
+.order-card__detail.is-open {
+  max-height: var(--detail-h, 6rem);
+  margin: 0.08rem 0;   /* 上下 8px */
+  padding: 0.08rem 0.04rem;
+  opacity: 1;
+  border-top-width: 0.01rem;
+}
+/* 测量态：JS 展开前先禁用过渡，获得含 padding 的完整内容高度 */
+.order-card__detail.is-measuring {
+  transition: none;
+}
+.order-detail__row {
+  display: flex;
+  align-items: center;
+  gap: 0.04rem;
+  white-space: nowrap;
+}
+.order-detail__row:not(:first-child) {
+  border-top: 0.01rem solid rgba(16, 18, 21, 0.05);
+  padding-top: 0.04rem;
+}
+/* 序号：无背景、DIN 小号文本（14/400，Figma I606:5096;23244:13019 透明） */
+.order-detail__idx {
+  flex-shrink: 0;
+  width: 0.16rem;
+  height: 0.16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #111827;
+}
+/* 品名：中文说明文字（12/330 灰） */
+.order-detail__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.12rem;
+  font-weight: 330;
+  color: #6B7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* 重量：数值 + 单位 */
+.order-detail__weight {
+  flex: 0 0 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.02rem;
+}
+.order-detail__weight .order-detail__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  color: #111827;
+}
+.order-detail__weight .order-detail__unit {
+  font-size: 0.12rem;
+  font-weight: 330;
+  color: #6B7280;
+}
+/* 价格：¥ + 数值 */
+.order-detail__price {
+  flex: 0 0 0.9rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.02rem;
+}
+.order-detail__price .order-detail__sym {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #111827;
+}
+.order-detail__price .order-detail__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  color: #111827;
+}
+
+/* 操作按钮（回执单/发票 居左，详情 由 margin-left:auto 推至最右；按钮组 gap 16；Figma 606:5103） */
+.order-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.16rem;
+}
+/* 回执单/发票：浅蓝圆角胶囊（#F2F9FF / 40px / 文字 16-330），Figma 614:5873 */
+.order-foot__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 0.08rem 0.16rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #F2F9FF;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* 详情：绿字 14/330 + 绿箭头（Figma 606:5104），margin-left:auto 居右 */
+.order-foot__btn--primary {
+  margin-left: auto;
+  height: 0.2rem;
+  padding: 0;
+  background: none;
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: var(--c-primary);
+}
+
+/* =====================================================================
+   收支页（Figma 230:4120 月 / 230:3997 年 / 日  1:1 还原）
+   375×812；背景 #EBF2FC；顶栏 + 日历卡片 + 收入统计卡片；底栏共用
+   ===================================================================== */
+#page-flow {
+  margin-top: 0;                /* 顶栏从视口顶部开始（不继承 .page 负 margin） */
+  gap: 0;
+  padding: 0;
+  background: #EBF2FC;
+}
+
+/* ---------- 顶栏：已抽离为 app-topbar 组件（scripts/topbar.js），收支页复用 ---------- */
+
+/* ---------- 日历卡片 ---------- */
+.flow-calcard {
+  margin: 0.08rem;
+  padding: 0.08rem 0.16rem 0.16rem;   /* 上 8px、左右 16px、下 16px */
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+}
+
+/* 筛选栏（页头 Header 内，Figma 932:62695：padding 0 8 16；白底分段控件） */
+.flow-segments {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.08rem 0.16rem;
+}
+/* 分段控件容器：白底；收入/支出无间距，日/月/年组内 gap 8 */
+.flow-seg {
+  display: inline-flex;
+  padding: 0;
+  background: #FFFFFF;
+}
+.flow-seg--income {
+  border-radius: 0.2rem;
+}
+.flow-seg--range {
+  border-radius: 0.08rem;
+  gap: 0.08rem;
+  background: transparent;   /* 日/月/年控件无背景色 */
+}
+/* 收入/支出按钮：padding 4/24；未选中白底深字，选中绿底白字（Figma 932:62696） */
+.flow-seg__btn {
+  height: auto;
+  padding: 0.04rem 0.24rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #FFFFFF;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 日/月/年按钮：padding 4/16，白底 bg-1（Figma 932:62697） */
+.flow-seg--range .flow-seg__btn {
+  background: var(--c-bg-1);
+  border-radius: 0.08rem;
+  padding: 0.04rem 0.16rem;
+}
+.flow-seg__btn.is-active {
+  background: #16A34A;
+  color: #F9FAFB;
+}
+/* 收入（选中）白描边 1px（Figma I932:62696;21746:36549 strokes #FFF） */
+.flow-seg--income .flow-seg__btn.is-active {
+  box-shadow: inset 0 0 0 0.01rem #FFFFFF;
+}
+
+/* 年月标题 + 左右箭头（筛选栏已移至页头；Figma 230:4252：居中、gap 10、箭头 20） */
+.flow-calhead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  margin-top: 0.12rem;
+}
+.flow-calhead__arrow {
+  width: 0.2rem;
+  height: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(16, 18, 21, 0.5);
+  background: none;
+}
+.flow-calhead__arrow svg { width: 0.18rem; height: 0.18rem; }
+/* 年月标题：西文5级文本（20/400，Figma 230:4174）；撑满箭头之间的剩余宽度 */
+.flow-calhead__title {
+  flex: 1;
+  min-width: 0.8rem;
+  text-align: center;
+  font-size: 0.2rem;
+  font-weight: 400;
+  line-height: 1.172;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+
+/* 星期表头：中文常规文本（16/330、行高 40，Figma 230:4258）；距年月 16 */
+.flow-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 0.16rem;
+}
+.flow-weekdays span {
+  height: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #6B7280;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+
+/* 日历网格（月/年：3 列；行距 4，Figma 测量） */
+.flow-calgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.04rem 0;
+  margin-top: 0.08rem;
+}
+.flow-calgrid--month {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.17rem;
+  margin-bottom: 0.17rem;
+}
+.flow-calgrid--year {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.17rem;
+  margin-bottom: 0.17rem;
+}
+/* 日视图：7 列（含星期表头；行距 4、列距 4；距年月 16） */
+.flow-calgrid--day {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.04rem 0.04rem;
+  margin-top: 0.16rem;
+}
+/* 星期行跨满 7 列，与第一行日期间距 8（4 margin + 4 row-gap），列距与日期列一致 4 */
+.flow-calgrid--day .flow-weekdays {
+  grid-column: 1 / -1;
+  margin: 0 0 0.04rem;
+  column-gap: 0.04rem;
+}
+.flow-calgrid[hidden],
+.flow-detail[hidden] { display: none; }
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.04rem;
+  min-height: 0.5rem;
+  padding: 0.08rem 0;
+  border: none;
+  background: none;
+  border-radius: 0.08rem;
+}
+.cal-cell:disabled { visibility: hidden; }
+/* 日期数字：西文常规文本（16/400，Figma 230:4266） */
+.cal-cell__num {
+  font-size: 0.16rem;
+  font-weight: 400;
+  line-height: 1.172;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 暂无：中文说明文字（12/330，30% 黑，Figma 230:4267） */
+.cal-cell__none {
+  font-size: 0.12rem;
+  font-weight: 330;
+  line-height: 1.172;
+  color: rgba(16, 18, 21, 0.3);
+}
+/* 金额：西文小号（10/400，绿，Figma style_UO1DNB） */
+.cal-cell__amt {
+  font-size: 0.1rem;
+  font-weight: 400;
+  line-height: 1.172;
+  color: #16A34A;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 有金额的日期：淡绿底（Figma rgba(17,170,85,0.1)） */
+.cal-cell--tint {
+  background: rgba(17, 170, 85, 0.1);
+}
+/* 选中：主题绿底，文字反白（#F9FAFB，Figma 230:4183） */
+.cal-cell.is-selected {
+  background: #16A34A;
+}
+.cal-cell.is-selected .cal-cell__num,
+.cal-cell.is-selected .cal-cell__amt,
+.cal-cell.is-selected .cal-cell__none {
+  color: #F9FAFB;   /* 选中态：数字/金额/暂无 全部反白 */
+}
+
+/* ---------- 收入统计卡片 ---------- */
+.flow-statcard {
+  position: relative;
+  margin: 0.08rem;
+  padding: 0.16rem;
+  background: transparent;   /* 白色由切角背景 SVG 提供（230:4323 fill 无填充），否则会填满切角 */
+  border-radius: 0.08rem;
+  /* 卡片样式无特别说明时禁用阴影（DESIGN.md 强制） */
+}
+/* 缺角背景：白色 359x118 右上切角，叠在卡片顶部、遮挡插画底部（Figma 230:4324） */
+.flow-statcard__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1.18rem;
+  border-radius: 0.08rem;
+  z-index: 1;   /* 在插画之上：切角卡片遮挡货币插图（Figma 230:4324 在 230:4300 之前） */
+  pointer-events: none;
+}
+/* 标题：西文6级标题（16/700，Figma 230:4216） */
+.flow-statcard__title {
+  position: relative;
+  z-index: 2;
+  font-size: 0.16rem;
+  font-weight: 700;
+  line-height: 1.172;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 货币插画：112x112，右上角上溢 43px（Figma 230:4300 x:247 y:-16 相对组件，统计卡在其下 27px；
+   主体被切角卡片遮挡，仅顶部露在卡片上方，z-index 低于 bg） */
+.flow-statcard__deco {
+  position: absolute;
+  top: -0.43rem;
+  right: 0.08rem;
+  width: 1.12rem;
+  height: 1.12rem;
+  object-fit: contain;
+  pointer-events: none;
+}
+/* 日期标题：西文常规文本（16/400，Figma 230:4212） */
+.flow-statcard__date {
+  margin-top: 0.04rem;
+  font-size: 0.12rem;
+  color: #9CA3AF;
+}
+.flow-statcard__date--outside {
+  margin: 0.16rem 0.16rem 0.04rem;
+  font-size: 0.16rem;
+  font-weight: 400;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+.flow-statcard__grid {
+  position: relative;
+  z-index: 2;   /* 内容在切角背景之上 */
+  display: flex;
+  margin-top: 0.12rem;
+  gap: 0.08rem;
+}
+.flow-stat {
+  flex: 1;
+  position: relative;
+  padding: 0 0.04rem;
+}
+/* 统计项间无分割线（设计稿 230:4323 信息区仅 gap 8） */
+/* 标签：中文小号文本（14/330，Figma 230:4219） */
+.flow-stat__label {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #6B7280;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 数值：西文4级标题（24/700，Figma 230:4221） */
+.flow-stat__value {
+  margin-top: 0.08rem;
+  font-size: 0.24rem;
+  font-weight: 700;
+  line-height: 1.172;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 合计金额：绿色（Figma 230:4234 #16A34A） */
+.flow-stat__value--green {
+  color: #16A34A;
+}
+.flow-detail__weight,
+.flow-detail__amount {
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+
+/* ---------- 明细卡片 ---------- */
+.flow-detail {
+  margin: 0.08rem;
+  padding: 0.08rem 0.16rem;   /* 上下 8px、左右 16px */
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+}
+.flow-detail__head,
+.flow-detail__row {
+  display: flex;
+  align-items: flex-start;   /* 名字列与重量/金额顶部对齐（设计稿 230:4237） */
+  padding: 0.08rem 0;        /* 上下内边距 8px，高度随内容自适应 */
+  border-bottom: 0.01rem solid rgba(16, 18, 21, 0.05);
+}
+.flow-detail__head { display: none; }
+.flow-detail__row:last-child { border-bottom: none; }
+/* 姓名+时间：垂直容器（设计稿 230:4237 序号 column gap 4，名字 117 宽，时间在名字下） */
+.flow-detail__who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.04rem;
+  flex: 0 0 1.17rem;
+}
+/* 姓名：中文小号文本（14/330，Figma 230:4237） */
+.flow-detail__title {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 时间：西文说明文本（12/400，Figma 230:4237） */
+.flow-detail__time {
+  font-size: 0.12rem;
+  font-weight: 400;
+  color: #6B7280;
+  white-space: nowrap;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+/* 重量/金额：西文常规文本（16/400，Figma 230:4237）；平分撑满容器剩余宽度 */
+.flow-detail__weight {
+  flex: 1;
+  text-align: right;
+  font-size: 0.16rem;
+  font-weight: 400;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+.flow-detail__amount {
+  flex: 1;
+  text-align: right;
+  font-size: 0.16rem;
+  font-weight: 400;
+  color: #111827;
+  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+}
+.flow-detail__unit {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #111827;
+  margin-left: 0.02rem;
+}
+
+/* =====================================================================
+   我的页（Figma 573:7074  4.1.5 果农(已认证)  1:1 还原）
+   375×812；背景 #EBF2FC；渐变头图 + 卡片叠层；底栏共用
+   ===================================================================== */
+#page-mine {
+  margin-top: 0;                /* 顶栏从视口顶部开始 */
+  gap: 0;
+  padding: 0;
+  background: #EBF2FC;
+}
+
+/* 背景头图（Figma 573:7077：绿→EBF2FC 渐变铺底，直角——画板圆角属装饰已去除） */
+.mine-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  z-index: 0;
+  overflow: hidden;
+}
+.mine-head__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 内容容器（叠在头图上，撑满剩余高度内部滚动；三部分布局中 mine 页内容区，usercard 已独立固定于其上方） */
+.mine-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 0.08rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+/* 个人信息卡（透明叠在绿色头图上，固定不随内容滚动；Figma 573:7085：姓名 20 白字、徽章用 badge 组件、电话 16） */
+.mine-usercard {
+  position: relative;
+  z-index: 1;              /* 叠在渐变头图之上 */
+  padding: 0.08rem 0.16rem;
+  margin-top: 0.72rem;     /* 顶栏 absolute 不占流，usercard 从顶栏下方开始 */
+  flex-shrink: 0;
+}
+.mine-usercard__top {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+  padding-bottom: 0.16rem;   /* 下内边距 16px */
+}
+.mine-avatar {
+  width: 0.64rem;
+  height: 0.64rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #FFFFFF;
+}
+.mine-usercard__meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  height: auto;   /* 高度根据内容自适应 */
+  padding: 0;
+}
+.mine-username {
+  font-size: 0.2rem;
+  font-weight: 630;
+  color: #F3F4F6;
+}
+.mine-username-row {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+.mine-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.06rem;
+}
+.mine-phone {
+  font-size: 0.16rem;
+  color: #F3F4F6;
+}
+
+/* 钱包卡（Figma 573:7119：切角背景 bg-notched 359×116 + 右上切角按钮 btn-Skewed + 余额/提现） */
+.mine-wallet {
+  position: relative;
+  padding: 0.16rem;
+  border-radius: 0.08rem;
+  min-height: 1.16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;   /* 内容贴卡片底部（提现按钮右下角） */
+}
+.mine-wallet__notched {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+/* 余额明细按钮（Figma 929:51091：透明底、白字、白箭头，叠卡片右上缺口，左直右圆角 8；
+   文字+箭头样式由 text-arrow 组件提供，此处仅保留定位与外形） */
+.mine-wallet__balance {
+  position: absolute;
+  top: -0.08rem;
+  right: 0;
+  z-index: 1;
+  height: 0.28rem;
+  padding: 0 0.08rem;
+  border-radius: 0 0.08rem 0.08rem 0;
+  background: transparent;
+}
+.mine-wallet__label {
+  font-size: 0.16rem;
+  color: #6B7280;
+}
+.mine-wallet__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;                 /* 标签与下方数值间隔 24 */
+}
+.mine-wallet__main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;        /* 金额数字与提现按钮水平对齐（贴底） */
+  justify-content: space-between;
+  gap: 0.12rem;
+}
+.mine-wallet__amount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #111827;
+}
+.mine-wallet__currency {
+  font-size: 0.16rem;
+  font-weight: 330;
+}
+.mine-wallet__amount-num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.4rem;
+  font-weight: 700;
+}
+.mine-wallet__withdraw {
+  flex-shrink: 0;
+  height: 0.36rem;
+  padding: 0 0.24rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: var(--c-primary);
+  color: #F9FAFB;
+  font-size: 0.16rem;
+}
+
+/* 交易统计卡 */
+.mine-stats {
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  padding: 0.16rem;
+}
+.mine-stats__row {
+  display: flex;
+  align-items: stretch;
+}
+/* 标签 + 值 同容器（Figma 573:7135：column gap 4） */
+.mine-stats__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.04rem;
+}
+/* 第二项（累计收款）右对齐 + 左分隔 */
+.mine-stats__item--right {
+  align-items: flex-end;
+  text-align: right;
+  padding-left: 0.16rem;
+}
+.mine-stats__label {
+  font-size: 16px;
+  color: #6B7280;
+}
+.mine-stats__value {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.24rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #111827;
+}
+
+.mine-chart {
+  margin-top: 0.16rem;
+}
+/* ECharts 画布（Figma 573:7154：图表 327×47 + 下方标题 12px） */
+.mine-chart__canvas {
+  width: 100%;
+  height: 0.47rem;
+}
+.mine-chart__title {
+  margin-top: 0.04rem;
+  font-size: 0.12rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #9CA3AF;
+  text-align: center;
+}
+.mine-stats__order {
+  display: flex;
+  align-items: center;
+  gap: 0.06rem;
+  margin-top: 0.14rem;
+  padding-top: 0.14rem;
+  border-top: 0.01rem solid #F0F1F3;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+}
+.mine-stats__order-label {
+  font-size: 0.14rem;
+  color: #6B7280;
+}
+.mine-stats__order-num {
+  font-size: 0.14rem;
+  font-weight: 600;
+  color: #111827;
+}
+/* 查看：文字+箭头统一用 text-arrow 组件（绿字绿箭头），此处仅保留右推定位 */
+.mine-stats__order-view {
+  margin-left: auto;
+}
+
+/* 功能方块（并排）：贸易订单 / 银行卡管理 */
+.mine-grid {
+  display: flex;
+  gap: 0.08rem;
+}
+.mine-grid__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  border: none;
+}
+/* 图标无背景容器，直接展示彩色 SVG（订单 38、银行卡 40） */
+.mine-grid__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mine-grid__icon img {
+  width: 0.38rem;
+  height: 0.38rem;
+}
+.mine-grid__item:nth-child(2) .mine-grid__icon img {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+.mine-grid__label {
+  font-size: 0.16rem;
+  color: #111827;
+}
+
+/* 功能列表 & 联系客服/设置 */
+.mine-list {
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  padding: 0.04rem 0.16rem;
+}
+.mine-list__item {
+  display: flex;
+  align-items: center;
+  gap: 0.12rem;
+  width: 100%;
+  height: 0.52rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-bottom: 0.01rem solid #F2F3F5;
+  text-align: left;
+}
+.mine-list .mine-list__item:last-child { border-bottom: none; }
+.mine-list__icon {
+  width: 0.24rem;
+  height: 0.24rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-primary);
+}
+.mine-list__icon img {
+  width: 0.22rem;
+  height: 0.22rem;
+}
+.mine-list__label {
+  flex: 1;
+  font-size: 0.15rem;
+  color: #111827;
+}
+/* 行尾箭头：文字+箭头统一用 text-arrow 组件（浅灰，text-arrow--muted） */
+
+/* 经纪人认证 banner（Figma 573:7177：渐变白→绿、图标 40×40、立刻认证绿标签） */
+.mine-broker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.1rem;
+  padding: 0.16rem;
+  border-radius: 0.08rem;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.4) 2%, rgba(17, 170, 85, 0.3) 100%),
+    #FFFFFF;
+}
+.mine-broker__icon {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex-shrink: 0;
+}
+.mine-broker__title {
+  font-size: 0.16rem;
+  font-weight: 700;
+  color: #14532D;
+}
+.mine-broker__sub {
+  margin-top: 0.04rem;
+  font-size: 0.13rem;
+  color: #166534;
+}
+.mine-broker__btn {
+  flex-shrink: 0;
+  height: 0.36rem;
+  padding: 0.08rem 0.16rem;
+  border: none;
+  border-radius: 0.48rem;
+  background: var(--c-primary);
+  color: #F9FAFB;
+  font-size: 0.14rem;
+  font-weight: 600;
+}
+
+/* 列表图标（当项目缺少对应 SVG 时，用纯 CSS 绘制保证 1:1 视觉） */
+

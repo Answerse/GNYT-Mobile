@@ -1,0 +1,37 @@
+/* 桂农易通 徽章组件样式（配合 scripts/badge.js）
+   用法：<span class="badge" data-badge="admin"></span>，Badge.mount() 自动渲染
+   多类型：每个类型一个 .badge--xxx 变体（背景色/文字色由语义 Token 控制） */
+
+:root {
+  --c-primary: #16A34A;
+}
+
+/* 徽章基础：左侧图标 24×24 绝对定位并上凸 5.5px，右侧胶囊标签；
+   圆角 4px、左上角 6px（用户要求；Figma 306:12086 经纪人标签） */
+.badge {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 0.18rem;
+  padding: 0.01rem 0.04rem 0.01rem 0.24rem;
+  border-radius: 0.06rem 0.04rem 0.04rem 0.04rem;
+  font-size: 0.1rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #FFFFFF;
+}
+.badge__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(-0.055rem);
+  width: 0.24rem;
+  height: 0.24rem;
+  border-radius: 0.04rem;
+}
+
+/* 类型变体 */
+.badge--admin { background: var(--c-primary); }
+.badge--real  { background: #84CC16; }
+.badge--broker { background: #22C55E; }

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>集采活动列表 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+</head>
+<body>
+  <div class="jc-page">
+
+    <!-- 顶部绿色渐变头图（Figma 932:68682 bg-head：375×390 #DCFCE7→#EBF2FC） -->
+    <div class="jc-head" aria-hidden="true"></div>
+
+    <!-- ==================== 页头（Header 组件：顶栏变体4 od 返回 + 居中标题 + 微信按钮，Figma 932:68725） ==================== -->
+    <div class="header-mount" data-header="jicai"></div>
+
+    <!-- ==================== 滚动内容 ==================== -->
+    <main class="jc-scroll">
+
+      <!-- 集采广告（Figma 933:69083：359×96 圆角16 无底色 + 右侧商品图；标题为设计稿 SVG 文字，Figma 933:69104） -->
+      <section class="jc-ad" aria-label="集采活动广告">
+        <div class="jc-ad__text">
+          <img class="jc-ad__text-img" src="assets/jicai-ad-text.svg" alt="溯源产地 优选集采" />
+        </div>
+        <img class="jc-ad__img" src="assets/jicai-ad.png" alt="" aria-hidden="true" />
+      </section>
+
+      <!-- 集采卡片（Figma 933:68925：商品图 + 采购需求 + 参考起步价 + 报价截止 + 立刻报价） -->
+      <article class="jc-card">
+        <div class="jc-card__req">
+          <div class="jc-card__thumb-wrap">
+            <img class="jc-card__thumb" src="assets/jicai-goods.png" alt="大红 / 5年 /A级" />
+          </div>
+          <div class="jc-card__info">
+            <p class="jc-card__name">大红 / 5年 /A级</p>
+            <div class="jc-card__row">
+              <span class="jc-card__label">采购需求总量: </span>
+              <span class="jc-card__num">5000.00</span><span class="jc-card__unit">kg</span>
+            </div>
+            <div class="jc-card__row jc-card__row--price">
+              <span class="jc-card__label">参考起步价: </span>
+              <span class="jc-card__pricebox">
+                <span class="jc-card__sym">¥</span>
+                <span class="jc-card__price">300.00</span>
+                <span class="jc-card__unit">元/kg</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <footer class="jc-card__foot">
+          <div class="jc-card__deadline">
+            <span class="jc-card__dlabel">活动截止时间:</span>
+            <span class="jc-card__dnum">2026-10-20</span>
+          </div>
+          <button class="jc-card__btn" type="button">立刻报名</button>
+        </footer>
+      </article>
+
+      <!-- 虚线分割线（Figma 939:69144：359 宽 1px #101215 10% 虚线 2 2） -->
+      <div class="jc-divider" aria-hidden="true"></div>
+
+      <!-- 集采卡片 2 -->
+      <article class="jc-card">
+        <div class="jc-card__req">
+          <div class="jc-card__thumb-wrap">
+            <img class="jc-card__thumb" src="assets/jicai-goods.png" alt="大红 / 5年 /A级" />
+          </div>
+          <div class="jc-card__info">
+            <p class="jc-card__name">大红 / 5年 /A级</p>
+            <div class="jc-card__row">
+              <span class="jc-card__label">采购需求总量: </span>
+              <span class="jc-card__num">5000.00</span><span class="jc-card__unit">kg</span>
+            </div>
+            <div class="jc-card__row jc-card__row--price">
+              <span class="jc-card__label">参考起步价: </span>
+              <span class="jc-card__pricebox">
+                <span class="jc-card__sym">¥</span>
+                <span class="jc-card__price">300.00</span>
+                <span class="jc-card__unit">元/kg</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <footer class="jc-card__foot">
+          <div class="jc-card__deadline">
+            <span class="jc-card__dlabel">活动截止时间:</span>
+            <span class="jc-card__dnum">2026-10-20</span>
+          </div>
+          <button class="jc-card__btn" type="button">立刻报名</button>
+        </footer>
+      </article>
+
+      <!-- 虚线分割线 -->
+      <div class="jc-divider" aria-hidden="true"></div>
+
+      <!-- 集采卡片 3 -->
+      <article class="jc-card">
+        <div class="jc-card__req">
+          <div class="jc-card__thumb-wrap">
+            <img class="jc-card__thumb" src="assets/jicai-goods.png" alt="大红 / 5年 /A级" />
+          </div>
+          <div class="jc-card__info">
+            <p class="jc-card__name">大红 / 5年 /A级</p>
+            <div class="jc-card__row">
+              <span class="jc-card__label">采购需求总量: </span>
+              <span class="jc-card__num">5000.00</span><span class="jc-card__unit">kg</span>
+            </div>
+            <div class="jc-card__row jc-card__row--price">
+              <span class="jc-card__label">参考起步价: </span>
+              <span class="jc-card__pricebox">
+                <span class="jc-card__sym">¥</span>
+                <span class="jc-card__price">300.00</span>
+                <span class="jc-card__unit">元/kg</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <footer class="jc-card__foot">
+          <div class="jc-card__deadline">
+            <span class="jc-card__dlabel">活动截止时间:</span>
+            <span class="jc-card__dnum">2026-10-20</span>
+          </div>
+          <button class="jc-card__btn" type="button">立刻报名</button>
+        </footer>
+      </article>
+
+      <!-- 虚线分割线 -->
+      <div class="jc-divider" aria-hidden="true"></div>
+
+      <!-- 集采卡片 4 -->
+      <article class="jc-card">
+        <div class="jc-card__req">
+          <div class="jc-card__thumb-wrap">
+            <img class="jc-card__thumb" src="assets/jicai-goods.png" alt="大红 / 5年 /A级" />
+          </div>
+          <div class="jc-card__info">
+            <p class="jc-card__name">大红 / 5年 /A级</p>
+            <div class="jc-card__row">
+              <span class="jc-card__label">采购需求总量: </span>
+              <span class="jc-card__num">5000.00</span><span class="jc-card__unit">kg</span>
+            </div>
+            <div class="jc-card__row jc-card__row--price">
+              <span class="jc-card__label">参考起步价: </span>
+              <span class="jc-card__pricebox">
+                <span class="jc-card__sym">¥</span>
+                <span class="jc-card__price">300.00</span>
+                <span class="jc-card__unit">元/kg</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <footer class="jc-card__foot">
+          <div class="jc-card__deadline">
+            <span class="jc-card__dlabel">活动截止时间:</span>
+            <span class="jc-card__dnum">2026-10-20</span>
+          </div>
+          <button class="jc-card__btn" type="button">立刻报名</button>
+        </footer>
+      </article>
+
+    </main>
+
+  </div>
+
+  <!-- Header 组件（顶栏变体4：返回 + 居中标题 + 微信按钮） -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="jicai"]'),
+    topbar: { variant: 'od', title: '集采活动列表', right: 'wechat', ghost: true }
+  });
+  </script>
+</body>
+</html>
