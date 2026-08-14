@@ -4,7 +4,19 @@
 (function () {
   'use strict';
 
-  // 农民形象图占位兜底：加载失败时隐藏，避免在 HTML 写行内 style
+  // ---------- rem 基准：375 设计稿等比缩放（1rem = 100px @375），JS 兜底兼容部分 Android 浏览器 ----------
+  (function () {
+    var baseW = 375, maxW = 430;
+    function setRem() {
+      var w = document.documentElement.clientWidth;
+      if (w > maxW) w = maxW;
+      document.documentElement.style.fontSize = (w / baseW * 100) + 'px';
+    }
+    setRem();
+    window.addEventListener('resize', setRem);
+  })();
+
+  // 农民形象图占位兜底：加载失败时隐藏，避免在 HTML 中写行内 style
   var statDeco = document.querySelector('.stat__deco');
   if (statDeco) {
     statDeco.addEventListener('error', function () {

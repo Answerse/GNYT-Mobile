@@ -52,8 +52,12 @@
 
 /* ---------- 基础重置 ---------- */
 html {
-  font-size: calc(100vw / 3.75);   /* 375 设计稿等比缩放，1rem = 100px @375 */
+  /* 375 设计稿等比缩放：1rem = 100px @375。
+     最小 360/3.75=96px，最大 430/3.75≈114.67px */
+  font-size: clamp(96px, calc(100vw / 3.75), 114.67px);
+  /* 兼容兜底：部分 Android 浏览器对 clamp+calc 支持不稳定，JS 通过 main.js 执行 */
 }
+/* 通用重置 */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* body 基础（页面专属的背景/高度/滚动策略由各页面 CSS 覆盖） */
