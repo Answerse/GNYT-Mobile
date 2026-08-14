@@ -190,7 +190,6 @@ body {
   gap: 0.04rem;
 }
 .create-order__title {
-  font-family: "ZmWH", serif;
   font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
@@ -269,7 +268,6 @@ body {
   padding-left: 0.2rem;
 }
 .ad__title {
-  font-family: "ZmWH", serif;
   font-size: 0.24rem;
   font-weight: 630;
   line-height: 1.326;
@@ -305,7 +303,6 @@ body {
   gap: 0.08rem;
 }
 .market__title {
-  font-family: "ZmWH", serif;
   font-size: 0.2rem;
   font-weight: 700;
   line-height: 1.326;
@@ -464,7 +461,7 @@ body {
   color: var(--c-white);
 }
 .code-user__phone {
-  font-family: "DINish Condensed", "MiSans", sans-serif; /* 西文5级标题 */
+  font-family: "DINish Condensed", "PingFang SC", sans-serif; /* 西文5级标题 */
   font-size: 0.2rem;                 /* 20 */
   font-weight: 700;
   line-height: 1.268;
@@ -1026,7 +1023,7 @@ body {
   font-weight: 330;
   line-height: 1.326;
   color: #111827;
-  font-family: "DINish Condensed", "MiSans", "PingFang SC", sans-serif;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
 }
 /* 日/月/年按钮：padding 4/16，白底 bg-1（Figma 932:62697） */
 .flow-seg--range .flow-seg__btn {
@@ -1663,7 +1660,6 @@ body {
   flex-shrink: 0;
 }
 .mine-broker__title {
-  font-family: "ZmWH", serif;
   font-size: 0.16rem;
   font-weight: 700;
   color: #14532D;

@@ -152,7 +152,7 @@ body {
 .od-goods__row-value {
   font-size: 0.14rem;
   color: #1D2129;
-  font-family: "DINish Condensed", "MiSans", sans-serif;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
 }
 .od-goods__total {
   display: flex;

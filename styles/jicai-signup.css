@@ -1,0 +1,155 @@
+/* =====================================================================
+   集采报名说明页（Figma 966:7170  1.5.2 集采报名  1:1 还原 · 新版设计稿）
+   375×834；背景 #EBF2FC + 顶部绿色渐变头图(375×390 渐变 #DCFCE7→#EBF2FC)；
+   顶栏复用 Header 组件（变体4 od ghost：返回 + 空标题 + 右侧微信按钮，Figma 966:7211）；
+   骨架（.jc-page / .jc-head / .jc-scroll）复用 styles/jicai.css
+   基础重置 / 字体 / 顶栏组件样式见 styles/components.css
+   ===================================================================== */
+
+/* ---------- 覆盖集采页骨架：报名页背景与头图渐变（DCFCE7→EBF2FC） ---------- */
+body {
+  background: #EBF2FC;
+}
+.jc-page {
+  background: #EBF2FC;
+}
+.jc-head {
+  background: url("../assets/images/jc-signup-bg-head.svg") no-repeat center top / 100% 100%;
+}
+
+/* ===================== 标题区（Figma 967:7535：居中大标题 + 两行说明，padding 16/16/24，column gap8） ===================== */
+.js-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.08rem;
+  padding: 0.16rem 0.16rem 0.24rem;   /* 16 16 24 */
+  flex-shrink: 0;
+}
+/* 大标题：700 36 居中（粗体系统无衬线体） */
+.js-title__main {
+  font-family: "Alimama ShuHeiTi Bold", "PingFang SC", sans-serif;
+  font-size: 0.36rem;
+  font-weight: 700;
+  line-height: 1.226;
+  color: #111827;
+  text-align: left;
+}
+.js-title__accent {
+  color: #16A34A;
+}
+/* 说明文字：中文常规文本（330 16，居中） */
+.js-title__sub {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  text-align: left;
+}
+
+/* ===================== 流程说明卡（Figma 967:7427：359 宽，column gap8） ===================== */
+.js-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  flex-shrink: 0;
+}
+/* 单张流程卡（Figma 967:7498：白底圆角8，row gap16 padding16） */
+.js-step {
+  display: flex;
+  align-items: stretch;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+}
+/* 序号列：底部对齐（Figma 967:7499：序号贴卡片底，与按钮底水平） */
+.js-step__axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+/* 序号：28×28 圆形描边绿、DINish 20/400 绿（Figma 967:7500） */
+.js-step__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.28rem;
+  height: 0.28rem;
+  border: 0.01rem solid #16A34A;
+  border-radius: 50%;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem;
+  font-weight: 400;
+  line-height: 1.268;
+  color: #16A34A;
+}
+/* 说明列：文字与按钮 column gap24（Figma 967:7504） */
+.js-step__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+}
+/* 说明文字：中文常规文本（MiSans 330 16，左对齐） */
+.js-step__text {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+/* 填充按钮（Figma 70:9734：绿底圆角40，padding 8/16，文字 16/330 白） */
+.js-step__btn {
+  align-self: flex-start;
+  padding: 0.08rem 0.16rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #16A34A;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #FFFFFF;
+}
+/* 右侧配图：96×96（Figma 967:7591） */
+.js-step__img {
+  width: 0.96rem;
+  height: 0.96rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ===================== 底栏（Figma 967:7538：居中文字 + 确定参加按钮，column gap16 padding 24/16，上阴影） ===================== */
+.js-bottombar {
+  flex-shrink: 0;
+  width: 3.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.16rem;
+  padding: 0.24rem 0.16rem;
+  background: transparent;
+  box-shadow: none;   /* 底栏阴影已去除，背景透明 */
+}
+/* 提示文字：中文5级文本（MiSans 330 20，#111827） */
+.js-bottombar__text {
+  font-size: 0.2rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  text-align: center;
+}
+/* 确定参加：绿底圆角40，高50，padding 5/64，文字 20/330 #F9FAFB（Figma 65:1318） */
+.js-bottombar__btn {
+  height: 0.5rem;
+  padding: 0.05rem 0.64rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: #16A34A;
+  font-size: 0.2rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #F9FAFB;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>报名说明 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+  <link rel="stylesheet" href="styles/jicai-signup.css" />
+</head>
+<body>
+  <div class="jc-page">
+
+    <!-- 顶部绿色渐变头图（Figma 966:7171 bg-head：375×390 #DCFCE7→#EBF2FC） -->
+    <div class="jc-head" aria-hidden="true"></div>
+
+    <!-- ==================== 页头（Header 组件：顶栏变体4 od 返回 + 居中标题(空) + 微信按钮，Figma 966:7211） ==================== -->
+    <div class="header-mount" data-header="jicai-signup"></div>
+
+    <!-- ==================== 滚动内容 ==================== -->
+    <main class="jc-scroll">
+
+      <!-- 标题区（Figma 967:7535：居中大标题 + 两行说明，padding 16/16/24 gap8） -->
+      <section class="js-title" aria-label="报名说明">
+        <h1 class="js-title__main"><span class="js-title__accent">报名</span>说明</h1>
+        <p class="js-title__sub">非常感谢您参与此次原产地集采活动。</p>
+        <p class="js-title__sub">在报名之前，请了解以下内容：</p>
+      </section>
+
+      <!-- 流程说明卡（Figma 967:7427：359 宽，两张白卡 gap8；序号 + 说明 + 96 图） -->
+      <section class="js-cards" aria-label="报名流程">
+        <article class="js-step">
+          <div class="js-step__axis">
+            <span class="js-step__num">1</span>
+          </div>
+          <div class="js-step__info">
+            <p class="js-step__text">完成"桂农易通"钱包账户开户</p>
+            <button class="js-step__btn" type="button">去充值</button>
+          </div>
+          <img class="js-step__img" src="assets/images/jc-signup-wallet.png" alt="" />
+        </article>
+
+        <article class="js-step">
+          <div class="js-step__axis">
+            <span class="js-step__num">2</span>
+          </div>
+          <div class="js-step__info">
+            <p class="js-step__text">确保钱包账户资金足以支付本次活动保证金</p>
+            <button class="js-step__btn" type="button">去开户</button>
+          </div>
+          <img class="js-step__img" src="assets/images/jc-signup-balance.png" alt="" />
+        </article>
+      </section>
+
+    </main>
+
+    <!-- ==================== 底栏（Figma 967:7538：居中文字 + 确定参加按钮，上阴影） ==================== -->
+    <footer class="js-bottombar">
+      <p class="js-bottombar__text">我已知晓并完成充值</p>
+      <button class="js-bottombar__btn" type="button">确定参加</button>
+    </footer>
+
+  </div>
+
+  <!-- Header 组件（顶栏变体4 od ghost：返回 jicai.html + 空标题 + 微信按钮） -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="jicai-signup"]'),
+    topbar: { variant: 'od', title: '', right: 'wechat', ghost: true }
+  });
+  // 返回按钮指向集采活动列表页（组件默认 index.html，此处覆盖）
+  document.querySelector('.od-topbar__back').setAttribute('href', 'jicai.html');
+  </script>
+</body>
+</html>

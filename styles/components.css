@@ -4,7 +4,9 @@
    各页面统一先引入本文件，再引入页面专属 CSS（页面 CSS 仅覆盖设计稿特殊变体）
    ===================================================================== */
 
-/* ---------- 字体（DINish Condensed：项目英文/数字统一使用，SIL OFL v1.1 本地嵌入） ---------- */
+/* ---------- 字体（项目字体族全家桶） ---------- */
+/* 中文正文/标题默认使用系统无衬线体（MiSans 体积大，不嵌入使用） */
+/* DINish Condensed：项目英文/数字统一使用（SIL OFL v1.1 本地嵌入） */
 @font-face {
   font-family: "DINish Condensed";
   src: url("../assets/fonts/DINishCondensed-Regular.woff2") format("woff2");
@@ -19,12 +21,12 @@
   font-style: normal;
   font-display: swap;
 }
-/* Banner/页面标题装饰字体（字形较粗、有装饰感，用于突出展示） */
+/* 阿里妈妈数黑体 Bold：大标题装饰字体（本地嵌入） */
 @font-face {
-  font-family: "ZmWH";
-  src: url("../assets/fonts/ZmWHXh3VLRxO.woff2") format("woff2"),
-       url("../assets/fonts/ZmWHXh3VLRxO.woff") format("woff");
-  font-weight: normal;
+  font-family: "Alimama ShuHeiTi Bold";
+  src: url("../assets/fonts/Alimama-ShuHeiTi.woff2") format("woff2"),
+       url("../assets/fonts/Alimama-ShuHeiTi.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -56,7 +58,7 @@ html {
 
 /* body 基础（页面专属的背景/高度/滚动策略由各页面 CSS 覆盖） */
 body {
-  font-family: "DINish Condensed", "MiSans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-family: "DINish Condensed", -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
   color: #111827;
   -webkit-font-smoothing: antialiased;
 }
@@ -249,7 +251,6 @@ a { text-decoration: none; color: inherit; }
 .od-topbar__title {
   flex: 1;
   text-align: center;
-  font-family: "ZmWH", serif;
   font-size: 0.17rem;
   font-weight: 500;
   color: #1D2129;
@@ -293,7 +294,6 @@ a { text-decoration: none; color: inherit; }
 .oc-topbar__back svg { width: 100%; height: 100%; }
 .oc-topbar__title {
   position: absolute; left: 50%; transform: translateX(-50%);
-  font-family: "ZmWH", serif;
   font-size: 0.17rem;
   font-weight: 500;
   color: #101215;
