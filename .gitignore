@@ -8,3 +8,4 @@ __pycache__/
 # Editor
 .idea/
 .vscode/
+assets/fonts/MiSans-*.woff2
