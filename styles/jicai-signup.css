@@ -54,34 +54,33 @@ body {
   gap: 0.08rem;
   flex-shrink: 0;
 }
-/* 单张流程卡（Figma 967:7498：白底圆角8，row gap16 padding16） */
+/* 单张流程卡（Figma 967:7498：白底圆角8，row gap16 padding24/16） */
 .js-step {
   display: flex;
   align-items: stretch;
   gap: 0.16rem;
-  padding: 0.16rem;
+  padding: 0.24rem 0.16rem;
   background: #FFFFFF;
   border-radius: 0.08rem;
 }
-/* 序号列：底部对齐（Figma 967:7499：序号贴卡片底，与按钮底水平） */
+/* 序号列：顶部对齐 */
 .js-step__axis {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 }
-/* 序号：28×28 圆形描边绿、DINish 20/400 绿（Figma 967:7500） */
+/* 序号：DINish 30/700 绿（无描边，Figma 967:7500 / 组件 967:7459） */
 .js-step__num {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 0.28rem;
   height: 0.28rem;
-  border: 0.01rem solid #16A34A;
   border-radius: 50%;
   font-family: "DINish Condensed", "PingFang SC", sans-serif;
-  font-size: 0.2rem;
-  font-weight: 400;
+  font-size: 0.3rem;
+  font-weight: 700;
   line-height: 1.268;
   color: #16A34A;
 }
@@ -100,22 +99,22 @@ body {
   line-height: 1.326;
   color: #111827;
 }
-/* 填充按钮（Figma 70:9734：绿底圆角40，padding 8/16，文字 16/330 白） */
+/* 去开户/去充值按钮（Figma 967:7573：透明底 + 1px #16A34A 描边圆角40，padding 8/32，文字 16/330 绿） */
 .js-step__btn {
   align-self: flex-start;
-  padding: 0.08rem 0.16rem;
-  border: none;
+  padding: 0.08rem 0.32rem;
+  border: 0.01rem solid #16A34A;
   border-radius: 0.4rem;
-  background: #16A34A;
+  background: transparent;
   font-size: 0.16rem;
   font-weight: 330;
   line-height: 1.326;
-  color: #FFFFFF;
+  color: #16A34A;
 }
-/* 右侧配图：96×96（Figma 967:7591） */
+/* 右侧配图：102×102（Figma 967:7591） */
 .js-step__img {
-  width: 0.96rem;
-  height: 0.96rem;
+  width: 1.02rem;
+  height: 1.02rem;
   object-fit: cover;
   flex-shrink: 0;
 }

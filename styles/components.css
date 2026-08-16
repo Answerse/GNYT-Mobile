@@ -21,10 +21,10 @@
   font-style: normal;
   font-display: swap;
 }
-/* 阿里妈妈数黑体 Bold：大标题装饰字体（CDN） */
+/* 阿里妈妈数黑体 Bold：大标题装饰字体（完整字库，本地嵌入 assets/fonts） */
 @font-face {
   font-family: "Alimama ShuHeiTi Bold";
-  src: url("https://mdn.alipayobjects.com/portal/mergedPortal/afbc2fed-8b5a-4f0b-8a63-1c5c0e1d7f5d.ttf") format("truetype");
+  src: url("../assets/fonts/AlimamaShuHeiTi-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -295,6 +295,10 @@ a { text-decoration: none; color: inherit; }
   color: #101215;
 }
 .oc-topbar__back svg { width: 100%; height: 100%; }
+.oc-topbar__back-icon {
+  width: 0.18rem;
+  height: 0.16rem;
+}
 .oc-topbar__title {
   position: absolute; left: 50%; transform: translateX(-50%);
   font-size: 0.17rem;

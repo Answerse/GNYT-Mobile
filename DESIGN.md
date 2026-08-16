@@ -262,6 +262,7 @@ PageHeader.mount({
 - **边距、间隔（padding / margin / gap）以 375 设计稿为准、用 rem 表达**：结构性间距按 8 的倍数（0.08rem 的倍数：8 / 16 / 24 / 32 @375）；**小图标、小徽章等元素内部允许 2 / 4 / 6 px 等小值**（设计稿如此，无需强归 8 倍数）。非 375 视口下 rem 等比缩放（如 8px 显示为 9px）属正常适配，不是误差；禁止因此改用固定 px 破坏整体等比。
 - **顶栏高度统一 72px（0.72rem）**，以首页为标准；所有模块/二级页面顶栏保持一致，禁止另设高度。
 - HTML **禁止硬编码行内样式**（`style="..."`）；JS 通过 `classList` 切换状态，不写 `element.style`。
+- **位图资源下载（远程/设计稿导出的 PNG 等）：必须下载 3x 分辨率**（`pngScale=3`），避免在手机屏幕上模糊。
 - 字体：中文 MiSans / PingFang SC；**英文与数字统一使用 DINish Condensed**（开源字体 SIL OFL v1.1，本地嵌入 `assets/fonts/DINishCondensed-Regular.woff2`、`DINishCondensed-SemiBold.woff2`，字重 400 / 600）。
   - CSS 中只使用以下两个 token：
     ```css

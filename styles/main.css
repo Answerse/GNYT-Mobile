@@ -268,6 +268,7 @@ body {
   padding-left: 0.2rem;
 }
 .ad__title {
+  font-family: "Alimama ShuHeiTi Bold", "PingFang SC", sans-serif;
   font-size: 0.24rem;
   font-weight: 630;
   line-height: 1.326;
@@ -277,6 +278,19 @@ body {
 /* 我要参加：文字+箭头按钮，统一用 text-arrow 组件（styles/components.css），广告区内左对齐 */
 .ad__content .text-arrow {
   align-self: flex-start;
+}
+/* 我要参加：箭头反白置于主题色圆角容器内（20×20 圆角16px，图标 16px 白） */
+.ad__content .text-arrow__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 0.16rem;
+  background: var(--c-primary);
+}
+.ad__content .text-arrow__box .text-arrow__icon {
+  background-color: #FFFFFF;
 }
 .ad__img {
   position: absolute;

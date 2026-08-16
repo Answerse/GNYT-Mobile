@@ -157,7 +157,12 @@
         back5.href = (opts.left && opts.left.href) || 'index.html';
       }
       back5.setAttribute('aria-label', '返回');
-      back5.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7L12 2z"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>';
+      // 返回图标：复用图标库 chevron-left.svg（design.md 二级页页头返回箭头）
+      var backIcon = document.createElement('img');
+      backIcon.className = 'oc-topbar__back-icon';
+      backIcon.src = 'assets/icons/chevron-left.svg';
+      backIcon.alt = '';
+      back5.appendChild(backIcon);
       nav5.appendChild(back5);
       var title5 = document.createElement('h1');
       title5.className = 'oc-topbar__title';
