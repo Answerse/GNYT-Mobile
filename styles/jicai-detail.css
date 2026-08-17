@@ -1,0 +1,71 @@
+/* =====================================================================
+   集采活动详情页（Figma 1007:10479  1.5.2 集采活动详情）
+   骨架复用 styles/jicai.css（.jc-page / .jc-head / .jc-scroll），仅页面专属覆盖
+   ===================================================================== */
+
+/* ---------- 覆盖头图背景：深绿 #16A34A→#EBF2FC（Figma 1007:10480），区别于集采列表的浅绿渐变 ---------- */
+.jc-page .jc-head {
+  background: url("../assets/bg-head-jd.svg") no-repeat center top / 100% 100%;
+}
+
+/* ---------- 详情页背景 #EBF2FC（覆盖 jicai.css 的 #FFFFFF） ---------- */
+body { background: #EBF2FC; }
+.jc-page { background: #EBF2FC; }
+
+/* ---------- 顶栏适配深色头图 ---------- */
+/* 头图上的返回箭头置白 */
+.jc-page .od-topbar__back { color: #FFFFFF; }
+/* 顶栏标题置浅色 */
+.jc-page .od-topbar__title { color: #F3F4F6; }
+
+/* ---------- 表单卡片（Figma 1007:10488：白底圆角 8，padding 24，行间虚线分隔） ---------- */
+.jd-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.24rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  flex-shrink: 0;
+}
+
+/* 表单行：去组件默认上边线，改用下虚线；行内留边由卡片 padding 代劳 */
+.jd-card .form__row {
+  margin: 0;
+  border-top: none;
+  border-bottom: 0.01rem dashed rgba(16, 18, 21, 0.1);
+  min-height: auto;
+  padding: 0.08rem 0;
+}
+.jd-card .form__row:last-of-type { border-bottom: none; }
+
+/* 行标签置次要灰 */
+.jd-card .form__label { color: #6B7280; }
+
+/* 文本域行：顶对齐 */
+.jd-card .jd-form__row--textarea { align-items: flex-start; }
+.jd-card .jd-form__row--textarea .form__label { padding-top: 0.1rem; }
+
+/* 文本域（活动详情占位） */
+.jd-card .jd-form__textarea {
+  text-align: left;
+  min-height: 0.88rem;
+  line-height: 1.326;
+  resize: none;
+}
+
+/* 选择行箭头：复用 text-arrow__icon--triangle 组件（components.css），仅覆盖不透明度 */
+.text-arrow__icon--triangle.jd-arrow--dim { opacity: 0.5; }
+
+/* ---------- 底栏（Figma 1007:10525：白底上阴影，padding 16，居中按钮） ---------- */
+.jd-bottombar {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  box-shadow: 0 -0.02rem 0.1rem rgba(0, 0, 0, 0.02);
+}
+.jd-bottombar__btn {
+  width: 100%;
+}

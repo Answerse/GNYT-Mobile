@@ -140,15 +140,7 @@ body {
   color: #111827;
   text-align: center;
 }
-/* 确定参加：绿底圆角40，高50，padding 5/64，文字 20/330 #F9FAFB（Figma 65:1318） */
+/* 确定参加：复用 .btn-fill 组件（components.css），仅保留设计稿横向 padding 64px（Figma 65:1318 填充按钮） */
 .js-bottombar__btn {
-  height: 0.5rem;
   padding: 0.05rem 0.64rem;
-  border: none;
-  border-radius: 0.4rem;
-  background: #16A34A;
-  font-size: 0.2rem;
-  font-weight: 330;
-  line-height: 1.326;
-  color: #F9FAFB;
 }

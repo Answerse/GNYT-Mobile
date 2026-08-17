@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>开户 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/steps.css" />
+  <link rel="stylesheet" href="styles/account-open.css" />
+</head>
+<body>
+  <div class="ao-page">
+
+    <!-- Header 组件挂载点（标准 App Shell：.page-header flex-shrink:0 锁定顶部，不参与滚动） -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 滚动内容区（App Shell Container） ==================== -->
+    <main class="ao-scroll">
+
+      <!-- ==================== Step 1: 开户表单（类型切换 + 个人/企业表单） ==================== -->
+      <section class="ao-step is-active" id="ao-step-1">
+
+        <!-- 步骤条挂载点 -->
+        <div class="ao-steps-mount"></div>
+
+        <!-- 开户类型分段控件 + 个人/企业表单（合成一张卡片） -->
+        <article class="ao-card">
+          <div class="ao-type__seg" role="tablist" aria-label="开户类型">
+            <button class="ao-type__tab is-active" type="button" role="tab" aria-selected="true" data-type="personal">个人账户</button>
+            <button class="ao-type__tab" type="button" role="tab" aria-selected="false" data-type="enterprise">企业账户</button>
+          </div>
+          <div class="ao-form is-active" id="ao-form-personal">
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-name">真实姓名</label>
+            <input class="form__input" id="ap-name" type="text" placeholder="请输入真实姓名" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-idno">身份证号</label>
+            <input class="form__input" id="ap-idno" type="text" placeholder="请输入身份证号" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-bankcard">银行卡号</label>
+            <input class="form__input" id="ap-bankcard" type="text" inputmode="numeric" placeholder="请输入银行卡号" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-bank">所属银行</label>
+            <input class="form__input" id="ap-bank" type="text" placeholder="请输入所属银行" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-mobile">银行预留手机号</label>
+            <input class="form__input" id="ap-mobile" type="tel" inputmode="numeric" placeholder="请输入银行预留手机号" autocomplete="off" />
+          </div>
+        </div>   <!-- 关闭个人表单 -->
+
+        <div class="ao-form" id="ao-form-enterprise">
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-company">企业名称</label>
+            <input class="form__input" id="ae-company" type="text" placeholder="请输入企业名称" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-credit">统一社会信用代码</label>
+            <input class="form__input" id="ae-credit" type="text" placeholder="请输入统一社会信用代码" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-legal">法人姓名</label>
+            <input class="form__input" id="ae-legal" type="text" placeholder="请输入法人姓名" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-legalid">法人身份证号</label>
+            <input class="form__input" id="ae-legalid" type="text" placeholder="请输入法人身份证号" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-bankcard">对公银行卡号</label>
+            <input class="form__input" id="ae-bankcard" type="text" inputmode="numeric" placeholder="请输入对公银行卡号" autocomplete="off" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ae-bank">所属银行</label>
+            <input class="form__input" id="ae-bank" type="text" placeholder="请输入所属银行" autocomplete="off" />
+          </div>
+        </div>   <!-- 关闭企业表单 -->
+        </article>   <!-- 关闭外层 ao-card -->
+      </section>
+
+      <!-- ==================== Step 2: 设置支付密码 ==================== -->
+      <section class="ao-step" id="ao-step-2">
+        <div class="ao-steps-mount"></div>
+        <article class="ao-card ao-form is-active">
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-pwd">支付密码</label>
+            <input class="form__input" id="ap-pwd" type="password" inputmode="numeric" placeholder="请输入6位数字支付密码" autocomplete="new-password" />
+          </div>
+          <div class="form__row">
+            <label class="form__label form__label--wide form__label--required" for="ap-pwd2">确认支付密码</label>
+            <input class="form__input" id="ap-pwd2" type="password" inputmode="numeric" placeholder="请再次输入支付密码" autocomplete="new-password" />
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================== Step 3: 充值说明（已移除，开户流程仅两步） ==================== -->
+
+    </main>
+
+    <!-- ==================== 底部操作条（App Shell flex 层，按钮文案随步骤切换） ==================== -->
+    <footer class="ao-bottombar" id="ao-bottombar">
+      <button class="btn-fill ao-bottombar__btn" id="ao-submit" type="button">提交开户</button>
+    </footer>
+
+    <!-- ==================== 开户成功弹窗（保存密码成功后弹出，Figma 1004:10116 充值引导） ==================== -->
+    <div class="ao-modal" id="ao-modal" aria-hidden="true">
+      <div class="ao-modal__mask"></div>
+      <div class="ao-modal__card">
+        <img class="ao-modal__head" src="assets/icons/recharge-bg-head.svg" alt="" />
+        <h2 class="ao-modal__title">开户成功</h2>
+        <p class="ao-modal__text">恭喜您，账户已就绪<br />充值后即可开始交易</p>
+        <div class="ao-modal__actions">
+          <button class="ao-modal__btn ao-modal__btn--primary" type="button" id="ao-modal-recharge">去充值</button>
+          <button class="ao-modal__btn ao-modal__btn--ghost" type="button" id="ao-modal-home">返回首页</button>
+        </div>
+      </div>
+      <button class="ao-modal__close" type="button" aria-label="关闭" id="ao-modal-close">
+        <img src="assets/icons/recharge-close.svg" alt="" />
+      </button>
+    </div>
+
+  </div>
+
+  <script src="scripts/steps.js"></script>
+  <script>
+    var stepsApi = Steps.mount({
+      container: document.querySelector('.ao-step.is-active .ao-steps-mount'),
+      current: 1,
+      steps: ['填写开户信息', '设置支付密码']
+    });
+
+    // 步骤切换 + 步骤条状态 + 底部按钮文案联动 + 顶栏标题联动
+    function goStep(n) {
+      document.querySelectorAll('.ao-step').forEach(function (s) { s.classList.remove('is-active'); });
+      var el = document.getElementById('ao-step-' + n);
+      if (el) el.classList.add('is-active');
+      // 将步骤条元素移到当前节的挂载点（确保排在顶栏之后、卡片之前）
+      var mount = el.querySelector('.ao-steps-mount');
+      if (mount && stepsApi.el.parentNode !== mount) mount.appendChild(stepsApi.el);
+      stepsApi.setCurrent(n);
+      var btn = document.getElementById('ao-submit');
+      if (btn) btn.textContent = n === 1 ? '提交开户' : '保存密码';
+      // 顶栏标题随步骤联动（标准 App Shell：单顶栏，标题动态更新）
+      var titleEl = document.querySelector('.od-topbar__title');
+      if (titleEl) titleEl.textContent = n === 1 ? '开户' : '设置支付密码';
+    }
+
+    // 开户成功弹窗（保存密码成功后弹出）
+    var aoModal = document.getElementById('ao-modal');
+    function openModal() { aoModal.classList.add('is-open'); }
+    function closeModal() { aoModal.classList.remove('is-open'); }
+    document.getElementById('ao-submit').addEventListener('click', function () {
+      var label = this.textContent;
+      if (label === '保存密码') { openModal(); return; }
+      goStep(2);   // 提交开户
+    });
+    document.getElementById('ao-modal-recharge').addEventListener('click', function () {
+      closeModal();
+      location.href = 'recharge.html';   // 去充值 → 充值说明页（Figma 65:6521）
+    });
+    document.getElementById('ao-modal-home').addEventListener('click', function () {
+      location.href = 'index.html';
+    });
+    document.getElementById('ao-modal-close').addEventListener('click', closeModal);
+
+    // 开户类型切换：分段控件选中态 + 对应表单显隐
+    document.querySelectorAll('.ao-type__tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var type = tab.dataset.type;
+        document.querySelectorAll('.ao-type__tab').forEach(function (t) {
+          var active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        document.getElementById('ao-form-personal').classList.toggle('is-active', type === 'personal');
+        document.getElementById('ao-form-enterprise').classList.toggle('is-active', type === 'enterprise');
+      });
+    });
+  </script>
+
+  <!-- Header 组件（顶栏变体4 od：返回 + 居中标题 + 微信按钮；标准 App Shell：单顶栏锁定顶部，标题/返回行为由 JS 按步骤联动） -->
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({ container: document.querySelector('.header-mount'), topbar: { variant: 'od', title: '开户', right: 'wechat', left: { type: 'back', onBack: function () {
+    var active = document.querySelector('.ao-step.is-active');
+    var step = active ? Number(active.id.split('-')[2]) : 1;
+    if (step > 1) goStep(step - 1); else location.href = 'jicai-signup.html';   // Step1 返回退出去开户来源页，Step2 回上一步
+  } } } });
+  </script>
+</body>
+</html>

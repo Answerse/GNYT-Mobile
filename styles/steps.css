@@ -1,0 +1,61 @@
+/* 步骤条组件样式（配合 scripts/steps.js）
+   用法：Steps.mount({ container, steps: [...], current: 1 })
+   说明：仅通过 classList 切换状态，不写 element.style，无框架依赖 */
+
+.steps {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.2rem 0.4rem;
+}
+.steps__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.06rem;
+  width: 0.6rem;
+  flex-shrink: 0;
+}
+.steps__circle {
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.14rem;
+  font-weight: 700;
+  border: 0.02rem solid #D1D5DB;
+  color: #D1D5DB;
+  background: transparent;
+}
+.steps__item.is-active .steps__circle {
+  background: #16A34A;
+  border-color: #16A34A;
+  color: #FFFFFF;
+}
+.steps__item.is-completed .steps__circle {
+  background: #16A34A;
+  border-color: #16A34A;
+  color: #FFFFFF;
+}
+.steps__connector {
+  flex: 1;
+  height: 0.02rem;
+  background: #D1D5DB;
+  margin-top: 0.13rem;
+}
+.steps__connector.is-completed {
+  background: #16A34A;
+}
+.steps__label {
+  font-size: 0.12rem;
+  color: #9CA3AF;
+  white-space: nowrap;
+}
+.steps__item.is-active .steps__label {
+  color: #16A34A;
+  font-weight: 500;
+}
+.steps__item.is-completed .steps__label {
+  color: #6B7280;
+}

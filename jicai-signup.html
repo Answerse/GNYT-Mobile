@@ -35,7 +35,7 @@
           </div>
           <div class="js-step__info">
             <p class="js-step__text">完成“桂农易通”钱包账户开户</p>
-            <button class="js-step__btn" type="button">去开户</button>
+            <button class="js-step__btn" type="button" data-link="account-open.html">去开户</button>
           </div>
           <img class="js-step__img" src="assets/images/jc-signup-wallet.png" alt="" />
         </article>
@@ -46,7 +46,7 @@
           </div>
           <div class="js-step__info">
             <p class="js-step__text">确保钱包账户资金足以支付本次活动保证金</p>
-            <button class="js-step__btn" type="button">去充值</button>
+            <button class="js-step__btn" type="button" data-link="account-open.html#recharge">去充值</button>
           </div>
           <img class="js-step__img" src="assets/images/jc-signup-balance.png" alt="" />
         </article>
@@ -57,7 +57,7 @@
     <!-- ==================== 底栏（Figma 967:7538：居中文字 + 确定参加按钮，上阴影） ==================== -->
     <footer class="js-bottombar">
       <p class="js-bottombar__text">我已知晓并完成充值</p>
-      <button class="js-bottombar__btn" type="button">确定参加</button>
+      <button class="btn-fill js-bottombar__btn" type="button">确定参加</button>
     </footer>
 
   </div>
@@ -73,6 +73,14 @@
   });
   // 返回按钮指向集采活动列表页（组件默认 index.html，此处覆盖）
   document.querySelector('.od-topbar__back').setAttribute('href', 'jicai.html');
+  // 去开户 → 开户页面；去充值 → 开户流程中的充值说明步骤（account-open.html#recharge）
+  document.querySelectorAll('.js-step__btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { location.href = btn.dataset.link; });
+  });
+  // 确定参加 → 集采活动详情页（Figma 1007:10479）
+  document.querySelector('.js-bottombar__btn').addEventListener('click', function () {
+    location.href = 'jicai-detail.html';
+  });
   </script>
 </body>
 </html>

@@ -116,9 +116,16 @@
       nav4.className = 'od-topbar__nav';
       // 透明悬浮态（集采活动页 932:68725）：类名由 od-topbar--ghost 变体定义
       if (opts.ghost) header.classList.add('od-topbar--ghost');
-      var back4 = document.createElement('a');
+      // 返回：默认 a 跳转；传 onBack 时为 button 触发回调（如订单创建"回上一步"）
+      var isBtn = opts.left && opts.left.onBack;
+      var back4 = document.createElement(isBtn ? 'button' : 'a');
       back4.className = 'od-topbar__back';
-      back4.href = 'index.html';
+      if (isBtn) {
+        back4.type = 'button';
+        back4.addEventListener('click', opts.left.onBack);
+      } else {
+        back4.href = (opts.left && opts.left.href) || 'index.html';
+      }
       back4.setAttribute('aria-label', '返回');
       // 返回图标：复用图标库 chevron-left.svg（Figma 932:68725 向左-线性 18×16）
       var backIcon = document.createElement('img');
@@ -133,52 +140,13 @@
       nav4.appendChild(title4);
       // 右侧：可选微信按钮（浅色），默认占位（集采活动页 932:68725 右侧为微信按钮）
       if (opts.right === 'wechat') {
-        nav4.appendChild(buildWechat('light'));
+        nav4.appendChild(buildWechat(opts.wechatBg || 'light'));
       } else {
         var spacer4 = document.createElement('div');
         spacer4.className = 'od-topbar__spacer';
         nav4.appendChild(spacer4);
       }
       header.appendChild(nav4);
-      return;
-    }
-
-    if (variant === 'oc') {
-      var nav5 = document.createElement('div');
-      nav5.className = 'oc-topbar__nav';
-      // 返回：默认 a 跳转；传 onBack 时为 button 触发回调（如订单创建"回上一步"）
-      var isBtn = opts.left && opts.left.onBack;
-      var back5 = document.createElement(isBtn ? 'button' : 'a');
-      back5.className = 'oc-topbar__back';
-      if (isBtn) {
-        back5.type = 'button';
-        back5.addEventListener('click', opts.left.onBack);
-      } else {
-        back5.href = (opts.left && opts.left.href) || 'index.html';
-      }
-      back5.setAttribute('aria-label', '返回');
-      // 返回图标：复用图标库 chevron-left.svg（design.md 二级页页头返回箭头）
-      var backIcon = document.createElement('img');
-      backIcon.className = 'oc-topbar__back-icon';
-      backIcon.src = 'assets/icons/chevron-left.svg';
-      backIcon.alt = '';
-      back5.appendChild(backIcon);
-      nav5.appendChild(back5);
-      var title5 = document.createElement('h1');
-      title5.className = 'oc-topbar__title';
-      title5.textContent = opts.title || '';
-      nav5.appendChild(title5);
-      var capsule = document.createElement('div');
-      capsule.className = 'oc-topbar__capsule';
-      var dots = document.createElement('div');
-      dots.className = 'oc-topbar__capsule-dot';
-      dots.innerHTML = '<span></span><span></span><span></span>';
-      capsule.appendChild(dots);
-      var record = document.createElement('div');
-      record.className = 'oc-topbar__capsule-record';
-      capsule.appendChild(record);
-      nav5.appendChild(capsule);
-      header.appendChild(nav5);
       return;
     }
 

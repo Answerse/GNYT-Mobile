@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>集采活动详情 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+  <link rel="stylesheet" href="styles/jicai-detail.css" />
+</head>
+<body>
+  <!-- ==================== App Shell（DESIGN.md §2：body(100vh overflow:hidden) → .jc-page(flex column) ==================== -->
+  <div class="jc-page">
+
+    <!-- 顶部渐变头图（Figma 1007:10480 bg-head：375×390 #16A34A→#EBF2FC，z-index:-1 铺底，不随内容滚动） -->
+    <div class="jc-head" aria-hidden="true"></div>
+
+    <!-- ==================== 页头（Header 组件：od ghost 深色白字，flex-shrink:0 锁定顶部） ==================== -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 内容区 Container（flex:1 内部滚动） ==================== -->
+    <main class="jc-scroll">
+
+      <!-- 表单卡片（Figma 1007:10488：白底圆角8，padding 24，行间虚线分隔） -->
+      <section class="jd-card">
+
+        <!-- 1 活动标题 -->
+        <div class="form__row">
+          <div class="form__label">活动标题</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请输入活动标题" />
+          </div>
+        </div>
+
+        <!-- 2 发布平台 -->
+        <div class="form__row">
+          <div class="form__label">发布平台</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择发布平台" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- 3 商品品类 -->
+        <div class="form__row">
+          <div class="form__label">商品品类</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择商品品类" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- 4 品种 -->
+        <div class="form__row">
+          <div class="form__label">品种</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择品种" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- 4 陈化年份 -->
+        <div class="form__row">
+          <div class="form__label">陈化年份</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请填写具体年份" />
+          </div>
+        </div>
+
+        <!-- 5 产地 -->
+        <div class="form__row">
+          <div class="form__label">产地</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请输入产地" />
+          </div>
+        </div>
+
+        <!-- 6 参考价格 -->
+        <div class="form__row">
+          <div class="form__label">参考价格</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请输入参考价格" />
+            <span class="form__unit">元</span>
+          </div>
+        </div>
+
+        <!-- 7 活动详情（富文本占位） -->
+        <div class="form__row jd-form__row--textarea">
+          <div class="form__label">活动详情</div>
+          <div class="form__field">
+            <textarea class="form__input jd-form__textarea" rows="3" placeholder="请输入活动详情"></textarea>
+          </div>
+        </div>
+
+        <!-- 8 活动开始时间 -->
+        <div class="form__row">
+          <div class="form__label form__label--wide">活动开始时间</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择活动开始时间" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- 9 活动结束时间 -->
+        <div class="form__row">
+          <div class="form__label form__label--wide">活动结束时间</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择活动结束时间" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- 10 报名结束时间 -->
+        <div class="form__row">
+          <div class="form__label form__label--wide">报名结束时间</div>
+          <div class="form__field">
+            <input class="form__input" type="text" placeholder="请选择报名结束时间" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle jd-arrow--dim" aria-hidden="true"></span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ==================== 底栏（Figma 1007:10525：白底上阴影，居中"确定报名"按钮） ==================== -->
+    <footer class="jd-bottombar">
+      <button class="btn-fill jd-bottombar__btn" type="button">确定报名</button>
+    </footer>
+
+  </div>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  // 标准 od 顶栏（布局/间距/字号/字重与全部二级页一致），ghost 仅透明悬浮 + 颜色适配深色头图
+  PageHeader.mount({
+    container: document.querySelector('.header-mount'),
+    topbar: { variant: 'od', title: '集采活动详情', right: 'wechat', ghost: true, wechatBg: 'dark' }
+  });
+  document.querySelector('.jc-page .od-topbar__back').setAttribute('href', 'jicai-signup.html');
+  </script>
+</body>
+</html>

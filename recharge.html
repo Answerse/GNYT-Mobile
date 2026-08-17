@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>充值说明 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/recharge.css" />
+</head>
+<body>
+  <!-- ==================== App Shell 模式：Header + Container（DESIGN.md §2） ==================== -->
+  <div class="rc-page">
+
+    <!-- Header 组件挂载点（PageHeader.mount 生成 .page-header，flex-shrink:0 锁定顶部，不参与滚动） -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 内容区 Container（flex:1 内部滚动） ==================== -->
+    <main class="rc-scroll">
+
+      <!-- 引导语 + 充值插画（Figma 65:6524） -->
+      <p class="rc-lead">请按以下步骤完成平台余额充值</p>
+      <img class="rc-illustration" src="assets/icons/recharge-illustration.svg" alt="" />
+
+        <!-- 步骤1：开通资金账户并绑定银行卡 -->
+        <section class="rc-card">
+          <div class="rc-card__title">
+            <span class="rc-step">1</span>
+            <h2 class="rc-card__heading">开通资金账户并绑定银行卡</h2>
+          </div>
+          <button class="btn-fill rc-btn--primary" type="button" id="rc-open">去开通</button>
+          <div class="rc-sub">
+            <h3 class="rc-sub__heading">企业用户</h3>
+            <p class="rc-sub__text">可开通企业资金账户并绑定企业对公账户银行卡；</p>
+            <p class="rc-sub__text">可开通个人资金账户并绑定个人名下任意银行卡。</p>
+          </div>
+          <div class="rc-sub">
+            <h3 class="rc-sub__heading">个人用户</h3>
+            <p class="rc-sub__text">开通个人资金账户并绑定个人名下任意1张或多张银行卡</p>
+          </div>
+        </section>
+
+        <!-- 步骤2：充值（监管账号信息） -->
+        <section class="rc-card">
+          <div class="rc-card__title">
+            <span class="rc-step">2</span>
+            <h2 class="rc-card__heading">充值</h2>
+          </div>
+          <p class="rc-note">使用绑定的银行卡对应的网银APP或登录绑定银行卡的线上平台向以下监管账号转账。</p>
+          <div class="rc-info">
+            <div class="rc-info__row">
+              <span class="rc-info__label">监管账号</span>
+              <span class="rc-info__value rc-info__value--num">213419929391234234324</span>
+            </div>
+            <div class="rc-info__row">
+              <span class="rc-info__label">账户名称</span>
+              <span class="rc-info__value">广西交易场所登记结算有限公司</span>
+            </div>
+            <div class="rc-info__row">
+              <span class="rc-info__label">开户行</span>
+              <span class="rc-info__value">渤海银行南宁分行</span>
+            </div>
+          </div>
+          <button class="rc-btn rc-btn--ghost" type="button" id="rc-gotit">知道了</button>
+        </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    document.getElementById('rc-open').addEventListener('click', function () {
+      location.href = 'account-open.html';
+    });
+    document.getElementById('rc-gotit').addEventListener('click', function () {
+      if (history.length > 1) history.back(); else location.href = 'index.html';
+    });
+  </script>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({ container: document.querySelector('.header-mount'), topbar: { variant: 'od', title: '充值说明', right: 'wechat', left: { type: 'back', href: 'account-open.html' } } });
+  </script>
+</body>
+</html>

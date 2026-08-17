@@ -31,37 +31,41 @@ body {
 }
 
 img { max-width: 100%; }
-input { font: inherit; border: none; outline: none; background: transparent; }
 
-/* ---------- 页面根（App Shell：.page flex column，Header 锁定 + 内容区内部滚动） ---------- */
+/* ---------- 页面根（App Shell 三层结构：.oc-flow flex column 锁定视口，Header + Container） ---------- */
 .oc-flow {
-  height: 100%;
+  width: 3.75rem;
+  height: 100vh;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: var(--oc-bg);
 }
 
-/* 内容区：flex:1 内部滚动（design.md 2. 内容区 Container），左右 8px；顶部由各 step 首卡 margin 控制 */
+/* ---------- 内容区 Container（design.md §2：flex:1 内部滚动，默认内边距 0.16rem 0.08rem；flex column + gap 承担间距） ---------- */
 .oc-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 0 0.08rem;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.16rem 0.08rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
 }
 
 .oc-step { display: none; }
-.oc-step.is-active { display: block; }
+.oc-step.is-active { display: flex; flex-direction: column; gap: 0.08rem; }
 
-/* ---------- 卡片通用 ---------- */
+/* Header 由 PageHeader.mount 渲染到 .header-mount，flex-shrink:0 锁定顶部（design.md §2 标准 App Shell，不参与滚动） */
+
+/* ---------- 卡片通用（白底圆角 8；水平留边由 Container 内边距承担） ---------- */
 .oc-card {
   background: var(--oc-white);
   border-radius: 0.08rem;
   overflow: hidden;
 }
-.oc-card + .oc-card { margin-top: 0.08rem; }
-/* 每步首卡与吸顶顶栏保持 16px 间距（design.md 内容区上边距 16px） */
-.oc-step > .oc-card:first-of-type,
-.oc-step > .oc-confirm__section:first-of-type { margin-top: 0.16rem; }
 
 /* 选择卖方卡（Figma 65:6239：整卡绿色 padding4 gap8，标题行 + 白色操作区） */
 .oc-card--seller {
@@ -82,7 +86,7 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   display: flex; align-items: center;
   font-size: 0.16rem;
   font-weight: 630;
-  color: #F9FAFB;
+  color: #FFFFFF;            /* Figma 65:6110 标题 #FFFFFF */
 }
 .oc-card__title span { margin-right: 0.04rem; }
 .oc-card__title-sub {
@@ -148,6 +152,7 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   gap: 0.16rem;
 }
 .oc-seller__info-col { display: flex; flex-direction: column; gap: 0.04rem; }
+.oc-seller__info-col:first-child { width: 0.72rem; flex-shrink: 0; }   /* Figma 65:6113 收款人列固定宽 72 */
 .oc-seller__info-col--end { flex: 1; align-items: flex-end; }
 .oc-seller__info-label { font-size: 0.14rem; color: #6B7280; font-weight: 330; }
 .oc-seller__info-value { font-size: 0.16rem; color: #101215; font-weight: 330; }
@@ -155,14 +160,32 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   font-family: "DINish Condensed", "PingFang SC", sans-serif;
   font-size: 0.16rem;
   color: #101215;
-  font-weight: 600;
+  font-weight: 700;
 }
-/* 确认订单页卖方信息卡（Figma 65:6112 已选果农：绿卡 padding8 gap10，白底圆角4 padding16） */
-.oc-card--seller-confirm { padding: 0.08rem; gap: 0.1rem; }
+/* 确认订单页卖方信息卡（Figma 65:6109：绿渐变卡 padding8 gap10 + 白字标题 + 白底信息块 + 右上钱包插画） */
+.oc-card--seller-confirm {
+  position: relative;
+  padding: 0.08rem;
+  gap: 0.1rem;
+  background: linear-gradient(45deg, #16A34A 0%, #F0FDF4 100%);
+}
 .oc-card--seller-confirm .oc-seller__info {
   background: #FFFFFF;
   border-radius: 0.04rem;
-  padding: 0.16rem;
+  padding: 0.08rem 0.16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.04rem;
+}
+.oc-seller__info-row { display: flex; align-items: center; gap: 0.04rem; }
+/* 右上钱包插画（Figma 994:9580：absolute，卡内右上，82x83） */
+.oc-seller__wallet {
+  position: absolute;
+  top: 0.13rem;
+  right: 0.24rem;
+  width: 0.82rem;
+  height: 0.83rem;
+  pointer-events: none;
 }
 
 /* ---------- 称重信息（空） ---------- */
@@ -216,42 +239,7 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   white-space: nowrap;
 }
 .oc-weigh-form__delete { color: var(--oc-orange); }
-.oc-weigh-form__row {
-  display: flex; align-items: center;
-  min-height: 0.52rem;
-  margin: 0 0.12rem;
-  border-top: 0.005rem solid var(--oc-border);
-  padding: 0.12rem 0;
-}
-.oc-weigh-form__row:first-of-type { border-top: none; }
-.oc-weigh-form__label {
-  display: flex; align-items: center; gap: 0.04rem;
-  width: 0.86rem;
-  font-size: 0.16rem;
-  color: var(--oc-text);
-  flex-shrink: 0;
-}
-.oc-weigh-form__label--required::before {
-  content: "*";
-  color: var(--oc-red);
-  margin-right: 0.02rem;
-}
-.oc-weigh-form__field {
-  flex: 1;
-  display: flex; align-items: center; gap: 0.08rem;
-}
-.oc-weigh-form__input {
-  flex: 1;
-  font-size: 0.15rem;
-  color: var(--oc-text);
-  text-align: right;
-}
-.oc-weigh-form__input::placeholder { color: var(--oc-text-light); }
-.oc-weigh-form__unit { font-size: 0.15rem; color: var(--oc-text); }
-.oc-weigh-form__arrow {
-  width: 0.16rem; height: 0.16rem;
-  color: var(--oc-text-light);
-}
+/* 表单行/标签/输入框样式见 components.css 表单组件（.form__row 等，单源维护） */
 .oc-weigh-form__extra {
   display: flex; align-items: center; justify-content: center;
   padding: 0.12rem 0;
@@ -309,76 +297,96 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 }
 .oc-bottombar {
   flex-shrink: 0;          /* App Shell：flex 锁定在底部，禁止 position:fixed */
-  background: var(--oc-white);
-  box-shadow: 0 -0.01rem 0.04rem rgba(0,0,0,0.04);
+  background: #FFFFFF;
+  box-shadow: 0 -0.02rem 0.1rem rgba(0, 0, 0, 0.02);
 }
+/* 金额区（Figma 99:2179 底栏-账单：12px 说明文字 + 16/20px 数字，段间竖分隔线） */
 .oc-bottombar__summary {
-  display: flex; align-items: center;
-  height: 0.56rem;
-  padding: 0 0.12rem;
-  border-bottom: 0.005rem solid var(--oc-border);
+  display: flex; align-items: center; gap: 0.16rem;
+  padding: 0.08rem 0.16rem;
+  border-bottom: 0.005rem solid rgba(16, 18, 21, 0.1);
 }
 .oc-bottombar__count {
-  display: flex; flex-direction: column; align-items: center;
-  width: 0.70rem;
-  border-right: 0.005rem solid var(--oc-border);
+  display: flex; flex-direction: column; justify-content: center;
+  width: 0.3rem;
+  flex-shrink: 0;
 }
-.oc-bottombar__count-label { font-size: 0.14rem; color: var(--oc-text-sub); }
-.oc-bottombar__count-value { font-size: 0.18rem; font-weight: 700; color: var(--oc-text); }
-.oc-bottombar__count-unit { font-size: 0.12rem; color: var(--oc-text-sub); }
+.oc-bottombar__count-label { font-size: 0.12rem; color: #6B7280; font-weight: 330; text-align: center; }
+.oc-bottombar__count-value {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem; font-weight: 700; color: #111827; text-align: center;
+}
+.oc-bottombar__count-unit { font-size: 0.12rem; color: #111827; font-weight: 330; }
+.oc-bottombar__divider {
+  width: 0.005rem; height: 0.32rem;
+  background: rgba(16, 18, 21, 0.1);
+  flex-shrink: 0;
+}
 .oc-bottombar__tax {
   flex: 1;
-  padding-left: 0.12rem;
-  display: flex; flex-direction: column; gap: 0.04rem;
-  font-size: 0.14rem;
+  display: flex; flex-direction: column; justify-content: center; gap: 0.04rem;
+  font-size: 0.12rem; color: #6B7280; font-weight: 330;
 }
-.oc-bottombar__tax-row { display: flex; gap: 0.06rem; }
+.oc-bottombar__tax-row { display: flex; align-items: center; gap: 0.02rem; }
+.oc-bottombar__tax-num { display: flex; align-items: baseline; gap: 0.02rem; color: #111827; }
+.oc-bottombar__tax-cur { font-size: 0.14rem; font-style: normal; }
+.oc-bottombar__tax-val {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem; font-weight: 400; font-style: normal;
+}
+.oc-bottombar__tax-sep {
+  width: 0.005rem; height: 0.08rem;
+  background: rgba(16, 18, 21, 0.1);
+  margin: 0 0.03rem;
+}
 .oc-bottombar__amount {
-  display: flex; flex-direction: column; align-items: flex-end;
-  padding-left: 0.12rem;
-  border-left: 0.005rem solid var(--oc-border);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-end;
+  flex-shrink: 0;
 }
-.oc-bottombar__amount-label { font-size: 0.14rem; color: var(--oc-text-sub); }
-.oc-bottombar__amount-value { font-size: 0.20rem; font-weight: 700; color: var(--oc-primary); }
-.oc-bottombar__amount-value .unit { font-size: 0.12rem; color: var(--oc-primary); font-weight: 400; }
-
+.oc-bottombar__amount-label { font-size: 0.12rem; color: #6B7280; font-weight: 330; }
+.oc-bottombar__amount-value { display: flex; align-items: baseline; gap: 0.02rem; color: #16A34A; font-size: 0.14rem; }
+.oc-bottombar__amount-num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem; font-weight: 700; color: #16A34A;
+}
+/* 操作区（暂存描边灰字 + 提交保存绿底，右对齐，padding16 gap16） */
 .oc-bottombar__actions {
-  display: flex; align-items: center;
-  height: 0.62rem;
-  padding: 0 0.12rem;
-  gap: 0.10rem;
+  display: flex; align-items: center; gap: 0.16rem;
+  padding: 0.16rem;
+}
+.oc-bottombar__actions-main {
+  flex: 1;
+  display: flex; justify-content: flex-end;
 }
 .oc-bottombar__btn {
-  flex: 1;
-  height: 0.44rem;
-  border: 0.01rem solid var(--oc-border);
+  padding: 0.08rem 0.16rem;
+  border: 0.01rem solid rgba(16, 18, 21, 0.5);
   border-radius: 0.08rem;
-  font-size: 0.16rem;
-  color: var(--oc-text);
-  background: var(--oc-white);
+  font-size: 0.16rem; font-weight: 330; line-height: 1.326;
+  color: #6B7280;
+  background: #FFFFFF;
 }
 .oc-bottombar__btn--primary {
-  background: var(--oc-primary);
-  color: var(--oc-white);
-  border-color: var(--oc-primary);
+  background: #16A34A;
+  color: #F9FAFB;
+  border-color: #16A34A;
 }
 
 /* ---------- 确认订单页 ---------- */
-.oc-confirm__section { margin-top: 0.08rem; }
+.oc-confirm__section {
+  margin-top: 0.08rem;
+  padding: 0.16rem;          /* 设计稿卡片内边距 16px（Figma 65:6119 / 65:6003） */
+}
 .oc-confirm__section:first-child { margin-top: 0; }
 
 .oc-section__title {
   display: flex; align-items: center; gap: 0.04rem;
   height: 0.36rem;
-  padding: 0 0.08rem;
   background: var(--oc-white);
   font-size: 0.16rem;
   font-weight: 630;
   color: var(--oc-text);
-  border-radius: 0.08rem 0.08rem 0 0;
-  border-bottom: 0.005rem solid rgba(16, 18, 21, 0.1);   /* 标题下分割线（Figma 840:6159） */
 }
-.oc-section__title--solo { border-radius: 0.08rem; }
 
 /* 商品明细行（Figma 65:6009 实例：序号 + 名称 + 重量/价格，均深色 #101215） */
 .oc-goods-item {
@@ -388,14 +396,14 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 }
 .oc-goods-item + .oc-goods-item { margin-top: 0.08rem; }
 .oc-goods-item__idx {
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
   font-family: "DINish Condensed", "PingFang SC", sans-serif;
   font-size: 0.16rem; font-weight: 400;
   color: #101215;
   flex-shrink: 0;
 }
 .oc-goods-item__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.04rem; }
-.oc-goods-item__name { font-size: 0.16rem; color: #101215; font-weight: 330; }
+.oc-goods-item__name { font-size: 0.14rem; color: var(--oc-text-sub); font-weight: 330; }
 .oc-goods-item__meta { display: flex; align-items: baseline; justify-content: space-between; }
 .oc-goods-item__weight { font-size: 0.14rem; color: #101215; }
 .oc-goods-item__price { font-size: 0.14rem; color: #101215; }
@@ -406,21 +414,38 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 }
 .oc-goods-item__cur { font-style: normal; font-size: 0.14rem; color: #101215; }
 .oc-goods-item__unit { font-size: 0.14rem; color: #101215; font-weight: 330; }
+/* Step 3（Figma 65:6107 商品明细以组件呈现：价格绿 #16A34A、数字 20px，重量 20px 深色） */
+#oc-step-3 .oc-goods-item__weight .oc-goods-item__num { font-size: 0.2rem; }
+#oc-step-3 .oc-goods-item__cur { color: var(--oc-primary); }
+#oc-step-3 .oc-goods-item__price .oc-goods-item__num {
+  font-size: 0.2rem;
+  color: var(--oc-primary);
+}
 
-/* 合计行（Figma 65:6013 总价：深色，数字 DINish 20px） */
+/* 合计行（Figma 65:6035 总价：左排 gap16，深色，数字 DINish 20px） */
 .oc-goods-total {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.10rem 0;
+  display: flex; align-items: center; gap: 0.16rem;
+  padding: 0.08rem 0;
   background: var(--oc-white);
   border-top: 0.005rem solid rgba(16, 18, 21, 0.1);
 }
-.oc-goods-total__label { font-size: 0.14rem; color: #101215; }
+.oc-goods-total__label { font-size: 0.14rem; font-weight: 330; color: #101215; }
 .oc-goods-total__value,
 .oc-goods-total__price { display: flex; align-items: baseline; gap: 0.02rem; }
+.oc-goods-total__price { margin-left: auto; }   /* 合计价格右对齐 */
 .oc-goods-total__num {
   font-family: "DINish Condensed", "PingFang SC", sans-serif;
   font-style: normal; font-weight: 400;
   font-size: 0.2rem; color: #101215;
+}
+/* 合计价格：加粗加大 */
+.oc-goods-total__price .oc-goods-total__num {
+  font-weight: 700;
+  font-size: 0.24rem;
+}
+.oc-goods-total__price .oc-goods-total__cur {
+  font-weight: 700;
+  font-size: 0.16rem;
 }
 .oc-goods-total__cur { font-style: normal; font-size: 0.14rem; color: #101215; }
 .oc-goods-total__unit { font-size: 0.14rem; color: #101215; font-weight: 330; }
@@ -452,87 +477,112 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   display: flex; flex-direction: column; gap: 0.08rem;
 }
 .oc-fee-note__head {
-  display: flex; align-items: center; justify-content: center; gap: 0.04rem;
+  display: flex; align-items: center; gap: 0.04rem;
   color: var(--oc-primary);
   font-size: 0.14rem;
   font-weight: 330;
 }
 .oc-fee-note__head svg { width: 0.16rem; height: 0.16rem; }
-.oc-fee-note__content {
+.oc-fee-note__list {
+  margin: 0;
+  padding-left: 1em;
   font-size: 0.14rem;
   color: #101215;
   font-weight: 330;
   line-height: 1.326;
 }
+.oc-fee-note__list li + li { margin-top: 0.08rem; }
 
-/* 支付方式 / 付款账户 */
+/* 支付方式（Figma 65:6044：浅蓝卡 #F2F9FF，选中浅绿底 rgba(17,170,85,.05) + 绿描边 #11AA55，圆角8 padding16 gap16） */
 .oc-pay-method {
-  display: flex; align-items: center; gap: 0.10rem;
-  padding: 0.10rem 0.12rem;
-  background: var(--oc-white);
-  border-top: 0.005rem solid var(--oc-border);
+  display: flex; flex-direction: column; gap: 0.16rem;
+  padding: 0.16rem;
+  background: #F2F9FF;
+  border-radius: 0.08rem;
 }
-.oc-pay-method__radio { width: 0.20rem; height: 0.20rem; flex-shrink: 0; }
-.oc-pay-method__main { flex: 1; }
-.oc-pay-method__title { font-size: 0.15rem; color: var(--oc-text); margin-bottom: 0.02rem; }
-.oc-pay-method__desc { font-size: 0.13rem; color: var(--oc-text-sub); }
-.oc-pay-method__extra {
-  display: flex; align-items: center; gap: 0.06rem;
-  font-size: 0.13rem;
-  color: var(--oc-primary);
+.oc-pay-method + .oc-pay-method { margin-top: 0.16rem; }
+/* 可点击选择卡片：hover 提示可点，active 绿色按压反馈（仅背景变化，无布局位移） */
+.oc-pay-method,
+.oc-account-card {
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
-.oc-pay-method__extra svg { width: 0.16rem; height: 0.16rem; }
-
-.oc-pay-method--selected .oc-pay-method__main,
-.oc-pay-method--selected { background: var(--oc-primary-soft); }
+.oc-pay-method:hover,
+.oc-account-card:hover { background: #E9F4FE; }
+.oc-pay-method:active,
+.oc-account-card:active { background: rgba(17, 170, 85, 0.12); }
+.oc-pay-method--selected:hover,
+.oc-account-card--selected:hover { background: rgba(17, 170, 85, 0.1); }
+.oc-pay-method--selected:active,
+.oc-account-card--selected:active { background: rgba(17, 170, 85, 0.16); }
+.oc-pay-method--selected {
+  background: rgba(17, 170, 85, 0.05);
+  border: 0.01rem solid #11AA55;
+}
+.oc-pay-method__head { display: flex; align-items: center; gap: 0.16rem; }
+.oc-pay-method__radio { width: 0.2rem; height: 0.2rem; flex-shrink: 0; }
+.oc-pay-method__main { flex: 1; min-width: 0; }
+.oc-pay-method__title { font-size: 0.16rem; color: #101215; font-weight: 330; }
+.oc-pay-method__desc {
+  display: flex; align-items: center; gap: 0.08rem;
+  margin-top: 0.04rem;
+  font-size: 0.14rem; color: #6B7280; font-weight: 330;
+}
+.oc-pay-method__cur,
+.oc-pay-method__num,
+.oc-pay-method__unit { font-style: normal; color: #101215; }
+.oc-pay-method__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem; color: #101215;
+}
 
 .oc-pay-method__cash {
   display: flex; align-items: center; gap: 0.08rem;
-  margin-top: 0.08rem;
 }
 .oc-pay-method__cash-input {
   flex: 1;
   height: 0.36rem;
-  background: var(--oc-white);
-  border: 0.005rem solid var(--oc-border);
-  border-radius: 0.04rem;
-  padding: 0 0.10rem;
-  display: flex; align-items: center;
-  font-size: 0.14rem;
-  color: var(--oc-text-light);
+  background: #FFFFFF;
+  border: 0.01rem solid var(--oc-border);
+  border-radius: 0.08rem;
+  padding: 0 0.1rem;
+  display: flex; align-items: center; gap: 0.08rem;
 }
-.oc-pay-method__cash-input svg { width: 0.14rem; height: 0.14rem; margin-right: 0.06rem; color: var(--oc-text-light); }
-.oc-pay-method__cash-suffix { margin-left: auto; }
+.oc-pay-method__cash-search,
+.oc-pay-method__cash-arrow { width: 0.14rem; height: 0.14rem; color: #101215; opacity: 0.5; flex-shrink: 0; }
+.oc-pay-method__cash-placeholder {
+  flex: 1;
+  font-size: 0.16rem; font-weight: 330; color: #6B7280;
+}
+.oc-pay-method__cash-suffix { font-size: 0.14rem; color: #101215; }
 .oc-pay-method__cash-tag {
-  padding: 0.06rem 0.10rem;
+  padding: 0.06rem 0.1rem;
   background: var(--oc-primary-soft);
   border-radius: 0.04rem;
-  font-size: 0.13rem;
+  font-size: 0.14rem;
   color: var(--oc-primary);
 }
 
-/* 付款账户卡片 */
+/* 付款账户（Figma 65:6089：浅蓝卡 #F2F9FF，选中浅绿底 + 绿描边，单选 + 名称 + 账号/去充值） */
 .oc-account-card {
-  display: flex; align-items: flex-start; gap: 0.10rem;
-  padding: 0.10rem 0.12rem;
-  background: var(--oc-white);
-  border-top: 0.005rem solid var(--oc-border);
+  display: flex; align-items: center; gap: 0.16rem;
+  padding: 0.16rem;
+  background: #F2F9FF;
+  border-radius: 0.08rem;
 }
-.oc-account-card__logo {
-  width: 0.36rem; height: 0.36rem;
-  background: var(--oc-blue-soft);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  color: var(--oc-blue);
-  font-size: 0.14rem;
+.oc-account-card + .oc-account-card { margin-top: 0.16rem; }
+.oc-account-card--selected {
+  background: rgba(17, 170, 85, 0.05);
+  border: 0.01rem solid #11AA55;
 }
-.oc-account-card__main { flex: 1; }
-.oc-account-card__name { font-size: 0.15rem; color: var(--oc-text); margin-bottom: 0.02rem; }
-.oc-account-card__no { font-size: 0.13rem; color: var(--oc-text-sub); }
-/* 去充值：文字+箭头统一用 text-arrow 组件（--primary 绿），样式见 styles/components.css */
-
-.oc-account-card--selected { background: var(--oc-primary-soft); }
+.oc-account-card__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.08rem; }
+.oc-account-card__name { font-size: 0.16rem; color: #101215; font-weight: 330; }
+.oc-account-card__meta { display: flex; align-items: center; gap: 0.08rem; }
+.oc-account-card__no {
+  flex: 1;
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem; color: #101215; font-weight: 400;
+}
 
 /* 底部确认条 */
 .oc-confirm-bar {
@@ -569,95 +619,72 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   border-color: var(--oc-primary);
 }
 
-/* ---------- 支付成功页 ---------- */
+/* ---------- 支付成功页（Figma 65:5949：状态插画 + 金额 + 双按钮） ---------- */
 .oc-success {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1.40rem;
-  background: var(--oc-bg);
+  gap: 0.16rem;
+  padding: 1.12rem 0.16rem 1.08rem;
 }
-.oc-success__card {
+/* 状态插画（192×192：三层货币 + 绿色确认勾） */
+.oc-success__illus {
   position: relative;
-  width: 2.80rem;
-  height: 3.30rem;
-  background: var(--oc-white);
-  border-radius: 0.12rem;
-  margin-bottom: 0.24rem;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 1.92rem;
+  height: 1.92rem;
+  flex-shrink: 0;
 }
-.oc-success__card::before {
-  content: "";
+.oc-success__coin { position: absolute; }
+.oc-success__coin--1 { left: 0.135rem; top: 0.64rem; width: 1.65rem; height: 0.83rem; }
+.oc-success__coin--2 { left: 0.2016rem; top: 0.5088rem; width: 1.5168rem; height: 0.7584rem; opacity: 0.5; }
+.oc-success__coin--3 { left: 0.2784rem; top: 0.3944rem; width: 1.3632rem; height: 0.6816rem; opacity: 0.25; }
+.oc-success__shadow {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1.30rem;
-  background: linear-gradient(180deg, var(--oc-primary-soft) 0%, var(--oc-white) 100%);
-  z-index: 0;
+  left: 0.2736rem; top: 1.1904rem;
+  width: 1.3728rem; height: 0.432rem;
+  background: rgba(16, 18, 21, 0.5);
+  filter: blur(0.096rem);
+  border-radius: 50%;
+  opacity: 0.1;
 }
-.oc-success__icon {
-  position: relative;
-  width: 0.80rem; height: 0.80rem;
-  margin-top: 0.70rem;
-  z-index: 2;
+.oc-success__check {
+  position: absolute;
+  left: 0.644rem; top: 1.148rem;
+  width: 0.64rem; height: 0.64rem;
+  background: #16A34A;
+  border-radius: 50%;
+  box-shadow: 0 0.0768rem 0.096rem rgba(0, 0, 0, 0.1);
+  display: flex; align-items: center; justify-content: center;
 }
-.oc-success__title {
-  position: relative;
-  z-index: 2;
-  font-size: 0.20rem;
-  font-weight: 500;
-  color: var(--oc-text);
-  margin: 0.16rem 0 0.16rem;
-}
-.oc-success__amount-label {
-  position: relative; z-index: 2;
-  font-size: 0.14rem; color: var(--oc-text-sub); margin-bottom: 0.06rem;
-}
+.oc-success__check svg { width: 0.384rem; height: 0.384rem; }
+/* 金额（支付成功 20px/330 + ¥5887.00 40px DINish 700） */
 .oc-success__amount {
-  position: relative; z-index: 2;
-  font-size: 0.32rem; font-weight: 700; color: var(--oc-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.08rem;
 }
-.oc-success__amount .unit { font-size: 0.16rem; font-weight: 400; }
+.oc-success__title { font-size: 0.2rem; font-weight: 330; line-height: 1.326; color: #101215; }
+.oc-success__price { display: flex; align-items: baseline; gap: 0.08rem; }
+.oc-success__cur { font-size: 0.16rem; font-weight: 630; color: #101215; }
+.oc-success__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.4rem; font-weight: 700; color: #101215; line-height: 1.172;
+}
+.oc-success__unit { font-size: 0.16rem; font-weight: 630; color: #101215; }
+/* 按钮（查看订单 绿底 #16A34A + 创建新订单 描边 #11AA55） */
 .oc-success__btns {
-  display: flex; gap: 0.12rem;
-  margin-top: 0.20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+  padding: 0.24rem 0.4rem;
+  align-self: stretch;
 }
-.oc-success__btn {
-  height: 0.44rem;
-  padding: 0 0.28rem;
-  border: 0.01rem solid var(--oc-border);
-  border-radius: 0.08rem;
-  font-size: 0.15rem;
-  color: var(--oc-text);
-  background: var(--oc-white);
-}
-.oc-success__btn--primary {
-  background: var(--oc-primary);
-  color: var(--oc-white);
-  border-color: var(--oc-primary);
-}
-
-/* Step 3/4 紧凑模式（选择卖方卡已统一为 oc-card--seller 结构，此处样式移除） */
-#oc-step-3 .oc-pay-method,
-#oc-step-4 .oc-pay-method,
-#oc-step-3 .oc-account-card,
-#oc-step-4 .oc-account-card {
-  padding: 0.12rem;
-}
-
-#oc-step-3 .oc-goods-item,
-#oc-step-4 .oc-goods-item,
-#oc-step-3 .oc-goods-total,
-#oc-step-4 .oc-goods-total {
-  padding: 0.12rem;
-}
-
-#oc-step-3 .oc-fee-item,
-#oc-step-4 .oc-fee-item {
-  padding: 0.12rem;
+/* 查看订单 / 创建新订单：复用 .btn-fill 组件（components.css）；--outline 为描边变体 */
+.oc-success__btn--outline {
+  background: transparent;
+  border: 0.01rem solid #11AA55;
+  color: #009944;
 }
 
 /* 隐藏/显示工具 */

@@ -1,6 +1,15 @@
 # 桂农易通 设计规范（Design Spec）
 
 > 本文件是页面开发的设计基准。新增页面、组件必须遵循以下约定，除非设计稿明确特殊说明。
+>
+> **⚠️ 最高优先级规则**：本规范优先级高于任何外部约定、口头说明或一般开发习惯。所有页面构建必须严格遵循本文件定义的结构、命名和布局模式；任何偏离必须征得文档维护者书面同意并同步更新本文件。**违反本文件的行为视为技术债，需立即修正。**
+>
+> **📋 页面构建标准流程（强制，三步缺一不可）**：
+> 1. **读取 Figma 设计稿属性**：字号、颜色、对齐方式、外边距、内边距、间隔、布局方式、字重、圆角、背景设置、图片资源——全部从设计稿取数，禁止凭空臆造数值。
+> 2. **按本文件的页面结构搭框架**：先确定布局模式（App Shell / Full Scroll），再按 Header + Container（+ Tabbar）层级搭建，命名空间对齐规范。
+> 3. **优先复用组件与已有样式**：先查组件库（`styles/components.css` / `scripts/*.js`）与现有页面，能复用组件/样式一律复用；没有才新建；**不确定时停止并询问用户**，禁止自行假设。
+>
+> **📢 交付流程（强制）**：页面/功能搭建完成后：① 立刻通知用户（不擅自做任何验证/预览）；② 同时列出可能出现的问题清单供用户判断；③ 是否验证（浏览器测试/预览/截图等）必须经用户明确同意后才能执行，禁止擅自验证。
 
 ---
 
@@ -147,6 +156,53 @@ PageHeader.mount({
 });
 ```
 
+### 二级页页头（od 顶栏）标准用法（强制）
+
+> 所有二级页（详情 / 表单）页头统一复用 od 顶栏组件，样式已在 `components.css` 调好并冻结（Figma 840:8859）。
+> **禁止**：页面手动操作组件 DOM、覆盖 `.od-topbar__*` 的尺寸/布局/字号、在页面 CSS 另写页头样式。
+
+**标准浅色页头（绝大多数二级页）**：
+
+```html
+<div class="header-mount"></div>
+```
+
+```js
+PageHeader.mount({
+  container: document.querySelector('.header-mount'),
+  topbar: { variant: 'od', title: '页面标题', right: 'wechat', left: { type: 'back', href: '上一页.html' } }
+});
+```
+
+**深色头图 / 透明悬浮场景（ghost 变体）**：
+
+```js
+// 浅色头图（如集采列表页）：与明亮模式尺寸一致，仅颜色/背景差异，微信按钮 light
+PageHeader.mount({
+  container: document.querySelector('.header-mount'),
+  topbar: { variant: 'od', title: '页面标题', right: 'wechat', ghost: true }
+});
+
+// 深色头图（如集采详情页）：额外传 wechatBg:'dark'，页面 CSS 只覆盖两行颜色
+PageHeader.mount({
+  container: document.querySelector('.header-mount'),
+  topbar: { variant: 'od', title: '页面标题', right: 'wechat', ghost: true, wechatBg: 'dark' }
+});
+```
+
+```css
+/* 深色头图场景页面专属覆盖（仅颜色，禁止改尺寸/布局） */
+.jc-page .od-topbar__back { color: #FFFFFF; }
+.jc-page .od-topbar__title { color: #F3F4F6; }
+```
+
+**已冻结的组件细节（禁止修改）**：
+- 标题**绝对居中**于顶栏正中（`position:absolute; left:50%; transform:translateX(-50%)`），居中不依赖左右控件宽度
+- 左侧返回按钮 `0.76rem × 0.72rem`、箭头左对齐（`justify-content:flex-start`）、图标 `chevron-left.svg` 18×16
+- 右侧微信按钮 / spacer **等宽 0.76rem**（对称视觉平衡）
+- nav 无白色背景（背景由页面透出）；明亮模式有 `border-bottom: 0.005rem solid #E5E6EB`
+- **明暗是同一组件**：ghost（透明悬浮）与明亮模式布局/间距/字号/字重完全一致（标题统一 `0.17rem/500`），仅颜色/背景差异（nav 透明无边框、文字深色）；**禁止在 ghost 变体里单独设置尺寸**
+
 ---
 
 ## 5. 卡片默认样式（强制）
@@ -214,6 +270,31 @@ PageHeader.mount({
 | 微信按钮 | `scripts/wechat-button.js` + `styles/components.css` | `<button data-wechat data-wechat-bg="dark|light">`，仅明暗两种样式 |
 | 徽章 | `scripts/badge.js` + `styles/badge.css` | `<span class="badge" data-badge="admin">`，类型在 CONFIG 注册 |
 | 文字+箭头按钮 | `styles/components.css` 的 `.text-arrow` | 查看/详情/余额明细/更多等，见上文规范 |
+| 填充按钮 | `styles/components.css` 的 `.btn-fill` | 主操作胶囊按钮（确定报名/去开通/确定参加/提交开户/查看订单等），高 50 圆角 40 绿底白字 20/330（Figma 65:1317） |
+
+### 填充按钮组件规范（强制）
+
+**所有底部主操作胶囊按钮统一复用 `.btn-fill` 组件，禁止在页面 CSS 另写同类样式。**
+
+```html
+<button class="btn-fill" type="button">确定报名</button>
+```
+
+- 组件样式单源：`styles/components.css` 的 `.btn-fill`（Figma 65:1317 填充按钮：高 0.5rem、圆角 0.4rem、绿底 `--c-primary`、白字 20/330 `#F9FAFB`、padding 0.05rem 0.3rem）
+- 宽度 / 横向 padding 为设计稿实例差异时，页面用扩展类覆盖（如 `.jd-bottombar__btn { width: 100% }`、`.js-bottombar__btn { padding: 0.05rem 0.64rem }`），**禁止改组件本身**
+- 描边透明变体（次要按钮）在页面保留：`background: transparent; border: 0.01rem solid ...`
+
+### 微信按钮组件规范（强制）
+
+微信按钮一律通过组件渲染，**禁止在页面或顶栏变体中另造样式**（如自造胶囊/其他右侧元素）：
+
+- 组件：`scripts/wechat-button.js`（`WechatButton.mount()` 扫描 `[data-wechat]` 自动注入图标）+ `styles/components.css` 的 `.topbar__wechat`（75×25、圆角 20）
+- 结构（固定）：`<button class="topbar__wechat" type="button" aria-label="微信" data-wechat data-wechat-bg="dark|light"></button>`，图标由组件按明暗注入，禁止手写内容
+- **仅明暗两种样式**：
+  - `data-wechat-bg="dark"` → `--on-dark`（深色背景）：白描边 10% + 白图标 50%（`assets/icons/wechat-btn-on-dark.svg`）
+  - `data-wechat-bg="light"` → `--on-light`（浅色背景）：白填充 10% + 深描边 10% + 深图标 50%（`assets/icons/wechat-btn-bright.svg`）
+- 背景明暗判定：显式 `data-wechat-bg` 优先；未传时组件自动检测就近非透明背景亮度
+- 顶栏变体（od/app/home/mine/code 等）需要微信按钮时，一律传 `right: 'wechat'` 由顶栏组件渲染（自动按顶栏背景明暗传 `on-dark/on-light`），页面不手写
 
 ### 徽章组件规范（强制）
 
@@ -262,6 +343,7 @@ PageHeader.mount({
 - **边距、间隔（padding / margin / gap）以 375 设计稿为准、用 rem 表达**：结构性间距按 8 的倍数（0.08rem 的倍数：8 / 16 / 24 / 32 @375）；**小图标、小徽章等元素内部允许 2 / 4 / 6 px 等小值**（设计稿如此，无需强归 8 倍数）。非 375 视口下 rem 等比缩放（如 8px 显示为 9px）属正常适配，不是误差；禁止因此改用固定 px 破坏整体等比。
 - **顶栏高度统一 72px（0.72rem）**，以首页为标准；所有模块/二级页面顶栏保持一致，禁止另设高度。
 - HTML **禁止硬编码行内样式**（`style="..."`）；JS 通过 `classList` 切换状态，不写 `element.style`。
+- **禁止在多处重复硬编码相同的 DOM 结构**（如为每个步骤各写一份步骤条）；应提取为单份模板，状态由 JS 动态切换。
 - **位图资源下载（远程/设计稿导出的 PNG 等）：必须下载 3x 分辨率**（`pngScale=3`），避免在手机屏幕上模糊。
 - 字体：中文 MiSans / PingFang SC；**英文与数字统一使用 DINish Condensed**（开源字体 SIL OFL v1.1，本地嵌入 `assets/fonts/DINishCondensed-Regular.woff2`、`DINishCondensed-SemiBold.woff2`，字重 400 / 600）。
   - CSS 中只使用以下两个 token：
@@ -289,3 +371,39 @@ PageHeader.mount({
 - ❌ 计算 `height: calc(100vh - xxx)` 等手写高度
 - ❌ 手写 `font-family`
 - ❌ 混合使用两种布局模式（App Shell + Full Scroll 不共存于同一页面）
+
+---
+
+## 9. 表单组件规范（强制）
+
+> 所有页面的表单（开户、称重、订单等）统一复用 `components.css` 的 `.form__*` 组件，禁止在页面 CSS 另写同类样式。
+
+### 9.1 组件结构
+
+```html
+<div class="form__row">
+  <label class="form__label form__label--required">标签</label>
+  <div class="form__field">
+    <input class="form__input" type="text" placeholder="..." />
+    <span class="form__unit">元</span>         <!-- 可选：后缀单位 -->
+    <svg class="form__arrow">...</svg>          <!-- 可选：行尾箭头 -->
+  </div>
+</div>
+```
+
+### 9.2 布局规则（强制）
+
+- 每个 `.form__row` 水平外边距统一为 **`0.16rem`（16px）**，与卡片内边距对齐，禁止使用其他值
+- 行高最小 **0.52rem（52px）**，内容垂直居中
+- 行间分隔线：`0.005rem solid #E5E7EB`，首行无分隔线
+- `.form__label` 固定宽度 **0.86rem**，标签与输入框间隙由 flex 自动撑满
+- `.form__label--wide` 用于 **6 字以上长标签**，宽度 **1.36rem**，配合 `white-space: nowrap` 禁止换行
+- `.form__label--required` 标签前添加红色 `*` 星号（颜色 `#C94747`）
+- `.form__input` 文字 **右对齐**，背景透明，无默认边框，placeholder 颜色 `#9CA3AF`
+- `.form__input::placeholder`：使用 `var(--c-text-light)`
+
+### 9.3 禁止行为
+
+- ❌ 在页面 CSS 中重写 `form__row` / `form__label` / `form__input` 样式
+- ❌ 使用 `.form__row` 之外的其他结构（如 `display:grid` 或 `table`）做表单行
+- ❌ 修改 `.form__row` 的 margin 值（统一 16px，不可变）

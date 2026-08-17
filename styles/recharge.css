@@ -1,0 +1,182 @@
+/* =====================================================================
+   充值说明页面（二级页 · App Shell：Figma 65:6521 1.4.2-充值提示）
+   三层结构（DESIGN.md §2 强制）：body(100vh overflow:hidden) → .rc-page(flex column, 375居中)
+   → Header(.header-mount + PageHeader 组件, flex-shrink:0 锁定顶部) + Container(.rc-scroll, flex:1 内部滚动)
+   基础重置 / 字体 / 组件样式见 styles/components.css
+   ===================================================================== */
+
+/* body：App Shell 视口锁定（design.md §2 强制 — body 不滚动） */
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: #EBF2FC;
+}
+
+/* ---------- 页面骨架（App Shell：flex column 锁定视口） ---------- */
+.rc-page {
+  width: 3.75rem;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: #EBF2FC;
+}
+
+/* ---------- 内容区 Container（design.md §2：flex:1 内部滚动，默认内边距 0.16rem 0.08rem；flex column + gap 承担间距） ---------- */
+.rc-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.16rem 0.08rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+/* ---------- Header 由 PageHeader.mount 渲染到 .header-mount，作为 flex-shrink:0 兄弟锁定视口顶部（design.md §2 标准 App Shell，不参与滚动、绝不与内容重叠） ---------- */
+
+
+/* 引导语：中文常规文本 16/330，居中 */
+.rc-lead {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #101215;
+  text-align: center;
+}
+
+/* 充值插画（Figma 65:6524：180×120 + 投影），水平居中 */
+.rc-illustration {
+  display: block;
+  margin: 0 auto;
+  width: 1.85rem;
+  height: 1.24rem;
+}
+
+/* ---------- 卡片（Figma 支付方式卡：白底圆角 8、内边距 16、纵向 gap 16；水平留边由 Container 内边距承担） ---------- */
+.rc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+}
+
+.rc-card__title {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+}
+
+/* 序号圆标（30×30 绿底白字） */
+.rc-step {
+  flex-shrink: 0;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-primary);
+  color: #FFFFFF;
+  font-size: 0.16rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* 卡标题：中文5级标题 20/630 */
+.rc-card__heading {
+  font-size: 0.2rem;
+  font-weight: 630;
+  line-height: 1.326;
+  color: #101215;
+}
+
+/* ---------- 胶囊按钮（主按钮复用 .btn-fill 组件，components.css） ---------- */
+.rc-btn--primary {
+  padding: 0.05rem 0.48rem;   /* 设计稿横向 padding 48px */
+}
+.rc-btn--ghost {
+  height: 0.5rem;
+  padding: 0.05rem 0.48rem;
+  border: 0.01rem solid rgba(16, 18, 21, 0.2);
+  border-radius: 0.4rem;
+  background: transparent;
+  color: #101215;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+}
+
+/* ---------- 说明块（浅绿底、圆角 8、gap 16） ---------- */
+.rc-sub {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: var(--c-green-50);
+  border-radius: 0.08rem;
+  text-align: left;
+}
+.rc-sub__heading {
+  font-size: 0.16rem;
+  font-weight: 630;
+  line-height: 1.326;
+  color: #101215;
+}
+.rc-sub__text {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #101215;
+}
+
+/* ---------- 步骤2 转账说明 ---------- */
+.rc-note {
+  align-self: stretch;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #101215;
+  text-align: left;
+}
+
+/* ---------- 监管账号信息块 ---------- */
+.rc-info {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  padding: 0.08rem 0.16rem;
+  background: var(--c-green-50);
+  border-radius: 0.08rem;
+}
+.rc-info__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.08rem;
+  padding: 0.08rem 0;
+  border-bottom: 0.01rem dashed rgba(38, 23, 11, 0.1);
+}
+.rc-info__row:last-child { border-bottom: none; }
+.rc-info__label {
+  flex-shrink: 0;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #6B7280;
+}
+.rc-info__value {
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #101215;
+  text-align: right;
+  word-break: break-all;
+}
+.rc-info__value--num { font-weight: 400; }

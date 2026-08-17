@@ -40,6 +40,7 @@
   --c-white: #FFFFFF;
   --c-text: #111827;
   --c-text-sub: #6B7280;
+  --c-text-light: #9CA3AF;    /* 更浅的次要文字（placeholder 等） */
   --c-green-50: #F0FDF4;
   --c-border: #E5E7EB;
   /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
@@ -47,6 +48,7 @@
   --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
   --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
   --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
+  --c-danger: #C94747;        /* 必填星号 / 删除等警示红 */
 }
 
 /* ---------- 基础重置 ---------- */
@@ -69,6 +71,7 @@ body {
 img { display: block; }
 button { font: inherit; cursor: pointer; border: none; background: none; }
 a { text-decoration: none; color: inherit; }
+input { font: inherit; border: none; outline: none; background: transparent; }
 
 /* =====================================================================
    页头组件（顶栏 + 可选子栏插槽，Figma 910:13227 / 621:6341）
@@ -228,21 +231,24 @@ a { text-decoration: none; color: inherit; }
   background: var(--c-primary);
 }
 
-/* ---- 变体 4：od 顶栏（二级页面浅色：返回 + 居中标题 + 右侧动作/微信） ---- */
+/* ---- 变体 4：od 顶栏（二级页面浅色：返回 + 居中标题 + 右侧动作/微信）
+      对称方案：左侧返回按钮与右侧微信按钮/占位等宽（0.76rem）保持视觉平衡，
+      标题绝对定位于顶栏正中，居中不依赖左右控件宽度（Figma 二级页顶栏 840:8859） ---- */
 .od-topbar__nav {
+  position: relative;
   height: 0.72rem;
   border-bottom: 0.005rem solid #E5E6EB;
   display: flex;
   align-items: center;
-  background: #FFFFFF;
+  justify-content: space-between;
   padding: 0 0.16rem;   /* 与全站顶栏变体一致：水平 16px，左右不贴视口边缘 */
 }
 .od-topbar__back {
-  width: 0.4rem;
+  width: 0.76rem;
   height: 0.72rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   color: #1D2129;
   flex-shrink: 0;
 }
@@ -252,15 +258,25 @@ a { text-decoration: none; color: inherit; }
   height: 0.16rem;
 }
 .od-topbar__title {
-  flex: 1;
-  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-width: 60%;          /* 防止超长标题挤压左右控件 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 0.17rem;
   font-weight: 500;
   color: #1D2129;
 }
-.od-topbar__spacer { width: 0.4rem; height: 0.72rem; flex-shrink: 0; }
+.od-topbar__spacer { width: 0.76rem; height: 0.72rem; flex-shrink: 0; }
 
-/* ---- 变体 4a：od 顶栏 · 透明悬浮态（集采活动页 Figma 932:68725：透明叠在渐变头上） ---- */
+/* ---- 变体 4a：od 顶栏 · 透明悬浮态（集采活动页 Figma 932:68725：透明叠在渐变头上）
+      明暗是同一组件，仅颜色/背景差异：布局、间距、字号、字重与明亮模式完全一致（继承基础样式） ---- */
 .od-topbar--ghost .od-topbar__nav {
   background: transparent;
   border-bottom: none;
@@ -269,73 +285,7 @@ a { text-decoration: none; color: inherit; }
   color: #101215;
 }
 .od-topbar--ghost .od-topbar__title {
-  font-size: 0.16rem;
-  font-weight: 330;
-  line-height: 1.326;
   color: #111827;
-}
-
-/* ---- 变体 5：oc 顶栏（创建订单流程，sticky，Figma 65:6236 系） ---- */
-.oc-topbar {
-  background: #EBF2FC;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.oc-topbar__nav {
-  height: 0.72rem;                 /* 顶栏高度以首页为标准 72 */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0.16rem;
-}
-.oc-topbar__back {
-  width: 0.24rem; height: 0.24rem;
-  display: flex; align-items: center; justify-content: center;
-  color: #101215;
-}
-.oc-topbar__back svg { width: 100%; height: 100%; }
-.oc-topbar__back-icon {
-  width: 0.18rem;
-  height: 0.16rem;
-}
-.oc-topbar__title {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  font-size: 0.17rem;
-  font-weight: 500;
-  color: #101215;
-}
-.oc-topbar__capsule {
-  display: flex;
-  align-items: center;
-  height: 0.32rem;
-  background: #FFFFFF;
-  border: 0.005rem solid rgba(0,0,0,0.08);
-  border-radius: 0.16rem;
-  padding: 0 0.10rem;
-  gap: 0.12rem;
-}
-.oc-topbar__capsule-dot {
-  display: flex; gap: 0.03rem;
-}
-.oc-topbar__capsule-dot span {
-  width: 0.05rem; height: 0.05rem;
-  background: #101215;
-  border-radius: 50%;
-}
-.oc-topbar__capsule-record {
-  width: 0.16rem; height: 0.16rem;
-  border: 0.015rem solid #101215;
-  border-radius: 50%;
-  position: relative;
-}
-.oc-topbar__capsule-record::after {
-  content: "";
-  position: absolute; left: 50%; top: 50%;
-  width: 0.06rem; height: 0.06rem;
-  background: #101215;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
 }
 
 /* ---- 我的页顶栏（复用首页结构：logo + 农户版 + 微信按钮，悬浮于渐变头上） ---- */
@@ -466,6 +416,81 @@ a { text-decoration: none; color: inherit; }
 /* 颜色变体 */
 .text-arrow--primary { color: var(--c-primary); }
 .text-arrow--white { color: #FFFFFF; }
+
+/* =====================================================================
+   表单组件（单源维护，强制：所有页面的表单行 / 标签 / 输入框统一复用本组件，
+   禁止在页面 CSS 中另写同类样式。原出处：订单创建页称重信息表单 oc-weigh-form__*）
+   结构：
+   <div class="form__row">
+     <label class="form__label form__label--required">标签</label>
+     <div class="form__field">
+       <input class="form__input" type="text" placeholder="..." />
+       <span class="form__unit">元</span>        <!-- 可选：后缀单位 -->
+       <svg class="form__arrow" ...></svg>        <!-- 可选：行尾箭头/chevron -->
+     </div>
+   </div>
+   ===================================================================== */
+.form__row {
+  display: flex; align-items: center;
+  min-height: 0.52rem;
+  margin: 0 0.16rem;   /* 表单内边距统一 16px（用户强调） */
+  border-top: 0.005rem solid var(--c-border);
+  padding: 0.12rem 0;
+}
+.form__row:first-of-type { border-top: none; }
+.form__label {
+  display: flex; align-items: center; gap: 0.04rem;
+  width: 0.86rem;
+  font-size: 0.16rem;
+  color: var(--c-text);
+  flex-shrink: 0;
+  white-space: nowrap;   /* 标签禁止换行（用户强调） */
+}
+/* 长标签（≥6 字）用加宽变体：1.36rem 可容纳 7 字标签 + 必填星号单行 */
+.form__label--wide { width: 1.36rem; }
+.form__label--required::before {
+  content: "*";
+  color: var(--c-danger);
+  margin-right: 0.02rem;
+}
+.form__field {
+  flex: 1;
+  display: flex; align-items: center; gap: 0.08rem;
+}
+.form__input {
+  flex: 1;
+  font-size: 0.15rem;
+  color: var(--c-text);
+  text-align: right;
+}
+.form__input::placeholder { color: var(--c-text-light); }
+.form__unit { font-size: 0.15rem; color: var(--c-text); }
+.form__arrow {
+  width: 0.16rem; height: 0.16rem;
+  color: var(--c-text-light);
+}
 .text-arrow--muted { color: var(--c-text-sub); }
 .text-arrow--faint { color: #C4C9D0; }   /* 列表行尾浅灰箭头 */
 .text-arrow--blue { color: #4080FF; }
+
+/* =====================================================================
+   填充按钮组件（Figma 65:1317 填充按钮：样式=标准, 类型=圆角, 状态=正常）
+   单源维护：底部主操作按钮统一复用（确定报名 / 去开通 / 确定参加 / 保存密码 等）
+   统一：高 50、圆角 40、绿底 #16A34A、白字 20/330（Figma 65:1318 标准变体）
+   宽度 / 横向 padding 由使用处设计稿决定（页面用扩展类覆盖，不改组件）
+   ===================================================================== */
+.btn-fill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.5rem;
+  padding: 0.05rem 0.3rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: var(--c-primary);
+  color: #F9FAFB;
+  font-size: 0.2rem;
+  font-weight: 330;
+  line-height: 1.326;
+  cursor: pointer;
+}
