@@ -109,11 +109,15 @@
     <div class="ao-modal" id="ao-modal" aria-hidden="true">
       <div class="ao-modal__mask"></div>
       <div class="ao-modal__card">
-        <img class="ao-modal__head" src="assets/icons/recharge-bg-head.svg" alt="" />
-        <h2 class="ao-modal__title">开户成功</h2>
-        <p class="ao-modal__text">恭喜您，账户已就绪<br />充值后即可开始交易</p>
+        <div class="ao-modal__img">
+          <img src="assets/images/modal-recharge-img.png" alt="" />
+        </div>
+        <div class="ao-modal__texts">
+          <h2 class="ao-modal__title">恭喜您，账户已就绪</h2>
+          <p class="ao-modal__text">充值后即可开始交易</p>
+        </div>
         <div class="ao-modal__actions">
-          <button class="ao-modal__btn ao-modal__btn--primary" type="button" id="ao-modal-recharge">去充值</button>
+          <button class="btn-fill" type="button" id="ao-modal-recharge">去充值</button>
           <button class="ao-modal__btn ao-modal__btn--ghost" type="button" id="ao-modal-home">返回首页</button>
         </div>
       </div>

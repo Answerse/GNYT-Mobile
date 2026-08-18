@@ -1,0 +1,33 @@
+/* =====================================================================
+   缴纳成功页（Figma 1004:10118 缴纳保证金弹窗 → 确定 → 本页）
+   骨架复用 jicai.css（.jc-page / .jc-scroll）；顶栏复用 od ghost 变体；
+   ===================================================================== */
+
+/* ---------- 成功内容区 ---------- */
+.jsd-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.8rem;
+}
+.jsd-success__icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-bottom: 0.24rem;
+}
+.jsd-success__title {
+  font-size: 0.24rem;
+  font-weight: 630;
+  color: var(--c-text);
+  margin-bottom: 0.12rem;
+}
+.jsd-success__desc {
+  font-size: 0.16rem;
+  color: var(--c-text-sub);
+  margin-bottom: 0.48rem;
+  text-align: center;
+  line-height: 1.5;
+}
+.jsd-success__btn {
+  width: calc(100% - 0.32rem);
+}

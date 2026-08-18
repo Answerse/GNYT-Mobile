@@ -29,6 +29,36 @@ body {
 .hero-zone__inner > .header-mount {
   margin: 0 -0.16rem;
 }
+/* Full Scroll 页头：随 Hero 滚动，滚出视口后 fixed 吸顶 + 白色（DESIGN.md §1.2） */
+.header-mount[data-header="home"] {
+  z-index: 50;
+}
+.header-mount[data-header="home"].is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 0.02rem 0.06rem rgba(0, 0, 0, 0.02);
+  animation: header-drop-in 0.3s ease forwards;
+}
+.header-mount[data-header="home"].is-fixed .topbar__switch {
+  color: rgba(29, 33, 41, 0.6);
+}
+.header-mount[data-header="home"].is-fixed .topbar__wechat-icon {
+  filter: invert(1);
+}
+.header-mount[data-header="home"].is-fixed .topbar__logo {
+  content: url("../assets/icons/logo-standard.svg");
+}
+.header-mount[data-header="home"].is-fixed .topbar__switch-icon {
+  content: url("../assets/icons/topbar-switch-standard.svg");
+}
+.header-mount[data-header="home"].is-fixed .topbar__tag {
+  background: var(--c-primary);
+  color: var(--c-white);
+}
 /* 3D 插画横幅：内容位于图像右半幅，置于绿色头部下半部 */
 .illus {
   position: absolute;

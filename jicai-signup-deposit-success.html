@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>缴纳成功 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+  <link rel="stylesheet" href="styles/jicai-signup-form.css" />
+  <link rel="stylesheet" href="styles/jicai-signup-deposit-success.css" />
+</head>
+<body>
+  <div class="jc-page">
+
+    <!-- 顶部绿色渐变头图（隐藏） -->
+    <div class="jc-head" aria-hidden="true"></div>
+
+    <!-- 页头（Header 组件：od ghost 返回 + 标题"缴纳成功" + 微信按钮） -->
+    <div class="header-mount" data-header="deposit-success"></div>
+
+    <!-- ==================== 滚动内容区（App Shell Container） ==================== -->
+    <main class="jc-scroll">
+      <div class="jsd-success">
+        <!-- 成功插画（复用 oc-check-circle.svg，绿色大勾） -->
+        <img class="jsd-success__icon" src="assets/icons/oc-check-circle.svg" alt="" />
+
+        <h2 class="jsd-success__title">缴纳成功</h2>
+
+        <p class="jsd-success__desc">本次活动保证金缴纳完成</p>
+
+        <button class="btn-fill jsd-success__btn" type="button" id="jsd-success-btn">查看我的报名</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="deposit-success"]'),
+    topbar: { variant: 'od', title: '缴纳成功', right: 'wechat', ghost: true }
+  });
+  document.querySelector('.od-topbar__back').setAttribute('href', 'jicai-detail.html');
+  document.getElementById('jsd-success-btn').addEventListener('click', function () {
+    location.href = 'jicai-signup.html';   // "查看我的报名" → 报名列表页
+  });
+  </script>
+</body>
+</html>

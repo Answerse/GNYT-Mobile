@@ -126,8 +126,8 @@
         title: opts.topbar.title,       // 变体 od/oc 居中标题
         tabs: opts.topbar.tabs,
         right: opts.topbar.right,
-        ghost: opts.topbar.ghost,       // 变体 od：透明悬浮态（od-topbar--ghost）
-        wechatBg: opts.topbar.wechatBg, // 变体 od：微信按钮明暗（默认 light，深色背景传 'dark'）
+        ghost: opts.topbar.ghost,       // 变体 od：透明悬浮态（浅色渐变头图）
+        dark: opts.topbar.dark,         // 变体 od：暗色 — 白色文字 + 透明无边框（深色头图）
         onTab: opts.onTab
       });
     }

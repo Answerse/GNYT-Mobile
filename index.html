@@ -726,6 +726,7 @@
   <!-- 页头组件：顶栏 + 筛选栏，固定在页头（Figma 910:13227 / 621:6341），订单页 / 收支页复用 -->
   <script src="scripts/topbar.js"></script>
   <script src="scripts/page-header.js"></script>
+  <script src="scripts/full-scroll-header.js"></script>
   <script>
   PageHeader.mount({
     container: document.querySelector('[data-header="order"]'),
@@ -799,6 +800,12 @@
   PageHeader.mount({
     container: document.querySelector('[data-header="home"]'),
     topbar: { variant: 'nav', right: 'wechat' }
+  });
+  // Full Scroll 页头吸顶（组件封装，@see scripts/full-scroll-header.js）
+  FullScrollHeader.mount({
+    scrollEl: '#page-home',
+    headerEl: '[data-header="home"]',
+    heroEl: '.hero-zone'
   });
   // 我的（变体1：深色 + Logo + 微信按钮，叠在绿色头图上）
   PageHeader.mount({

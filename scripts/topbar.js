@@ -114,8 +114,10 @@
     if (variant === 'od') {
       var nav4 = document.createElement('div');
       nav4.className = 'od-topbar__nav';
-      // 透明悬浮态（集采活动页 932:68725）：类名由 od-topbar--ghost 变体定义
+      // 透明悬浮态（浅色渐变头图）：类名由 od-topbar--ghost 变体定义
       if (opts.ghost) header.classList.add('od-topbar--ghost');
+      // 暗色变体（深色头图背景）：类名由 od-topbar--dark 变体定义
+      if (opts.dark) header.classList.add('od-topbar--dark');
       // 返回：默认 a 跳转；传 onBack 时为 button 触发回调（如订单创建"回上一步"）
       var isBtn = opts.left && opts.left.onBack;
       var back4 = document.createElement(isBtn ? 'button' : 'a');
@@ -127,20 +129,18 @@
         back4.href = (opts.left && opts.left.href) || 'index.html';
       }
       back4.setAttribute('aria-label', '返回');
-      // 返回图标：复用图标库 chevron-left.svg（Figma 932:68725 向左-线性 18×16）
-      var backIcon = document.createElement('img');
+      // 返回图标：CSS mask 引用 chevron-left.svg，颜色由父级 color → currentColor 控制
+      var backIcon = document.createElement('span');
       backIcon.className = 'od-topbar__back-icon';
-      backIcon.src = 'assets/icons/chevron-left.svg';
-      backIcon.alt = '';
       back4.appendChild(backIcon);
       nav4.appendChild(back4);
       var title4 = document.createElement('h1');
       title4.className = 'od-topbar__title';
       title4.textContent = opts.title || '';
       nav4.appendChild(title4);
-      // 右侧：可选微信按钮（浅色），默认占位（集采活动页 932:68725 右侧为微信按钮）
+      // 右侧：可选微信按钮（明色模式用 light，暗色模式用 dark；wechatBg 显式覆盖优先）
       if (opts.right === 'wechat') {
-        nav4.appendChild(buildWechat(opts.wechatBg || 'light'));
+        nav4.appendChild(buildWechat(opts.wechatBg || (opts.dark ? 'dark' : 'light')));
       } else {
         var spacer4 = document.createElement('div');
         spacer4.className = 'od-topbar__spacer';

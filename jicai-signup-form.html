@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>报名 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+  <link rel="stylesheet" href="styles/jicai-signup-form.css" />
+</head>
+<body>
+  <div class="jc-page">
+
+    <!-- 顶部绿色渐变头图 -->
+    <div class="jc-head" aria-hidden="true"></div>
+
+    <!-- 页头（App Shell Header：od ghost 返回 + 标题"报名" + 微信按钮） -->
+    <div class="header-mount" data-header="signup-form"></div>
+
+    <!-- ==================== 滚动内容区（App Shell Container） ==================== -->
+    <main class="jc-scroll">
+
+      <!-- 表单卡片 1：拟采购商品 -->
+      <section class="jsf-card">
+
+        <!-- 区段标题 -->
+        <h2 class="jsf-heading">拟采购商品</h2>
+
+        <!-- ====== 商品 1（bg-2 子卡） ====== -->
+        <div class="jsf-product">
+          <div class="form__row">
+            <div class="form__label">商品规格</div>
+            <div class="form__field">
+              <span class="jsf-value">大红陈皮</span>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__label">参考价格</div>
+            <div class="form__field">
+              <span class="jsf-value">200.0</span>
+              <span class="form__unit">元/公斤</span>
+            </div>
+          </div>
+          <div class="form__row jsf-row--vertical">
+            <div class="form__label">拟采购数量</div>
+            <div class="form__field">
+              <input class="form__input" type="number" inputmode="decimal" placeholder="请输入本次拟采收的数量" />
+              <span class="form__unit">千克</span>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__label">预计采购金额</div>
+            <div class="form__field">
+              <span class="jsf-value jsf-value--amount">0.00</span>
+              <span class="form__unit">元</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== 商品 2（bg-2 子卡） ====== -->
+        <div class="jsf-product">
+          <div class="form__row">
+            <div class="form__label">商品规格</div>
+            <div class="form__field">
+              <span class="jsf-value">二红陈皮</span>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__label">参考价格</div>
+            <div class="form__field">
+              <span class="jsf-value">180.0</span>
+              <span class="form__unit">元/公斤</span>
+            </div>
+          </div>
+          <div class="form__row jsf-row--vertical">
+            <div class="form__label">拟采购数量</div>
+            <div class="form__field">
+              <input class="form__input" type="number" inputmode="decimal" placeholder="请输入本次拟采收的数量" />
+              <span class="form__unit">千克</span>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__label">预计采购金额</div>
+            <div class="form__field">
+              <span class="jsf-value jsf-value--amount">0.00</span>
+              <span class="form__unit">元</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ==================== 底栏（App Shell 底部操作条）：汇总 + 按钮（同创建订单页结构） ==================== -->
+    <footer class="jsf-bottombar">
+      <div class="jsf-total">
+        <div class="jsf-total__col">
+          <span class="jsf-total__label">预计采购总金额</span>
+          <span class="jsf-total__num">0.00 元</span>
+        </div>
+        <div class="jsf-total__col jsf-total__col--right">
+          <span class="jsf-total__label">保证金</span>
+          <span class="jsf-total__num">0.00 元</span>
+        </div>
+      </div>
+      <button class="btn-fill" type="button">确定报名</button>
+    </footer>
+
+  </div>
+
+  <!-- Header 组件（顶栏变体4 od ghost：返回 jicai-detail.html + 标题"报名" + 微信按钮） -->
+  <!-- ==================== 缴纳保证金弹窗（Figma 1004:10118 缴纳保证金弹窗） ==================== -->
+  <div class="jsf-modal" id="jsf-modal" aria-hidden="true">
+    <div class="jsf-modal__mask"></div>
+    <div class="jsf-modal__card">
+      <div class="jsf-modal__img">
+        <img src="assets/images/jsf-recharge-img.png" alt="" />
+      </div>
+      <div class="jsf-modal__texts">
+        <p class="jsf-modal__title">本次活动需缴纳保证金</p>
+        <p class="jsf-modal__amount-line">
+          <span class="jsf-modal__amount">200.0</span><span class="jsf-modal__unit">元</span>
+        </p>
+      </div>
+      <div class="jsf-modal__actions">
+        <button class="btn-fill jsf-modal__btn--primary" type="button" id="jsf-modal-submit">确定缴纳</button>
+        <button class="btn-fill jsf-modal__btn--ghost" type="button" id="jsf-modal-cancel">稍后再说</button>
+      </div>
+    </div>
+    <button class="jsf-modal__close" type="button" aria-label="关闭" id="jsf-modal-close">
+      <img src="assets/icons/ic-c-191.svg" alt="" />
+    </button>
+  </div>
+
+  <script defer>
+    var m = document.getElementById('jsf-modal');
+    var mb = document.getElementById('jsf-modal-close');
+    var ms = document.getElementById('jsf-modal-submit');
+
+    // 点击"确定报名"按钮 → 打开弹窗
+    document.querySelector('.jsf-bottombar .btn-fill').addEventListener('click', function (e) {
+      e.preventDefault();
+      m.classList.add('is-open');
+    });
+
+    // 关闭弹窗
+    mb.addEventListener('click', function () { m.classList.remove('is-open'); });
+    m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('is-open'); });
+
+    // 稍后再说（取消 → 仅关闭，不跳转）
+    var mc = document.getElementById('jsf-modal-cancel');
+    mc.addEventListener('click', function () { m.classList.remove('is-open'); });
+
+    // 确定（模拟缴纳成功 → 跳转到成功页）
+    ms.addEventListener('click', function () {
+      m.classList.remove('is-open');
+      location.href = 'jicai-signup-deposit-success.html';
+    });
+    </script>
+
+    <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('[data-header="signup-form"]'),
+    topbar: { variant: 'od', title: '报名', right: 'wechat', ghost: true }
+  });
+  // 返回 → 集采活动详情页
+  document.querySelector('.od-topbar__back').setAttribute('href', 'jicai-detail.html');
+  </script>
+</body>
+</html>

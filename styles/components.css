@@ -37,12 +37,16 @@
   --c-lime: #BEF264;
   --c-bg: #EBF2FC;
   --c-bg-1: #FFFFFF;          /* Figma variables bg-1（分段控件按钮底） */
+  --c-bg-2: #F2F9FF;          /* Figma variables bg-2（浅蓝） */
+  --c-bg-3: #EBF2FC;          /* Figma variables bg-3（页面背景浅蓝灰） */
   --c-white: #FFFFFF;
   --c-text: #111827;
   --c-text-sub: #6B7280;
   --c-text-light: #9CA3AF;    /* 更浅的次要文字（placeholder 等） */
   --c-green-50: #F0FDF4;
   --c-border: #E5E7EB;
+  --c-stroke-5: rgba(16, 18, 21, 0.05);    /* Figma variables Stroke/Neutral/5（#101215 @5%） */
+  --c-stroke-10: rgba(16, 18, 21, 0.1);   /* Figma variables Stroke/Neutral/10（#101215 @10%） */
   /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
   --c-info: #3B82F6;          /* Colors.Blue.500（Info.Default） */
   --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
@@ -252,10 +256,15 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   color: #1D2129;
   flex-shrink: 0;
 }
-/* 返回图标：复用图标库 chevron-left.svg（Figma 932:68725 向左-线性，18×16 填充） */
+/* 返回图标：CSS mask 引用 chevron-left.svg，颜色由父级 color → currentColor 控制，消除 SVG 硬编码 */
 .od-topbar__back-icon {
+  display: block;
   width: 0.18rem;
   height: 0.16rem;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: url("../assets/icons/chevron-left.svg") no-repeat center / contain;
+  mask: url("../assets/icons/chevron-left.svg") no-repeat center / contain;
 }
 .od-topbar__title {
   position: absolute;
@@ -275,17 +284,24 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 }
 .od-topbar__spacer { width: 0.76rem; height: 0.72rem; flex-shrink: 0; }
 
-/* ---- 变体 4a：od 顶栏 · 透明悬浮态（集采活动页 Figma 932:68725：透明叠在渐变头上）
-      明暗是同一组件，仅颜色/背景差异：布局、间距、字号、字重与明亮模式完全一致（继承基础样式） ---- */
+/* ---- 变体 4a：od 顶栏 · 透明悬浮态（仅结构：无背景 + 无边框，颜色继承基础样式=明色）
+       适用于浅色渐变/头图场景（如集采列表、报名页）。深色头图场景请用变体 4b（暗色）。 ---- */
 .od-topbar--ghost .od-topbar__nav {
   background: transparent;
   border-bottom: none;
 }
-.od-topbar--ghost .od-topbar__back {
-  color: #101215;
+
+/* ---- 变体 4b：od 顶栏 · 暗色（白色文字 + 透明无边框，用于深色头图背景）
+       明暗两套仅颜色差异，布局/尺寸/字号/字重完全一致。 ---- */
+.od-topbar--dark .od-topbar__nav {
+  background: transparent;
+  border-bottom: none;
 }
-.od-topbar--ghost .od-topbar__title {
-  color: #111827;
+.od-topbar--dark .od-topbar__back {
+  color: #FFFFFF;
+}
+.od-topbar--dark .od-topbar__title {
+  color: #F3F4F6;
 }
 
 /* ---- 我的页顶栏（复用首页结构：logo + 农户版 + 微信按钮，悬浮于渐变头上） ---- */
@@ -493,4 +509,18 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   font-weight: 330;
   line-height: 1.326;
   cursor: pointer;
+}
+
+/* =====================================================================
+   Full Scroll 页头入场动效（全站单源，各页面引用 @keyframes header-drop-in）
+   ===================================================================== */
+@keyframes header-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

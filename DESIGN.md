@@ -19,7 +19,7 @@
 
 ### 1.1 App Shell 模式（Tab 内页 / 二级页）
 
-用于：订单、收支、我的、亮码、所有二级页面。
+用于：订单、收支、我的、亮码、大部分二级页面。
 
 ```
 body（height:100vh, overflow:hidden，不整体滚动）
@@ -38,7 +38,7 @@ body（height:100vh, overflow:hidden，不整体滚动）
 
 ### 1.2 首页 Full Scroll 模式（视觉型页面）
 
-用于：首页。
+用于：首页、集采详情页。
 
 ```
 body（height:auto, overflow:auto，整体滚动）
@@ -174,34 +174,36 @@ PageHeader.mount({
 });
 ```
 
-**深色头图 / 透明悬浮场景（ghost 变体）**：
+**明/暗两套颜色变体**：
 
 ```js
-// 浅色头图（如集采列表页）：与明亮模式尺寸一致，仅颜色/背景差异，微信按钮 light
+// 明（默认 od）：深色文字 + 底部边框，用于浅色内容页（如开户/充值）
+PageHeader.mount({
+  container: document.querySelector('.header-mount'),
+  topbar: { variant: 'od', title: '页面标题', right: 'wechat' }
+});
+
+// 明 + 透明悬浮（ghost）：深色文字 + 透明无边框，用于浅色渐变/头图页（如集采列表、报名页）
 PageHeader.mount({
   container: document.querySelector('.header-mount'),
   topbar: { variant: 'od', title: '页面标题', right: 'wechat', ghost: true }
 });
 
-// 深色头图（如集采详情页）：额外传 wechatBg:'dark'，页面 CSS 只覆盖两行颜色
+// 暗（dark）：白色文字 + 透明无边框，用于深色头图页（如集采详情）
 PageHeader.mount({
   container: document.querySelector('.header-mount'),
-  topbar: { variant: 'od', title: '页面标题', right: 'wechat', ghost: true, wechatBg: 'dark' }
+  topbar: { variant: 'od', title: '页面标题', right: 'wechat', dark: true }
 });
 ```
 
-```css
-/* 深色头图场景页面专属覆盖（仅颜色，禁止改尺寸/布局） */
-.jc-page .od-topbar__back { color: #FFFFFF; }
-.jc-page .od-topbar__title { color: #F3F4F6; }
-```
+**页面无需再写颜色覆盖**——明/暗两套颜色由 `components.css` 的 `.od-topbar--dark` 变体完整控制，深色头图页无需页面 CSS 干预。
 
 **已冻结的组件细节（禁止修改）**：
 - 标题**绝对居中**于顶栏正中（`position:absolute; left:50%; transform:translateX(-50%)`），居中不依赖左右控件宽度
-- 左侧返回按钮 `0.76rem × 0.72rem`、箭头左对齐（`justify-content:flex-start`）、图标 `chevron-left.svg` 18×16
+- 左侧返回按钮 `0.76rem × 0.72rem`、箭头左对齐（`justify-content:flex-start`）、图标 `chevron-left.svg`（CSS mask 引用，颜色由 `color` → `currentColor` 控制，消除 SVG 硬编码）
 - 右侧微信按钮 / spacer **等宽 0.76rem**（对称视觉平衡）
-- nav 无白色背景（背景由页面透出）；明亮模式有 `border-bottom: 0.005rem solid #E5E6EB`
-- **明暗是同一组件**：ghost（透明悬浮）与明亮模式布局/间距/字号/字重完全一致（标题统一 `0.17rem/500`），仅颜色/背景差异（nav 透明无边框、文字深色）；**禁止在 ghost 变体里单独设置尺寸**
+- nav 无白色背景（背景由页面透出）；明色有 `border-bottom: 0.005rem solid #E5E6EB`，暗色/ghost 无边框
+- **明暗两套仅颜色差异**：布局/间距/字号/字重完全一致（标题统一 `0.17rem/500`）。明=深色文字（back/title `#1D2129`、微信 light），暗=白色文字（back/title `#FFFFFF/#F3F4F6`、微信 dark）。**禁止在 PageHeader.mount 调用之外手动操作组件 DOM、禁止覆盖 .od-topbar__* 尺寸/布局/字号**
 
 ---
 
