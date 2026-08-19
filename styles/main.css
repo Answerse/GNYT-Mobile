@@ -1372,7 +1372,9 @@ body {
    我的页（Figma 573:7074  4.1.5 果农(已认证)  1:1 还原）
    375×812；背景 #EBF2FC；渐变头图 + 卡片叠层；底栏共用
    ===================================================================== */
-#page-mine {
+#page-mine,
+#page-mine-broker,
+#page-mine-provider {
   margin-top: 0;                /* 顶栏从视口顶部开始 */
   gap: 0;
   padding: 0;
@@ -1566,6 +1568,7 @@ body {
 }
 
 .mine-chart {
+  width: 100%;
   margin-top: 0.16rem;
 }
 /* ECharts 画布（Figma 573:7154：图表 327×47 + 下方标题 12px） */
@@ -1643,6 +1646,51 @@ body {
   font-size: 0.16rem;
   color: #111827;
 }
+
+/* 集采活动管理卡片（Figma 1067:19197：购物车图标 + 标题 + 橙色标签 + 右箭头） */
+.mine-action-card {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  border: none;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+.mine-action-card__icon {
+  width: 0.38rem;
+  height: 0.38rem;
+  flex-shrink: 0;
+}
+.mine-action-card__title {
+  flex: 1;
+  font-size: 0.16rem;
+  color: #111827;
+  text-align: left;
+}
+.mine-action-card__badge {
+  padding: 0.02rem 0.08rem;
+  background: #F97316;
+  border-radius: 0.06rem;
+  font-size: 0.14rem;
+  color: #F9FAFB;
+  white-space: nowrap;
+}
+.mine-action-card__arrow {
+  width: 0.24rem;
+  height: 0.24rem;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+/* 有新订单时：显示标签、隐藏箭头 */
+.mine-action-card.has-badge .mine-action-card__badge { display: block; }
+.mine-action-card.has-badge .mine-action-card__arrow { display: none; }
+/* 无新订单时：显示箭头、隐藏标签 */
+.mine-action-card:not(.has-badge) .mine-action-card__badge { display: none; }
+.mine-action-card:not(.has-badge) .mine-action-card__arrow { display: block; }
 
 /* 功能列表 & 联系客服/设置 */
 .mine-list {

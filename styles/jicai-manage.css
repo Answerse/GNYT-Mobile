@@ -1,0 +1,25 @@
+/* 集采活动管理页（jicai-manage.html）— App Shell：Header + Container */
+.jm-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #F2F3F5;
+}
+
+/* 内容区：flex:1 内部滚动 */
+.jm-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.16rem;
+}
+
+/* 活动卡片列表（复用 main.css 的 order-card 样式） */
+.jm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}

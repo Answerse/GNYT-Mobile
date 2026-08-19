@@ -31,14 +31,33 @@
   // 注意：只匹配带 id 的页面容器（.page[id]），避免误伤首页内层 <main class="page"> 内容区
   function switchPage(key) {
     var found = false;
+    var MINE_PAGE_IDS = ['page-mine', 'page-mine-broker', 'page-mine-provider'];
+    var isMine = (key === 'mine');
     document.querySelectorAll('.page[id]').forEach(function (page) {
-      if (page.id === 'page-' + key) {
-        page.removeAttribute('hidden');
-        found = true;
+      if (isMine) {
+        // mine 页：保留当前可见的 mine 页，隐藏其他所有页
+        if (MINE_PAGE_IDS.indexOf(page.id) !== -1) {
+          if (!page.hasAttribute('hidden')) found = true;
+        } else {
+          page.setAttribute('hidden', '');
+        }
       } else {
-        page.setAttribute('hidden', '');
+        // 非 mine 页：隐藏所有 mine 页
+        if (MINE_PAGE_IDS.indexOf(page.id) !== -1) {
+          page.setAttribute('hidden', '');
+        } else if (page.id === 'page-' + key) {
+          page.removeAttribute('hidden');
+          found = true;
+        } else {
+          page.setAttribute('hidden', '');
+        }
       }
     });
+    // mine tab：如果都隐藏了，默认显示服务商版
+    if (isMine && !found) {
+      document.getElementById('page-mine-provider').removeAttribute('hidden');
+      found = true;
+    }
     if (found) {
       // body 不滚动，各页内容区内部滚动：切换时统一回到顶部
       ['#page-home', '#page-home main.page', '.order-list', '.page-content', '.mine-content', '.code-main']
@@ -50,11 +69,13 @@
   }
 
   function bindTabs(nav, home) {
+    var currentTab = 'home';
     nav.querySelectorAll('.tabbar__item').forEach(function (item) {
       item.addEventListener('click', function () {
         var key = item.getAttribute('data-page');
         // 当前页存在（SPA 复用）则切换并高亮；否则作为独立页跳转到模块首页
         if (switchPage(key)) {
+          currentTab = key;
           setActive(nav, key);
         } else {
           window.location.href = home + key;

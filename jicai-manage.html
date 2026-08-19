@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>集采活动管理 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/jicai.css" />
+  <link rel="stylesheet" href="styles/jicai-manage.css" />
+</head>
+<body>
+  <!-- ==================== App Shell 模式：Header + Container ==================== -->
+  <div class="jm-page">
+
+    <!-- Header 组件挂载点（PageHeader.mount 生成 .page-header，flex-shrink:0 锁定顶部） -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 内容区 Container（flex:1 内部滚动） ==================== -->
+    <main class="jm-scroll">
+      <div class="jm-list" id="jm-list">
+        <!-- 活动卡片由 JS 动态渲染（复用 jc-card 样式） -->
+      </div>
+    </main>
+
+  </div>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  // 返回
+  document.addEventListener('DOMContentLoaded', function () {
+    var back = document.querySelector('.od-topbar__back');
+    if (back) {
+      back.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (history.length > 1) history.back(); else location.href = 'index.html';
+      });
+    }
+  });
+
+  // 页头：变体 od 浅色 + 筛选标签栏（复用 order-filterbar / order-tab 样式）
+  PageHeader.mount({
+    container: document.querySelector('.header-mount'),
+    topbar: {
+      variant: 'od',
+      title: '集采活动管理',
+      right: 'wechat',
+      left: { type: 'back', href: 'index.html' }
+    },
+    filter: {
+      tabs: [
+        { label: '全部', value: 'all', count: 0, active: true },
+        { label: '进行中', value: 'active', count: 0 },
+        { label: '已完成', value: 'done', count: 0 },
+        { label: '已取消', value: 'cancelled', count: 0 }
+      ],
+      search: false
+    }
+  });
+
+  // 模拟活动数据（复用 jc-card 结构：商品图 + 采购需求 + 参考起步价 + 截止时间 + 立刻报名）
+  var activities = [
+    { name: '大红 / 5年 /A级', status: 'active', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'active', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'done', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'cancelled', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' }
+  ];
+
+  function renderList(filter) {
+    var list = document.getElementById('jm-list');
+    var filtered = filter === 'all' ? activities : activities.filter(function (a) { return a.status === filter; });
+    list.innerHTML = filtered.map(function (a) {
+      return '<article class="jc-card">' +
+        '<div class="jc-card__req">' +
+          '<div class="jc-card__thumb-wrap">' +
+            '<img class="jc-card__thumb" src="assets/jicai-goods.png" alt="' + a.name + '" />' +
+          '</div>' +
+          '<div class="jc-card__info">' +
+            '<p class="jc-card__name">' + a.name + '</p>' +
+            '<div class="jc-card__row">' +
+              '<span class="jc-card__label">采购需求总量: </span>' +
+              '<span class="jc-card__num">' + a.num + '</span><span class="jc-card__unit">' + a.unit + '</span>' +
+            '</div>' +
+            '<div class="jc-card__row jc-card__row--price">' +
+              '<span class="jc-card__label">参考起步价: </span>' +
+              '<span class="jc-card__pricebox">' +
+                '<span class="jc-card__sym">¥</span>' +
+                '<span class="jc-card__price">' + a.price + '</span>' +
+                '<span class="jc-card__unit">元/' + a.unit + '</span>' +
+              '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<footer class="jc-card__foot">' +
+          '<div class="jc-card__deadline">' +
+            '<span class="jc-card__dlabel">活动截止时间:</span>' +
+            '<span class="jc-card__dnum">' + a.deadline + '</span>' +
+          '</div>' +
+          '<button class="jc-card__btn" type="button">立刻报名</button>' +
+        '</footer>' +
+      '</article>';
+    }).join('');
+  }
+
+  renderList('all');
+
+  // 标签切换筛选
+  document.addEventListener('click', function (e) {
+    var tab = e.target.closest('.order-tab');
+    if (!tab) return;
+    var value = tab.dataset.tab;
+    renderList(value);
+  });
+  </script>
+</body>
+</html>

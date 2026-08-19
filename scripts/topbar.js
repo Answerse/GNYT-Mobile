@@ -20,8 +20,8 @@
   var LOGO_MARK_SRC = 'assets/icons/logo-mark.svg';  // app 变体 40px 方标
   var LOGO_SRC = 'assets/icons/logo.svg';            // home/mine/code 系统 logo（含"农户版"tag）
 
-  // 系统 logo + "农户版" tag（首页/我的/亮码共用）
-  function buildLogoWrap() {
+  // 系统 logo + tag（首页/我的/亮码共用；tagText 可自定义，默认"农户版"）
+  function buildLogoWrap(tagText) {
     var wrap = document.createElement('div');
     wrap.className = 'topbar__logo-wrap';
     var logo = document.createElement('img');
@@ -31,7 +31,7 @@
     wrap.appendChild(logo);
     var tag = document.createElement('span');
     tag.className = 'topbar__tag';
-    tag.textContent = '农户版';
+    tag.textContent = tagText || '农户版';
     wrap.appendChild(tag);
     return wrap;
   }
@@ -90,9 +90,26 @@
     if (variant === 'mine') {
       var nav2 = document.createElement('div');
       nav2.className = 'mine-topbar__nav';
-      nav2.appendChild(buildLogoWrap());
+      nav2.appendChild(buildLogoWrap(opts.tagText));
       var right2 = document.createElement('div');
       right2.className = 'mine-topbar__right';
+      // 切换按钮（right === 'switch+wechat' 时显示，如服务商版）
+      if (opts.right === 'switch+wechat') {
+        var sw2 = document.createElement('button');
+        sw2.type = 'button';
+        sw2.className = 'topbar__switch';
+        sw2.setAttribute('aria-label', '切换版本');
+        var swIcon2 = document.createElement('img');
+        swIcon2.className = 'topbar__switch-icon';
+        swIcon2.src = 'assets/icons/topbar-switch.svg';
+        swIcon2.alt = '';
+        sw2.appendChild(swIcon2);
+        var swText2 = document.createElement('span');
+        swText2.className = 'topbar__switch-text';
+        swText2.textContent = '切换';
+        sw2.appendChild(swText2);
+        right2.appendChild(sw2);
+      }
       right2.appendChild(buildWechat('dark'));
       nav2.appendChild(right2);
       header.appendChild(nav2);

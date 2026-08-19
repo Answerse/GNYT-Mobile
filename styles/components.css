@@ -326,7 +326,12 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   justify-content: space-between;
   padding: 0.16rem;
 }
-.mine-topbar__right { pointer-events: auto; }
+.mine-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+  pointer-events: auto;
+}
 
 /* ---- 亮码页顶栏（绿色背景 + 返回 / 标题 / 更多，Figma 65:5894） ---- */
 .code-topbar {

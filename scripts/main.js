@@ -26,30 +26,128 @@
 
   // ---------- 顶栏（买入/卖出、收购/交易）：由 scripts/topbar.js 组件负责 ----------
 
-  // ---------- 首页导航：农户版 / 企业版切换（Figma 247:10080 / 231:9724） ----------
-  // 切换顶栏标签 + 头部版本（农户版：统计+交易插画；企业版：仅增长插画，无统计）
-  function setHomeVersion(isFarm) {
+  // ---------- 首页导航：农户版 / 企业版 / 服务商版 三角色切换 ----------
+  var HOME_ROLES = ['farm', 'enterprise', 'provider'];
+  var HOME_LABELS = { farm: '农户版', enterprise: '企业版', provider: '服务商' };
+  var homeRole = 'farm';
+
+  function setHomeVersion(role) {
     var stat = document.querySelector('#page-home .stat--farm');
     var illusFarm = document.querySelector('#page-home .illus--farm');
     var illusEnt = document.querySelector('#page-home .illus--enterprise');
-    if (stat) stat.hidden = !isFarm;
-    if (illusFarm) illusFarm.hidden = !isFarm;
-    if (illusEnt) illusEnt.hidden = isFarm;
+    var illusProv = document.querySelector('#page-home .illus--provider');
+    if (stat) stat.hidden = role !== 'farm';
+    if (illusFarm) illusFarm.hidden = role !== 'farm';
+    if (illusEnt) illusEnt.hidden = role !== 'enterprise';
+    if (illusProv) illusProv.hidden = role !== 'provider';
   }
+
+  function updateHomeTag() {
+    document.querySelectorAll('.topbar--nav .topbar__tag').forEach(function (el) {
+      el.textContent = HOME_LABELS[homeRole];
+    });
+    document.querySelectorAll('.topbar--nav .topbar__switch-text').forEach(function (el) {
+      el.textContent = '切换';
+    });
+  }
+
   document.querySelectorAll('.topbar--nav .topbar__switch').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var nav = btn.closest('.topbar__nav');
-      if (!nav) return;
-      var tag = nav.querySelector('.topbar__tag');
-      var isFarm = tag && tag.textContent === '农户版';
-      if (tag) tag.textContent = isFarm ? '企业版' : '农户版';
-      // 按钮文字始终指向可切换到的目标版本（农户版时显示"企业版"，反之亦然）
-      var swText = nav.querySelector('.topbar__switch-text');
-      if (swText) swText.textContent = isFarm ? '农户版' : '企业版';
-      btn.setAttribute('aria-label', isFarm ? '切换农户版' : '切换企业版');
-      setHomeVersion(!isFarm);
+      var idx = (HOME_ROLES.indexOf(homeRole) + 1) % HOME_ROLES.length;
+      homeRole = HOME_ROLES[idx];
+      setHomeVersion(homeRole);
+      updateHomeTag();
     });
   });
+
+  // ---------- 我的页：农户版 / 经纪人版 / 服务商版 三角色切换 ----------
+  var MINE_ROLES = ['farm', 'broker', 'provider'];
+  var MINE_LABELS = { farm: '农户版', broker: '经纪人', provider: '服务商' };
+  var MINE_IDS = { farm: 'page-mine', broker: 'page-mine-broker', provider: 'page-mine-provider' };
+  var mineVersion = 'provider';
+
+  function updateMineSwitchText() {
+    document.querySelectorAll('.mine-topbar .topbar__switch-text').forEach(function (el) {
+      el.textContent = '切换';
+    });
+    MINE_ROLES.forEach(function (role) {
+      var tag = document.querySelector('#' + MINE_IDS[role] + ' .topbar__tag');
+      if (tag) tag.textContent = MINE_LABELS[role];
+    });
+  }
+  setTimeout(updateMineSwitchText, 0);
+
+  document.querySelectorAll('.mine-topbar .topbar__switch').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var nextIdx = (MINE_ROLES.indexOf(mineVersion) + 1) % MINE_ROLES.length;
+      var nextRole = MINE_ROLES[nextIdx];
+      // 隐藏当前，显示下一个
+      document.getElementById(MINE_IDS[mineVersion]).setAttribute('hidden', '');
+      document.getElementById(MINE_IDS[nextRole]).removeAttribute('hidden');
+      mineVersion = nextRole;
+      updateMineSwitchText();
+      // 延迟初始化图表
+      setTimeout(function () {
+        if (nextRole === 'farm') initTrendChart();
+        else if (nextRole === 'broker') initBrokerTrendChart();
+        else initProviderTrendChart();
+      }, 80);
+    });
+  });
+
+  // 服务商版图表初始化
+  function initProviderTrendChart() {
+    var el = document.getElementById('mineProviderTrendChart');
+    if (!el || !window.echarts) return;
+    if (!el.__chart) {
+      el.__chart = echarts.init(el);
+      el.__chart.setOption({
+        grid: { left: 0, right: 0, top: 4, bottom: 0 },
+        xAxis: { type: 'category', show: false, boundaryGap: false, data: ['一', '二', '三', '四', '五', '六', '日'] },
+        yAxis: {
+          type: 'value', show: true, position: 'right', min: 0, max: 100, splitNumber: 5,
+          axisLine: { show: false }, axisTick: { show: false }, axisLabel: { show: false },
+          splitLine: { show: true, lineStyle: { color: 'rgba(16, 18, 21, 0.05)' } }
+        },
+        series: [{
+          type: 'line', data: [95, 80, 60, 70, 40, 30, 22], showSymbol: false, smooth: false,
+          lineStyle: { color: '#16A34A', width: 2 },
+          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(57, 204, 121, 0.4)' },
+            { offset: 1, color: 'rgba(57, 204, 121, 0)' }
+          ]) }
+        }]
+      });
+    }
+    el.__chart.resize();
+  }
+
+  // 经纪人版图表初始化
+  function initBrokerTrendChart() {
+    var el = document.getElementById('mineBrokerTrendChart');
+    if (!el || !window.echarts) return;
+    if (!el.__chart) {
+      el.__chart = echarts.init(el);
+      el.__chart.setOption({
+        grid: { left: 0, right: 0, top: 4, bottom: 0 },
+        xAxis: { type: 'category', show: false, boundaryGap: false, data: ['一', '二', '三', '四', '五', '六', '日'] },
+        yAxis: {
+          type: 'value', show: true, position: 'right', min: 0, max: 100, splitNumber: 5,
+          axisLine: { show: false }, axisTick: { show: false }, axisLabel: { show: false },
+          splitLine: { show: true, lineStyle: { color: 'rgba(16, 18, 21, 0.05)' } }
+        },
+        series: [{
+          type: 'line', data: [95, 80, 60, 70, 40, 30, 22], showSymbol: false, smooth: false,
+          lineStyle: { color: '#16A34A', width: 2 },
+          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(57, 204, 121, 0.4)' },
+            { offset: 1, color: 'rgba(57, 204, 121, 0)' }
+          ]) }
+        }]
+      });
+    }
+    el.__chart.resize();
+  }
 
   // ---------- 订单页：筛选标签（全部/待支付/已完成/已取消）：由 scripts/page-header.js 组件负责过滤 ----------
 
@@ -135,7 +233,11 @@
   document.addEventListener('click', function (e) {
     var item = e.target.closest('.tabbar__item');
     if (item && item.getAttribute('data-page') === 'mine') {
-      setTimeout(initTrendChart, 80);
+      setTimeout(function () {
+        if (mineVersion === 'provider') initProviderTrendChart();
+        else if (mineVersion === 'broker') initBrokerTrendChart();
+        else initTrendChart();
+      }, 80);
     }
   });
 })();
