@@ -12,7 +12,7 @@ body {
 }
 
 .jc-page {
-  width: 3.75rem;
+  /* width: 3.75rem; */
   height: 100vh;
   margin: 0 auto;
   position: relative;
@@ -23,14 +23,17 @@ body {
 }
 
 /* ===================== 顶部绿色渐变头图（Figma 932:68682 bg-head：375×390 渐变 213° #DCFCE7→#FFFFFF）
-   z-index:-1 使其铺在页面背景之上、所有内容之下（顶栏/内容无需再设层级） ===================== */
+   z-index:-1 使其铺在页面背景之上、所有内容之下（顶栏/内容无需再设层级）
+   背景通过 CSS 变量 --jc-head-bg 控制，各页面只需覆盖变量值即可切换背景 ===================== */
 .jc-head {
+  --jc-head-bg: var(--bg-gradient-jicai);
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3.9rem;
-  background: url("../assets/bg-head-jicai.svg") no-repeat center top / 100% 100%;
+  background: var(--jc-head-bg);
   pointer-events: none;
   z-index: -1;
 }

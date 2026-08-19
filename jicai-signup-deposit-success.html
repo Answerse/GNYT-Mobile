@@ -3,32 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>缴纳成功 - 桂农易通</title>
+  <title>支付成功 - 桂农易通</title>
   <link rel="stylesheet" href="styles/components.css" />
   <link rel="stylesheet" href="styles/jicai.css" />
-  <link rel="stylesheet" href="styles/jicai-signup-form.css" />
   <link rel="stylesheet" href="styles/jicai-signup-deposit-success.css" />
 </head>
 <body>
   <div class="jc-page">
 
-    <!-- 顶部绿色渐变头图（隐藏） -->
+    <!-- 顶部绿色渐变头图（Figma bg-head 375×400：#16A34A→#EBF2FC） -->
     <div class="jc-head" aria-hidden="true"></div>
 
-    <!-- 页头（Header 组件：od ghost 返回 + 标题"缴纳成功" + 微信按钮） -->
+    <!-- 页头（Header 组件：od ghost 返回 + 标题 + 微信按钮） -->
     <div class="header-mount" data-header="deposit-success"></div>
 
     <!-- ==================== 滚动内容区（App Shell Container） ==================== -->
     <main class="jc-scroll">
       <div class="jsd-success">
-        <!-- 成功插画（复用 oc-check-circle.svg，绿色大勾） -->
-        <img class="jsd-success__icon" src="assets/icons/oc-check-circle.svg" alt="" />
+        <!-- 成功插画（Figma 1067:14890 状态插画-支付成功 192×192） -->
+        <img class="jsd-success__illust" src="assets/images/pay-success-illust.png" alt="" />
 
-        <h2 class="jsd-success__title">缴纳成功</h2>
+        <!-- 金额区（Figma 1067:14910） -->
+        <div class="jsd-success__amount">
+          <p class="jsd-success__label">支付成功</p>
+          <p class="jsd-success__value">
+            <span class="jsd-success__sym">¥</span>
+            <span class="jsd-success__num">5887.00</span>
+            <span class="jsd-success__unit">元</span>
+          </p>
+        </div>
 
-        <p class="jsd-success__desc">本次活动保证金缴纳完成</p>
-
-        <button class="btn-fill jsd-success__btn" type="button" id="jsd-success-btn">查看我的报名</button>
+        <!-- 按钮区（Figma 1067:14916：column, gap:24, padding:24 40） -->
+        <div class="jsd-success__actions">
+          <button class="btn btn--fill btn--l" type="button" id="jsd-success-signup">查看我的报名</button>
+          <button class="btn btn--outline btn--outline--primary btn--l" type="button" id="jsd-success-home">返回首页</button>
+        </div>
       </div>
     </main>
 
@@ -40,11 +49,14 @@
   <script>
   PageHeader.mount({
     container: document.querySelector('[data-header="deposit-success"]'),
-    topbar: { variant: 'od', title: '缴纳成功', right: 'wechat', ghost: true }
+    topbar: { variant: 'od', title: ' ', right: 'wechat', dark: true }
   });
   document.querySelector('.od-topbar__back').setAttribute('href', 'jicai-detail.html');
-  document.getElementById('jsd-success-btn').addEventListener('click', function () {
-    location.href = 'jicai-signup.html';   // "查看我的报名" → 报名列表页
+  document.getElementById('jsd-success-signup').addEventListener('click', function () {
+    location.href = 'jicai-signup.html';
+  });
+  document.getElementById('jsd-success-home').addEventListener('click', function () {
+    location.href = 'index.html';
   });
   </script>
 </body>

@@ -53,6 +53,11 @@
   --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
   --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
   --c-danger: #C94747;        /* 必填星号 / 删除等警示红 */
+  /* 渐变背景 Token */
+  --bg-gradient-hero: linear-gradient(180deg, #16A34A 40.25%, #EBF2FC 100%);
+  --bg-gradient-jicai: linear-gradient(213deg, #DCFCE7 0%, #FFFFFF 100%);
+  --bg-gradient-jicai-signup: linear-gradient(213deg, #DCFCE7 0%, #EBF2FC 100%);
+  --bg-gradient-success: linear-gradient(180deg, #16A34A 0%, #EBF2FC 100%);
 }
 
 /* ---------- 基础重置 ---------- */
@@ -291,11 +296,13 @@ input { font: inherit; border: none; outline: none; background: transparent; }
   border-bottom: none;
 }
 
-/* ---- 变体 4b：od 顶栏 · 暗色（白色文字 + 透明无边框，用于深色头图背景）
+/* ---- 变体 4b：od 顶栏 · 暗色（白色文字 + 透明无边框 + 毛玻璃，用于深色头图背景）
        明暗两套仅颜色差异，布局/尺寸/字号/字重完全一致。 ---- */
 .od-topbar--dark .od-topbar__nav {
   background: transparent;
   border-bottom: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 .od-topbar--dark .od-topbar__back {
   color: #FFFFFF;
@@ -447,7 +454,8 @@ input { font: inherit; border: none; outline: none; background: transparent; }
    </div>
    ===================================================================== */
 .form__row {
-  display: flex; align-items: center;
+  display: flex;
+  align-items: center;
   min-height: 0.52rem;
   margin: 0 0.16rem;   /* 表单内边距统一 16px（用户强调） */
   border-top: 0.005rem solid var(--c-border);
@@ -490,26 +498,114 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 .text-arrow--blue { color: #4080FF; }
 
 /* =====================================================================
-   填充按钮组件（Figma 65:1317 填充按钮：样式=标准, 类型=圆角, 状态=正常）
-   单源维护：底部主操作按钮统一复用（确定报名 / 去开通 / 确定参加 / 保存密码 等）
-   统一：高 50、圆角 40、绿底 #16A34A、白字 20/330（Figma 65:1318 标准变体）
-   宽度 / 横向 padding 由使用处设计稿决定（页面用扩展类覆盖，不改组件）
+   按钮组件（统一 .btn 基类 + --fill/--outline 变体 × --s/--m/--l 尺寸）
+   图标插槽：btn-icon--left / btn-icon--right，默认不显示
+   文字插槽：btn-text，默认不换行
+   JS 挂载：Button.mount() 自动注入 data-btn-icon-left/right 图标
    ===================================================================== */
-.btn-fill {
-  display: flex;
+/* 基类 */
+.btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 0.5rem;
+  height: 0.44rem;
   padding: 0.05rem 0.3rem;
   border: none;
   border-radius: 0.4rem;
-  background: var(--c-primary);
-  color: #F9FAFB;
-  font-size: 0.2rem;
+  font-size: 0.16rem;
   font-weight: 330;
   line-height: 1.326;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
+/* 文字 */
+.btn .btn-text { white-space: nowrap; }
+/* 图标容器 */
+.btn .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.btn .btn-icon svg,
+.btn .btn-icon img {
+  display: block;
+}
+/* 尺寸变体 */
+.btn--s { height: 0.32rem; padding: 0.08rem 0.2rem; font-size: 0.14rem; }
+.btn--s .btn-icon svg,
+.btn--s .btn-icon img { width: 0.16rem; height: 0.16rem; }
+.btn--m { height: 0.44rem; padding: 0.05rem 0.3rem; font-size: 0.16rem; }
+.btn--m .btn-icon svg,
+.btn--m .btn-icon img { width: 0.20rem; height: 0.20rem; }
+.btn--l { height: 0.56rem; padding: 0.05rem 0.4rem; font-size: 0.18rem; }
+.btn--l .btn-icon svg,
+.btn--l .btn-icon img { width: 0.24rem; height: 0.24rem; }
+/* 间距（默认按 m 尺寸 4px，l 尺寸 6px） */
+.btn .btn-icon--left { margin-right: 0.04rem; }
+.btn .btn-icon--right { margin-left: 0.04rem; }
+.btn--l .btn-icon--left { margin-right: 0.06rem; }
+.btn--l .btn-icon--right { margin-left: 0.06rem; }
+
+/* ---------- 变体：fill（填充） ---------- */
+.btn--fill {
+  width: 100%;
+  background: var(--c-primary);
+  color: #F9FAFB;
+}
+/* ---------- 变体：outline（描边） ---------- */
+.btn--outline {
+  width: 100%;
+  background: transparent;
+  border: 0.01rem solid rgba(32, 36, 37, 0.1);
+  color: var(--c-text-sub);
+}
+/* 描边积极态 */
+.btn--outline--primary {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+}
+/* 描边消极态 */
+.btn--outline--muted {
+  border-color: rgba(32, 36, 37, 0.1);
+  color: var(--c-text-sub);
+}
+
+/* ---------- 交互状态：hover / pressed ---------- */
+/* fill hover：背景加深 */
+.btn--fill:hover {
+  background: #15803D;
+}
+/* fill pressed：再加深 */
+.btn--fill:active {
+  background: #14532D;
+}
+/* outline hover：背景浅灰 */
+.btn--outline:hover {
+  background: rgba(32, 36, 37, 0.04);
+}
+/* outline pressed：背景再深一点 */
+.btn--outline:active {
+  background: rgba(32, 36, 37, 0.08);
+}
+/* outline--primary hover */
+.btn--outline--primary:hover {
+  background: rgba(22, 163, 74, 0.08);
+}
+/* outline--primary pressed */
+.btn--outline--primary:active {
+  background: rgba(22, 163, 74, 0.16);
+}
+/* outline--muted hover */
+.btn--outline--muted:hover {
+  background: rgba(32, 36, 37, 0.04);
+}
+/* outline--muted pressed */
+.btn--outline--muted:active {
+  background: rgba(32, 36, 37, 0.08);
+}
+
+
 
 /* =====================================================================
    Full Scroll 页头入场动效（全站单源，各页面引用 @keyframes header-drop-in）

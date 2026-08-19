@@ -1,33 +1,84 @@
 /* =====================================================================
-   缴纳成功页（Figma 1004:10118 缴纳保证金弹窗 → 确定 → 本页）
-   骨架复用 jicai.css（.jc-page / .jc-scroll）；顶栏复用 od ghost 变体；
+   支付成功页（Figma 1067:14881 成功页面2）
+   骨架复用 jicai.css（.jc-page / .jc-scroll）；顶栏复用 od dark 变体；
    ===================================================================== */
 
-/* ---------- 成功内容区 ---------- */
+/* 页面背景色（Figma bg-g：#EBF2FC） */
+.jc-page {
+  background: var(--c-bg-3);
+}
+
+/* 覆盖 jc-head 背景（Figma bg-head-success：#16A34A→#EBF2FC，375×400） */
+.jc-head {
+  --jc-head-bg: var(--bg-gradient-success);
+  height: 4rem;                     /* 设计稿 bg-head height: 400 */
+}
+
+/* ---------- 成功内容区（Figma layout_ITPSVJ：column, gap:16, padding:112 16 108） ---------- */
 .jsd-success {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 0.8rem;
+  align-self: stretch;
+  gap: 0.16rem;                     /* 设计稿 gap: 16px */
+  padding: 0.2rem 0.16rem 1.08rem; /* 设计稿 padding: 112 16 108 */
 }
-.jsd-success__icon {
-  width: 0.8rem;
-  height: 0.8rem;
-  margin-bottom: 0.24rem;
+/* 成功插画（Figma 1067:14890：192×192） */
+.jsd-success__illust {
+  width: 1.92rem;                   /* 设计稿 width: 192 */
+  height: 1.92rem;                  /* 设计稿 height: 192 */
+  flex-shrink: 0;
 }
-.jsd-success__title {
-  font-size: 0.24rem;
-  font-weight: 630;
-  color: var(--c-text);
-  margin-bottom: 0.12rem;
+/* 金额区（Figma 1067:14910：column, gap:8, align-center） */
+.jsd-success__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.08rem;                     /* 设计稿 gap: 8px */
 }
-.jsd-success__desc {
+/* 标签（MiSans 20/330 #101215） */
+.jsd-success__label {
+  font-size: 0.2rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #101215;
+  margin: 0;
+}
+/* 数值行（¥/元 16/630 + 数值40/700 DIN） */
+.jsd-success__value {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.08rem;                     /* 设计稿 gap: 8px */
+  margin: 0;
+}
+.jsd-success__sym {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
   font-size: 0.16rem;
-  color: var(--c-text-sub);
-  margin-bottom: 0.48rem;
-  text-align: center;
-  line-height: 1.5;
+  font-weight: 630;
+  line-height: 1.326;
+  color: #101215;
 }
-.jsd-success__btn {
-  width: calc(100% - 0.32rem);
+.jsd-success__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.4rem;                /* 设计稿 fontSize: 40 */
+  font-weight: 700;
+  line-height: 1.172;
+  color: #101215;
+}
+.jsd-success__unit {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem;
+  font-weight: 630;
+  line-height: 1.326;
+  color: #101215;
+}
+/* 按钮区（Figma 1067:14916：column, gap:24, padding:24 40） */
+.jsd-success__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  gap: 0.24rem;                     /* 设计稿 gap: 24px */
+  padding: 0.24rem 0.4rem;          /* 设计稿 padding: 24 40 */
 }

@@ -14,7 +14,7 @@ body {
   background: #EBF2FC;
 }
 .jc-head {
-  background: url("../assets/images/jc-signup-bg-head.svg") no-repeat center top / 100% 100%;
+  --jc-head-bg: var(--bg-gradient-jicai-signup);
 }
 
 /* ===================== 标题区（Figma 967:7535：居中大标题 + 两行说明，padding 16/16/24，column gap8） ===================== */
@@ -119,28 +119,28 @@ body {
   flex-shrink: 0;
 }
 
-/* ===================== 底栏（Figma 967:7538：居中文字 + 确定参加按钮，column gap16 padding 24/16，上阴影） ===================== */
+/* ===================== 底栏（Figma 967:7538：居中文字 + 确定参加按钮，column gap16 padding 17/16，上阴影） ===================== */
 .js-bottombar {
   flex-shrink: 0;
-  width: 3.75rem;
+  /* width: 3.75rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.16rem;
-  padding: 0.24rem 0.16rem;
-  background: transparent;
+  padding: 0.17rem 0.16rem;
+  background: #f2f9ff;
   box-shadow: none;   /* 底栏阴影已去除，背景透明 */
 }
 /* 提示文字：中文5级文本（MiSans 330 20，#111827） */
 .js-bottombar__text {
-  font-size: 0.2rem;
+  font-size: 0.16rem;
   font-weight: 330;
   line-height: 1.326;
   color: #111827;
   text-align: center;
 }
-/* 确定参加：复用 .btn-fill 组件（components.css），仅保留设计稿横向 padding 64px（Figma 65:1318 填充按钮） */
+/* 确定参加：复用 .btn.btn--fill 组件（components.css），padding 与组件一致 */
 .js-bottombar__btn {
-  padding: 0.05rem 0.64rem;
+  /* padding 继承 .btn.btn--fill 组件默认值 0.05rem 0.3rem，无需覆盖 */
 }

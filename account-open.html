@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles/components.css" />
   <link rel="stylesheet" href="styles/steps.css" />
   <link rel="stylesheet" href="styles/account-open.css" />
+  <link rel="stylesheet" href="styles/modal.css" />
 </head>
 <body>
   <div class="ao-page">
@@ -102,26 +103,26 @@
 
     <!-- ==================== 底部操作条（App Shell flex 层，按钮文案随步骤切换） ==================== -->
     <footer class="ao-bottombar" id="ao-bottombar">
-      <button class="btn-fill ao-bottombar__btn" id="ao-submit" type="button">提交开户</button>
+      <button class="btn btn--fill ao-bottombar__btn" id="ao-submit" type="button">提交开户</button>
     </footer>
 
     <!-- ==================== 开户成功弹窗（保存密码成功后弹出，Figma 1004:10116 充值引导） ==================== -->
-    <div class="ao-modal" id="ao-modal" aria-hidden="true">
-      <div class="ao-modal__mask"></div>
-      <div class="ao-modal__card">
-        <div class="ao-modal__img">
+    <div class="modal" id="ao-modal" aria-hidden="true">
+      <div class="modal__mask"></div>
+      <div class="modal__card">
+        <div class="modal__illust">
           <img src="assets/images/modal-recharge-img.png" alt="" />
         </div>
-        <div class="ao-modal__texts">
-          <h2 class="ao-modal__title">恭喜您，账户已就绪</h2>
-          <p class="ao-modal__text">充值后即可开始交易</p>
+        <div class="modal__texts">
+          <h2 class="modal__title">恭喜您，账户已就绪</h2>
+          <p class="modal__text">充值后即可开始交易</p>
         </div>
-        <div class="ao-modal__actions">
-          <button class="btn-fill" type="button" id="ao-modal-recharge">去充值</button>
-          <button class="ao-modal__btn ao-modal__btn--ghost" type="button" id="ao-modal-home">返回首页</button>
+        <div class="modal__actions">
+          <button class="btn btn--fill btn--l" type="button" id="ao-modal-recharge">去充值</button>
+          <button class="btn btn--outline btn--outline--muted btn--l" type="button" id="ao-modal-home">返回首页</button>
         </div>
       </div>
-      <button class="ao-modal__close" type="button" aria-label="关闭" id="ao-modal-close">
+      <button class="modal__close" type="button" aria-label="关闭" id="ao-modal-close">
         <img src="assets/icons/recharge-close.svg" alt="" />
       </button>
     </div>
@@ -129,6 +130,7 @@
   </div>
 
   <script src="scripts/steps.js"></script>
+  <script src="scripts/modal.js"></script>
   <script>
     var stepsApi = Steps.mount({
       container: document.querySelector('.ao-step.is-active .ao-steps-mount'),
@@ -153,9 +155,9 @@
     }
 
     // 开户成功弹窗（保存密码成功后弹出）
-    var aoModal = document.getElementById('ao-modal');
-    function openModal() { aoModal.classList.add('is-open'); }
-    function closeModal() { aoModal.classList.remove('is-open'); }
+    Modal.mount('#ao-modal');
+    function openModal() { Modal.open('#ao-modal'); }
+    function closeModal() { Modal.close('#ao-modal'); }
     document.getElementById('ao-submit').addEventListener('click', function () {
       var label = this.textContent;
       if (label === '保存密码') { openModal(); return; }
@@ -168,7 +170,6 @@
     document.getElementById('ao-modal-home').addEventListener('click', function () {
       location.href = 'index.html';
     });
-    document.getElementById('ao-modal-close').addEventListener('click', closeModal);
 
     // 开户类型切换：分段控件选中态 + 对应表单显隐
     document.querySelectorAll('.ao-type__tab').forEach(function (tab) {

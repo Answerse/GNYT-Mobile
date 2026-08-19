@@ -16,7 +16,7 @@ body {
   width: 100%;
   height: 3.75rem;
   background: linear-gradient(180deg, #16A34A 40%, #EBF2FC 97%);   /* bg-head 渐变（Figma 1016:11342） */
-  border-radius: 0 0 0.08rem 0.08rem;                              /* 左上/右上 0，左下/右下 8 */
+  border-radius: 0 0 0rem 0rem;                              /* 左上/右上 0，左下/右下 8 */
   overflow: hidden;
 }
 /* 遮罩层：仅顶部 0-100px 渐变（黑色 65% → 0%），确保页头白字可见 */
@@ -75,7 +75,7 @@ body {
 .jd-body {
   position: relative;
   z-index: 5;
-  margin-top: -0.84rem;           /* 上移 84px 使绿色卡与白色卡的分界线对齐主图 Hero 下边缘 */
+  margin-top: -0.865rem;           /* 上移 84px 使绿色卡与白色卡的分界线对齐主图 Hero 下边缘 */
   padding: 0 0.08rem 0.88rem;     /* 底部留 0.88rem 避免固定操作栏遮挡 */
   display: flex;
   flex-direction: column;
@@ -245,7 +245,7 @@ body {
 }
 .jd-call__icon { width: 0.16rem; height: 0.16rem; }
 
-/* ===================== 底部固定操作栏（DESIGN.md §6：btn-fill 组件，"确定报名"） ===================== */
+/* ===================== 底部固定操作栏（DESIGN.md §6：btn.btn--fill 组件，"确定报名"） ===================== */
 .jd-bottombar {
   position: fixed;
   bottom: 0;
@@ -258,9 +258,9 @@ body {
   background: #FFFFFF;
 }
 /* 底部栏内的按钮撑满宽度覆盖组件默认水平 padding */
-.jd-bottombar .btn-fill {
+.jd-bottombar .btn.btn--fill {
   flex: 1;
-  max-width: 3.43rem;   /* 375 - 16×2 */
+  /* max-width: 3.43rem; */   /* 375 - 16×2 */
 }
 
 /* ===================== 活动详情 · 独立白底卡片（图文混排） ===================== */
@@ -316,7 +316,7 @@ body {
     display: inline-block;
     width: 0.16rem;
     height: 0.16rem;
-    background-color: var(--c-white);
+    background-color: var(--c-primary);
     -webkit-mask: url("../assets/icons/ic-info-filled.svg") no-repeat center / contain;
     mask: url("../assets/icons/ic-info-filled.svg") no-repeat center / contain;
   }

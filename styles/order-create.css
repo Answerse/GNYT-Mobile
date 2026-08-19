@@ -680,7 +680,7 @@ img { max-width: 100%; }
   padding: 0.24rem 0.4rem;
   align-self: stretch;
 }
-/* 查看订单 / 创建新订单：复用 .btn-fill 组件（components.css）；--outline 为描边变体 */
+/* 查看订单 / 创建新订单：复用 .btn.btn--fill 组件（components.css）；--outline 为描边变体 */
 .oc-success__btn--outline {
   background: transparent;
   border: 0.01rem solid #11AA55;

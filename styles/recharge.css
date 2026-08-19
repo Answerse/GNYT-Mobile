@@ -96,7 +96,7 @@ body {
   color: #101215;
 }
 
-/* ---------- 胶囊按钮（主按钮复用 .btn-fill 组件，components.css） ---------- */
+/* ---------- 胶囊按钮（主按钮复用 .btn.btn--fill 组件，components.css） ---------- */
 .rc-btn--primary {
   padding: 0.05rem 0.48rem;   /* 设计稿横向 padding 48px */
 }

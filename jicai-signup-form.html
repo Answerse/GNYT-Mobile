@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles/components.css" />
   <link rel="stylesheet" href="styles/jicai.css" />
   <link rel="stylesheet" href="styles/jicai-signup-form.css" />
+  <link rel="stylesheet" href="styles/modal.css" />
 </head>
 <body>
   <div class="jc-page">
@@ -104,60 +105,115 @@
           <span class="jsf-total__num">0.00 元</span>
         </div>
       </div>
-      <button class="btn-fill" type="button">确定报名</button>
+      <button class="btn btn--fill" type="button">确定报名</button>
     </footer>
 
   </div>
 
   <!-- Header 组件（顶栏变体4 od ghost：返回 jicai-detail.html + 标题"报名" + 微信按钮） -->
   <!-- ==================== 缴纳保证金弹窗（Figma 1004:10118 缴纳保证金弹窗） ==================== -->
-  <div class="jsf-modal" id="jsf-modal" aria-hidden="true">
-    <div class="jsf-modal__mask"></div>
-    <div class="jsf-modal__card">
-      <div class="jsf-modal__img">
+  <div class="modal" id="jsf-modal" aria-hidden="true">
+    <div class="modal__mask"></div>
+    <div class="modal__card">
+      <div class="modal__illust">
         <img src="assets/images/jsf-recharge-img.png" alt="" />
       </div>
-      <div class="jsf-modal__texts">
-        <p class="jsf-modal__title">本次活动需缴纳保证金</p>
-        <p class="jsf-modal__amount-line">
-          <span class="jsf-modal__amount">200.0</span><span class="jsf-modal__unit">元</span>
+      <div class="modal__texts">
+        <p class="modal__title modal__title--sub">本次活动需缴纳保证金</p>
+        <p class="modal__amount-line">
+          <span class="modal__amount">200.0</span><span class="modal__unit">元</span>
         </p>
       </div>
-      <div class="jsf-modal__actions">
-        <button class="btn-fill jsf-modal__btn--primary" type="button" id="jsf-modal-submit">确定缴纳</button>
-        <button class="btn-fill jsf-modal__btn--ghost" type="button" id="jsf-modal-cancel">稍后再说</button>
+      <div class="modal__actions">
+        <button class="btn btn--fill btn--l" type="button" id="jsf-modal-submit">确定缴纳</button>
+        <button class="btn btn--outline btn--outline--muted btn--l" type="button" id="jsf-modal-cancel">稍后再说</button>
       </div>
     </div>
-    <button class="jsf-modal__close" type="button" aria-label="关闭" id="jsf-modal-close">
+    <button class="modal__close" type="button" aria-label="关闭" id="jsf-modal-close">
       <img src="assets/icons/ic-c-191.svg" alt="" />
     </button>
   </div>
 
-  <script defer>
-    var m = document.getElementById('jsf-modal');
-    var mb = document.getElementById('jsf-modal-close');
-    var ms = document.getElementById('jsf-modal-submit');
+  <!-- ==================== 输入密码弹窗 ==================== -->
+  <div class="modal" id="jsf-pwd-modal" aria-hidden="true">
+    <div class="modal__mask"></div>
+    <div class="modal__card modal__card--narrow">
+      <div class="modal__texts">
+        <p class="modal__title modal__title--sub">请输入支付密码</p>
+      </div>
+      <div class="jsf-pwd-inputs" id="jsf-pwd-inputs">
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+      </div>
+      <div class="modal__actions">
+        <button class="btn btn--fill btn--l" type="button" id="jsf-pwd-confirm">确定</button>
+        <button class="btn btn--outline btn--outline--muted btn--l" type="button" id="jsf-pwd-cancel">取消</button>
+      </div>
+    </div>
+  </div>
 
-    // 点击"确定报名"按钮 → 打开弹窗
-    document.querySelector('.jsf-bottombar .btn-fill').addEventListener('click', function (e) {
+  <script src="scripts/modal.js"></script>
+  <script>
+    Modal.mount('#jsf-modal');
+    Modal.mount('#jsf-pwd-modal');
+
+    // 点击"确定报名"按钮 → 打开保证金弹窗
+    document.querySelector('.jsf-bottombar .btn--fill').addEventListener('click', function (e) {
       e.preventDefault();
-      m.classList.add('is-open');
+      Modal.open('#jsf-modal');
     });
 
-    // 关闭弹窗
-    mb.addEventListener('click', function () { m.classList.remove('is-open'); });
-    m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('is-open'); });
+    // 稍后再说（取消 → 仅关闭）
+    document.getElementById('jsf-modal-cancel').addEventListener('click', function () {
+      Modal.close('#jsf-modal');
+    });
 
-    // 稍后再说（取消 → 仅关闭，不跳转）
-    var mc = document.getElementById('jsf-modal-cancel');
-    mc.addEventListener('click', function () { m.classList.remove('is-open'); });
+    // 确定缴纳 → 关闭保证金弹窗，打开密码弹窗
+    document.getElementById('jsf-modal-submit').addEventListener('click', function () {
+      Modal.close('#jsf-modal');
+      openPwdModal();
+    });
 
-    // 确定（模拟缴纳成功 → 跳转到成功页）
-    ms.addEventListener('click', function () {
-      m.classList.remove('is-open');
+    // ========== 密码输入弹窗逻辑 ==========
+    var pwdInputs = document.querySelectorAll('#jsf-pwd-inputs .jsf-pwd-input');
+
+    function openPwdModal() {
+      // 清空并重置
+      pwdInputs.forEach(function (input) { input.value = ''; });
+      Modal.open('#jsf-pwd-modal');
+      // 聚焦第一个输入框
+      setTimeout(function () { pwdInputs[0].focus(); }, 100);
+    }
+
+    // 密码输入：自动跳转下一个 / 退格跳回上一个
+    pwdInputs.forEach(function (input, idx) {
+      input.addEventListener('input', function () {
+        if (this.value && idx < pwdInputs.length - 1) {
+          pwdInputs[idx + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' && !this.value && idx > 0) {
+          pwdInputs[idx - 1].focus();
+        }
+      });
+    });
+
+    // 确定 → 模拟验证，跳转成功页
+    document.getElementById('jsf-pwd-confirm').addEventListener('click', function () {
+      Modal.close('#jsf-pwd-modal');
       location.href = 'jicai-signup-deposit-success.html';
     });
-    </script>
+
+    // 取消 → 关闭密码弹窗
+    document.getElementById('jsf-pwd-cancel').addEventListener('click', function () {
+      Modal.close('#jsf-pwd-modal');
+    });
+  </script>
 
     <script src="scripts/topbar.js"></script>
   <script src="scripts/page-header.js"></script>

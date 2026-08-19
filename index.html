@@ -536,10 +536,8 @@
     <!-- 顶栏（Header 组件：变体1 深色 + Logo + 微信按钮，由 PageHeader.mount 渲染） -->
     <div class="header-mount" data-header="mine"></div>
 
-    <!-- 背景头图（Figma 573:7077：绿→EBF2FC 渐变铺底，直角——画板圆角属装饰已去除） -->
-    <div class="mine-head" aria-hidden="true">
-      <img class="mine-head__img" src="assets/icons/mine-head.svg" alt="" />
-    </div>
+    <!-- 背景头图（Figma 573:7077：绿→EBF2FC 渐变铺底，CSS linear-gradient 实现） -->
+    <div class="mine-head" aria-hidden="true"></div>
 
     <!-- 个人信息（Figma 573:7085：头像 + 信息列[姓名行 + 电话]，透明叠头图；固定不随内容滚动） -->
     <section class="mine-usercard">
