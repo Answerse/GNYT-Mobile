@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>桂农易通 - 收支</title>
+  <link rel="preload" href="assets/fonts/DINishCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/DINishCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/AlimamaShuHeiTi-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+  <!-- ============ 收支页 ============ -->
+  <div class="page" id="page-flow">
+    <!-- 页头组件（顶栏固定在页头） -->
+    <div class="header-mount" data-header="flow"></div>
+
+    <!-- 内容区：撑满剩余高度，内部滚动 -->
+    <div class="page-content">
+      <!-- 日历卡片（筛选栏已移至页头 Header，由 PageHeader.mount 渲染） -->
+    <div class="flow-calcard">
+      <!-- 年月 + 左右切换 -->
+      <div class="flow-calhead">
+        <button class="flow-calhead__arrow" type="button" aria-label="上一项">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <span class="flow-calhead__title" data-range="month">2025</span>
+        <button class="flow-calhead__arrow" type="button" aria-label="下一项">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- 月视图：12 个月 -->
+      <div class="flow-calgrid flow-calgrid--month" data-view="month">
+        <button class="cal-cell" type="button"><span class="cal-cell__num">1 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">3 月</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">4 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">5 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">6 月</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">7 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">8 月</span><span class="cal-cell__amt">+6233310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">9 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">10 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">11 月</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">12 月</span><span class="cal-cell__none">暂无</span></button>
+      </div>
+
+      <!-- 年视图：9 个年份 -->
+      <div class="flow-calgrid flow-calgrid--year" data-view="year" hidden>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2017</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2018</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">2019</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2020</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2021</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">2022</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2023</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">2024</span><span class="cal-cell__amt">+87523310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2025</span><span class="cal-cell__none">暂无</span></button>
+      </div>
+
+      <!-- 日视图：日历（按 Figma 1:1 布局） -->
+      <div class="flow-calgrid flow-calgrid--day" data-view="day" hidden>
+        <div class="flow-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">1</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">2</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">3</span><span class="cal-cell__amt">+13158</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">4</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">5</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">6</span><span class="cal-cell__amt">+9876</span></button>
+
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">7</span><span class="cal-cell__amt">+13152</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">8</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">9</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">10</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">11</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">12</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">13</span><span class="cal-cell__amt">+113343</span></button>
+
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">14</span><span class="cal-cell__amt">+9876</span></button>
+        <button class="cal-cell cal-cell--tint" type="button"><span class="cal-cell__num">15</span><span class="cal-cell__amt">+13121</span></button>
+        <button class="cal-cell is-selected" type="button"><span class="cal-cell__num">16</span><span class="cal-cell__amt">+23310</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">17</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">18</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">19</span><span class="cal-cell__none">暂无</span></button>
+
+        <button class="cal-cell" type="button"><span class="cal-cell__num">20</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">21</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">22</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">23</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">24</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">25</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">26</span><span class="cal-cell__none">暂无</span></button>
+
+        <button class="cal-cell" type="button"><span class="cal-cell__num">27</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">28</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">29</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">30</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button"><span class="cal-cell__num">31</span><span class="cal-cell__none">暂无</span></button>
+        <button class="cal-cell" type="button" disabled></button>
+        <button class="cal-cell" type="button" disabled></button>
+      </div>
+    </div>
+
+    <!-- 统计卡片：收入统计 -->
+    <p class="flow-statcard__date flow-statcard__date--outside" data-range="month">2025-07</p>
+    <div class="flow-statcard">
+      <!-- 缺角背景（Figma 230:4324：359x118 右上切角，叠在卡片顶部，遮挡插画底部） -->
+      <img class="flow-statcard__bg" src="assets/flow-bg-notched.svg" alt="" aria-hidden="true" />
+      <p class="flow-statcard__title">收入统计</p>
+      <img class="flow-statcard__deco" src="assets/flow-money-deco.svg" alt="" aria-hidden="true" />
+      <div class="flow-statcard__grid">
+        <div class="flow-stat">
+          <p class="flow-stat__label">订单总数</p>
+          <p class="flow-stat__value" data-month="43" data-year="233" data-day="7">43</p>
+        </div>
+        <div class="flow-stat">
+          <p class="flow-stat__label">总重量(公斤)</p>
+          <p class="flow-stat__value" data-month="3201" data-year="923411" data-day="201">3201</p>
+        </div>
+        <div class="flow-stat">
+          <p class="flow-stat__label">合计金额 (元)</p>
+          <p class="flow-stat__value flow-stat__value--green" data-month="¥6233310" data-year="¥87523310" data-day="¥23310">¥6233310</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 明细卡片（月视图数据：何炜 / 李世海 / 郑文锦） -->
+    <div class="flow-detail" data-range="month">
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">何炜</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">89<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7836.59<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李世海</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">418<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7214.83<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">郑文锦</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">345<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9513.67<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+
+    <!-- 明细卡片（日视图数据：赵明辉 / 何炜 / 李世海 / 郑文锦） -->
+    <div class="flow-detail" data-range="day" hidden>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">赵明辉</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">418<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8947.56<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">何炜</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">89<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7836.59<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李世海</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">106<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8345.66<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">郑文锦</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">123<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9234.77<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+
+    <!-- 明细卡片（年视图数据：周琎 / 李豫卓 / 冯艺莲） -->
+    <div class="flow-detail" data-range="year" hidden>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">周琎</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">874<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥9054.27<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">李豫卓</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">418<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥7214.83<span class="flow-detail__unit">元</span></span>
+      </div>
+      <div class="flow-detail__row">
+        <div class="flow-detail__who">
+        <span class="flow-detail__title">冯艺莲</span>
+        <span class="flow-detail__time">2025-07-16 14:21:31</span>
+      </div>
+        <span class="flow-detail__weight">522<span class="flow-detail__unit">公斤</span></span>
+        <span class="flow-detail__amount">¥8015.36<span class="flow-detail__unit">元</span></span>
+      </div>
+    </div>
+    </div><!-- /.page-content -->
+  </div><!-- /#page-flow -->
+
+  <!-- 底部标签栏（内联，避免 fetch 模板额外请求） -->
+  <nav class="tabbar" aria-label="主导航">
+    <button class="tabbar__item" type="button" data-page="home">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-home-normal.svg" alt="首页" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-home-active.svg" alt="首页" />
+      </span>
+      <span class="tabbar__label">首页</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="order">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-order-normal.svg" alt="订单" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-order-active.svg" alt="订单" />
+      </span>
+      <span class="tabbar__label">订单</span>
+    </button>
+    <!-- 中间凸起"亮码卖货"主按钮 -->
+    <button class="tabbar__item tabbar__item--main" type="button" data-page="code">
+      <span class="tabbar__main-btn">
+        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
+      </span>
+      <span class="tabbar__label">亮码卖货</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="flow">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-flow-normal.svg" alt="收支" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-flow-active.svg" alt="收支" />
+      </span>
+      <span class="tabbar__label">收支</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="mine">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-mine-normal.svg" alt="我的" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-mine-active.svg" alt="我的" />
+      </span>
+      <span class="tabbar__label">我的</span>
+    </button>
+  </nav>
+
+  <!-- 公共脚本合并 app.js（defer：并行下载、不阻塞渲染；执行顺序保持依赖关系） -->
+  <script src="scripts/app.js" defer></script>
+  <script src="scripts/flow.js" defer></script>
+</body>
+</html>

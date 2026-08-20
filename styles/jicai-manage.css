@@ -23,3 +23,296 @@
   flex-direction: column;
   gap: 0.12rem;
 }
+
+/* =====================================================================
+   筛选栏（新变体 jmf-*，Figma 1076:43426：商品品类输入 + 分割线 + 标签栏）
+   独立类名，不复用/不修改 order-filterbar / order-tab 等现有变体
+   ===================================================================== */
+.jmf-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.08rem;
+  padding: 0 0.08rem 0.16rem;
+  background: #F2F3F5;
+}
+
+/* 商品品类输入：pill 50px、padding 4、gap 4，无背景色，相对定位（下拉菜单锚点） */
+.jmf-input {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.04rem;
+  padding: 0.04rem;
+  border-radius: 0.5rem;
+  background: none;
+  cursor: pointer;
+  min-height: 0.44rem; /* 最小点击范围 44px */
+}
+.jmf-input__text {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  white-space: nowrap;
+}
+/* 后置下拉箭头：16×16，颜色 #202425 50% 透明（CSS mask 引用现有 chevron 资源） */
+.jmf-input__arrow {
+  display: inline-block;
+  width: 0.16rem;
+  height: 0.16rem;
+  flex-shrink: 0;
+  background-color: #202425;
+  opacity: 0.5;
+  -webkit-mask: url("../assets/icons/oc-chevron-down.svg") no-repeat center / contain;
+  mask: url("../assets/icons/oc-chevron-down.svg") no-repeat center / contain;
+}
+
+/* 下拉菜单：白底圆角、绝对定位在输入框下方，每项最小高 44px */
+.jmf-menu {
+  position: absolute;
+  top: calc(100% + 0.08rem);
+  left: 0;
+  z-index: 20;
+  min-width: 1.6rem;
+  padding: 0.08rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  box-shadow: 0 0.04rem 0.12rem rgba(16, 18, 21, 0.08);
+  list-style: none;
+  margin: 0;
+}
+.jmf-menu[hidden] {
+  display: none;
+}
+.jmf-menu__item {
+  display: flex;
+  align-items: center;
+  min-height: 0.44rem; /* 最小点击范围 44px */
+  padding: 0 0.12rem;
+  border-radius: 0.04rem;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  cursor: pointer;
+}
+.jmf-menu__item:active {
+  background: rgba(16, 18, 21, 0.05);
+}
+
+/* 垂直分割线：rgba(16,18,21,0.1) */
+.jmf-divider {
+  width: 0.01rem;
+  align-self: stretch;
+  flex-shrink: 0;
+  background: rgba(16, 18, 21, 0.1);
+}
+
+/* 标签栏：横向可滚动，隐藏滚动条 */
+.jmf-tabs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.08rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.jmf-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* 标签：pill 24px、padding 4/12、gap 4、baseline 对齐；选中绿底白字，未选中白底深字 */
+.jmf-tab {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.04rem;
+  padding: 0.04rem 0.12rem;
+  border-radius: 0.24rem;
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  background: #FFFFFF;
+  border: none;
+  white-space: nowrap;
+}
+.jmf-tab.is-active {
+  background: var(--c-primary);
+  color: #FFFFFF;
+}
+/* 计数：西文 16/400 */
+.jmf-tab__count {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.16rem;
+  font-weight: 400;
+  line-height: 0.951;
+}
+
+/* =====================================================================
+   集采活动卡片（新变体 jmc-*，Figma 1076:43228：4种状态）
+   独立类名，不复用/不修改 jc-card 等现有卡片样式
+   ===================================================================== */
+.jmc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.16rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  flex-shrink: 0;
+}
+
+/* 状态标签：右上角绝对定位（Figma 标签位置 x 273~301 y 0），padding 2/8 */
+.jmc-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.02rem 0.08rem;
+  border-radius: 0 0 0 0.08rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  white-space: nowrap;
+}
+
+/* 主体：商品图 + 商品信息（row，两端对齐） */
+.jmc-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.16rem;
+}
+
+/* 商品图：80×80、圆角4、浅蓝底 #E1E8F2 */
+.jmc-thumb {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.04rem;
+  background: #E1E8F2;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.jmc-thumb__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 商品信息：column gap 8 */
+.jmc-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+/* 品名：中文常规 16/330 #111827 */
+.jmc-name {
+  font-size: 0.16rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+}
+/* 信息行：标签左对齐、值右对齐（两端对齐） */
+.jmc-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #6B7280;
+}
+.jmc-row__label {
+  margin-right: auto;
+  white-space: nowrap;
+  color: #6B7280;
+}
+.jmc-row__value {
+  font-size: 0.16rem;
+  color: #111827;
+}
+/* 价格块：¥ + 数值 + 单位（全部深色 #111827，Figma 1077:43621） */
+.jmc-row__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+}
+.jmc-row__sym {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #111827;
+}
+.jmc-row__num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem;
+  font-weight: 700;
+  line-height: 1.075;
+  color: #111827;
+}
+.jmc-row__unit {
+  font-size: 0.12rem;
+  font-weight: 330;
+  color: #111827;
+}
+
+/* 底栏：截止时间(fill) + 取消报名按钮 + 右箭头 */
+.jmc-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.16rem;
+}
+.jmc-deadline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.02rem;
+  height: 0.28rem;
+}
+.jmc-deadline__label {
+  font-size: 0.14rem;
+  font-weight: 330;
+  color: #111827;
+  white-space: nowrap;
+}
+.jmc-deadline__date {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.14rem;
+  font-weight: 400;
+  color: #111827;
+}
+/* 取消报名：填充按钮 样式=消极（Figma 70:9926：浅灰底 rgba(16,18,21,0.05)、无边框、
+   圆角40、padding 8/16、高32、文字 14/330 深色 #111827） */
+.jmc-btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.08rem;
+  padding: 0.08rem 0.16rem;
+  height: 0.32rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: rgba(16, 18, 21, 0.05);
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: #111827;
+  flex-shrink: 0;
+}
+/* 右箭头：16×16、rgba(16,18,21,0.5)、CSS mask 引用现有资源 */
+.jmc-arrow {
+  display: inline-block;
+  width: 0.16rem;
+  height: 0.16rem;
+  flex-shrink: 0;
+  background-color: #101215;
+  opacity: 0.5;
+  -webkit-mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+  mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+}

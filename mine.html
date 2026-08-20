@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>桂农易通 - 我的</title>
+  <link rel="preload" href="assets/fonts/DINishCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/DINishCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/AlimamaShuHeiTi-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+  <!-- ============ 我的页（农户版，默认隐藏） ============ -->
+  <div class="page" id="page-mine" hidden>
+    <!-- 顶栏（Header 组件：变体1 深色 + Logo + 微信按钮，由 PageHeader.mount 渲染） -->
+    <div class="header-mount" data-header="mine"></div>
+
+    <!-- 背景头图（Figma 573:7077：绿→EBF2FC 渐变铺底，CSS linear-gradient 实现） -->
+    <div class="mine-head" aria-hidden="true"></div>
+
+    <!-- 个人信息（Figma 573:7085：头像 + 信息列[姓名行 + 电话]，透明叠头图；固定不随内容滚动） -->
+    <section class="mine-usercard">
+      <div class="mine-usercard__top">
+        <img class="mine-avatar" src="assets/icons/mine-avatar.svg" alt="头像" />
+        <div class="mine-usercard__meta">
+          <div class="mine-username-row">
+            <p class="mine-username">侯庆山</p>
+            <div class="mine-tags">
+              <span class="badge" data-badge="real"></span>
+              <span class="badge" data-badge="broker"></span>
+            </div>
+          </div>
+          <p class="mine-phone">18174741232</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mine-content">
+      <!-- 钱包（Figma 573:7119：切角背景 bg-notched + 右上角余额明细按钮 + 余额/提现） -->
+      <section class="mine-wallet">
+        <img class="mine-wallet__notched" src="assets/icons/mine-bg-notched.svg" alt="" aria-hidden="true" />
+        <!-- 余额明细（Figma 929:51091：透明底、白字、白箭头，叠在卡片右上缺口；文字+箭头统一用 text-arrow 组件） -->
+        <button class="mine-wallet__balance text-arrow text-arrow--white" type="button">
+          余额明细
+          <span class="text-arrow__icon" aria-hidden="true"></span>
+        </button>
+        <div class="mine-wallet__main">
+          <div class="mine-wallet__info">
+            <p class="mine-wallet__label">钱包余额 (元)</p>
+            <p class="mine-wallet__amount"><span class="mine-wallet__currency">¥</span><span class="mine-wallet__amount-num">50000.00</span></p>
+          </div>
+          <button class="mine-wallet__withdraw" type="button">提现</button>
+        </div>
+      </section>
+
+      <!-- 交易统计（Figma 573:7133：统计两项容器 + ECharts 图表 + 今日订单数） -->
+      <section class="mine-stats">
+        <div class="mine-stats__row">
+          <div class="mine-stats__item">
+            <p class="mine-stats__label">今日订单总额 (元)</p>
+            <p class="mine-stats__value">¥30230.22</p>
+          </div>
+          <div class="mine-stats__item mine-stats__item--right">
+            <p class="mine-stats__label">累计收款 (元)</p>
+            <p class="mine-stats__value">¥323234.23</p>
+          </div>
+        </div>
+
+        <div class="mine-chart">
+          <div class="mine-chart__canvas" id="mineTrendChart" role="img" aria-label="近7日交易趋势"></div>
+          <p class="mine-chart__title">近7日交易趋势</p>
+        </div>
+
+        <button class="mine-stats__order" type="button">
+          <span class="mine-stats__order-label">今日订单数:</span>
+          <span class="mine-stats__order-num">320 单</span>
+          <span class="mine-stats__order-view text-arrow text-arrow--primary">查看
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </span>
+        </button>
+      </section>
+
+      <!-- 功能方块（并排）：集采贸易订单 / 贸易订单（Figma 1063:13468） -->
+      <section class="mine-grid">
+        <a class="mine-grid__item" href="jicai-manage.html">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_jicai_doc.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">集采贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+        <a class="mine-grid__item" href="#">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_trade_order.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+      </section>
+
+      <!-- 经纪人认证 banner（Figma 573:7177：渐变底 + 服务图标 40×40 + 立刻认证标签） -->
+      <section class="mine-broker">
+        <img class="mine-broker__icon" src="assets/icons/mine-service.svg" alt="" />
+        <div class="mine-broker__text">
+          <p class="mine-broker__title">认证成为经纪人</p>
+          <p class="mine-broker__sub">对接市场、整合资源</p>
+        </div>
+        <button class="mine-broker__btn" type="button">立刻认证</button>
+      </section>
+
+      <!-- 联系客服 / 设置 -->
+      <section class="mine-list">
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_bankcard.svg" alt="" /></span>
+          <span class="mine-list__label">银行卡管理</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_service.svg" alt="" /></span>
+          <span class="mine-list__label">联系客服</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_setting.svg" alt="" /></span>
+          <span class="mine-list__label">设置</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+      </section>
+    </div>
+  </div><!-- /#page-mine -->
+
+  <!-- ============ 服务商版"我的"页（默认显示） ============ -->
+  <div class="page" id="page-mine-provider">
+    <!-- 顶栏（服务商版：Logo + "服务商"标签 + 切换按钮 + 微信按钮） -->
+    <div class="header-mount" data-header="mine-provider"></div>
+
+    <div class="mine-head" aria-hidden="true"></div>
+
+    <section class="mine-usercard">
+      <div class="mine-usercard__top">
+        <img class="mine-avatar" src="assets/icons/mine-avatar.svg" alt="头像" />
+        <div class="mine-usercard__meta">
+          <div class="mine-username-row">
+            <p class="mine-username">侯庆山</p>
+            <div class="mine-tags">
+              <span class="badge" data-badge="real"></span>
+              <span class="badge" data-badge="broker"></span>
+            </div>
+          </div>
+          <p class="mine-phone">18174741232</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mine-content">
+      <section class="mine-wallet">
+        <img class="mine-wallet__notched" src="assets/icons/mine-bg-notched.svg" alt="" aria-hidden="true" />
+        <button class="mine-wallet__balance text-arrow text-arrow--white" type="button">
+          余额明细
+          <span class="text-arrow__icon" aria-hidden="true"></span>
+        </button>
+        <div class="mine-wallet__main">
+          <div class="mine-wallet__info">
+            <p class="mine-wallet__label">钱包余额 (元)</p>
+            <p class="mine-wallet__amount"><span class="mine-wallet__currency">¥</span><span class="mine-wallet__amount-num">50000.00</span></p>
+          </div>
+          <button class="mine-wallet__withdraw" type="button">提现</button>
+        </div>
+      </section>
+
+      <!-- 集采活动管理（Figma 1067:19197：购物车图标 + 标题 + 橙色标签 + 右箭头） -->
+      <a class="mine-action-card has-badge" href="jicai-manage.html">
+        <img class="mine-action-card__icon" src="assets/icons/ic_cart.svg" alt="" />
+        <span class="mine-action-card__title">集采活动管理</span>
+        <span class="mine-action-card__badge">新订单: 2</span>
+        <img class="mine-action-card__arrow" src="assets/icons/chevron-right.svg" alt="" />
+      </a>
+
+      <section class="mine-grid">
+        <a class="mine-grid__item" href="jicai-manage.html">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_jicai_doc.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">集采贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+        <a class="mine-grid__item" href="#">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_trade_order.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+      </section>
+
+      <section class="mine-stats">
+        <div class="mine-stats__row">
+          <div class="mine-stats__item">
+            <p class="mine-stats__label">今日订单总额 (元)</p>
+            <p class="mine-stats__value">¥30230.22</p>
+          </div>
+          <div class="mine-stats__item mine-stats__item--right">
+            <p class="mine-stats__label">累计收款 (元)</p>
+            <p class="mine-stats__value">¥323234.23</p>
+          </div>
+        </div>
+
+        <div class="mine-chart">
+          <div class="mine-chart__canvas" id="mineProviderTrendChart" role="img" aria-label="近7日交易趋势"></div>
+          <p class="mine-chart__title">近7日交易趋势</p>
+        </div>
+
+        <button class="mine-stats__order" type="button">
+          <span class="mine-stats__order-label">今日订单数:</span>
+          <span class="mine-stats__order-num">320 单</span>
+          <span class="mine-stats__order-view text-arrow text-arrow--primary">查看
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </span>
+        </button>
+      </section>
+
+      <section class="mine-broker">
+        <img class="mine-broker__icon" src="assets/icons/mine-service.svg" alt="" />
+        <div class="mine-broker__text">
+          <p class="mine-broker__title">认证成为经纪人</p>
+          <p class="mine-broker__sub">对接市场、整合资源</p>
+        </div>
+        <button class="mine-broker__btn" type="button">立刻认证</button>
+      </section>
+
+      <section class="mine-list">
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_bankcard.svg" alt="" /></span>
+          <span class="mine-list__label">银行卡管理</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_service.svg" alt="" /></span>
+          <span class="mine-list__label">联系客服</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_setting.svg" alt="" /></span>
+          <span class="mine-list__label">设置</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+      </section>
+    </div>
+  </div><!-- /#page-mine-provider -->
+
+  <!-- ============ 经纪人版"我的"页（默认隐藏） ============ -->
+  <div class="page" id="page-mine-broker" hidden>
+    <div class="header-mount" data-header="mine-broker"></div>
+
+    <div class="mine-head" aria-hidden="true"></div>
+
+    <section class="mine-usercard">
+      <div class="mine-usercard__top">
+        <img class="mine-avatar" src="assets/icons/mine-avatar.svg" alt="头像" />
+        <div class="mine-usercard__meta">
+          <div class="mine-username-row">
+            <p class="mine-username">侯庆山</p>
+            <div class="mine-tags">
+              <span class="badge" data-badge="real"></span>
+              <span class="badge" data-badge="broker"></span>
+            </div>
+          </div>
+          <p class="mine-phone">18174741232</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="mine-content">
+      <section class="mine-wallet">
+        <img class="mine-wallet__notched" src="assets/icons/mine-bg-notched.svg" alt="" aria-hidden="true" />
+        <button class="mine-wallet__balance text-arrow text-arrow--white" type="button">
+          余额明细
+          <span class="text-arrow__icon" aria-hidden="true"></span>
+        </button>
+        <div class="mine-wallet__main">
+          <div class="mine-wallet__info">
+            <p class="mine-wallet__label">钱包余额 (元)</p>
+            <p class="mine-wallet__amount"><span class="mine-wallet__currency">¥</span><span class="mine-wallet__amount-num">50000.00</span></p>
+          </div>
+          <button class="mine-wallet__withdraw" type="button">提现</button>
+        </div>
+      </section>
+
+      <section class="mine-stats">
+        <div class="mine-stats__row">
+          <div class="mine-stats__item">
+            <p class="mine-stats__label">今日订单总额 (元)</p>
+            <p class="mine-stats__value">¥30230.22</p>
+          </div>
+          <div class="mine-stats__item mine-stats__item--right">
+            <p class="mine-stats__label">累计收款 (元)</p>
+            <p class="mine-stats__value">¥323234.23</p>
+          </div>
+        </div>
+
+        <div class="mine-chart">
+          <div class="mine-chart__canvas" id="mineBrokerTrendChart" role="img" aria-label="近7日交易趋势"></div>
+          <p class="mine-chart__title">近7日交易趋势</p>
+        </div>
+
+        <button class="mine-stats__order" type="button">
+          <span class="mine-stats__order-label">今日订单数:</span>
+          <span class="mine-stats__order-num">320 单</span>
+          <span class="mine-stats__order-view text-arrow text-arrow--primary">查看
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </span>
+        </button>
+      </section>
+
+      <section class="mine-grid">
+        <a class="mine-grid__item" href="jicai-manage.html">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_jicai_doc.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">集采贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+        <a class="mine-grid__item" href="#">
+          <span class="mine-grid__icon"><img src="assets/icons/ic_trade_order.svg" alt="" /></span>
+          <span class="mine-grid__text">
+            <span class="mine-grid__label">贸易订单</span>
+            <img class="mine-grid__arrow" src="assets/icons/chevron-right.svg" alt="" />
+          </span>
+        </a>
+      </section>
+
+      <section class="mine-broker">
+        <img class="mine-broker__icon" src="assets/icons/mine-service.svg" alt="" />
+        <div class="mine-broker__text">
+          <p class="mine-broker__title">认证成为经纪人</p>
+          <p class="mine-broker__sub">对接市场、整合资源</p>
+        </div>
+        <button class="mine-broker__btn" type="button">立刻认证</button>
+      </section>
+
+      <section class="mine-list">
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_bankcard.svg" alt="" /></span>
+          <span class="mine-list__label">银行卡管理</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_service.svg" alt="" /></span>
+          <span class="mine-list__label">联系客服</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+        <button class="mine-list__item" type="button">
+          <span class="mine-list__icon"><img src="assets/icons/ic_setting.svg" alt="" /></span>
+          <span class="mine-list__label">设置</span>
+          <img class="mine-list__arrow" src="assets/icons/chevron-right.svg" alt="" />
+        </button>
+      </section>
+    </div>
+  </div><!-- /#page-mine-broker -->
+
+  <!-- 底部标签栏（内联，避免 fetch 模板额外请求） -->
+  <nav class="tabbar" aria-label="主导航">
+    <button class="tabbar__item" type="button" data-page="home">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-home-normal.svg" alt="首页" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-home-active.svg" alt="首页" />
+      </span>
+      <span class="tabbar__label">首页</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="order">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-order-normal.svg" alt="订单" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-order-active.svg" alt="订单" />
+      </span>
+      <span class="tabbar__label">订单</span>
+    </button>
+    <!-- 中间凸起"亮码卖货"主按钮 -->
+    <button class="tabbar__item tabbar__item--main" type="button" data-page="code">
+      <span class="tabbar__main-btn">
+        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
+      </span>
+      <span class="tabbar__label">亮码卖货</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="flow">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-flow-normal.svg" alt="收支" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-flow-active.svg" alt="收支" />
+      </span>
+      <span class="tabbar__label">收支</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="mine">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-mine-normal.svg" alt="我的" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-mine-active.svg" alt="我的" />
+      </span>
+      <span class="tabbar__label">我的</span>
+    </button>
+  </nav>
+
+  <!-- 公共脚本合并 app.js（defer：并行下载、不阻塞渲染；执行顺序保持依赖关系） -->
+  <script src="scripts/app.js" defer></script>
+  <script src="assets/vendor/echarts.min.js" defer></script>
+  <script src="scripts/mine.js" defer></script>
+</body>
+</html>

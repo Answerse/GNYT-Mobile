@@ -9,3 +9,20 @@ __pycache__/
 .idea/
 .vscode/
 assets/fonts/MiSans-*.woff2
+
+# Local backups (not for repo)
+_backup/
+backup-pre-*.tar.gz
+
+# IDE internal
+.pai/
+
+# Taro mini-app template (unrelated to H5 project)
+/src/
+/config/
+/types/
+/package.json
+/babel.config.js
+/tsconfig.json
+/project.config.json
+/project.tt.json

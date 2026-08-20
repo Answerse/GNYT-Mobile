@@ -16,6 +16,31 @@
     <!-- Header 组件挂载点（PageHeader.mount 生成 .page-header，flex-shrink:0 锁定顶部） -->
     <div class="header-mount"></div>
 
+    <!-- ==================== 筛选栏（新变体 jmf-*，Figma 1076:43426：商品品类输入 + 分割线 + 标签栏） ==================== -->
+    <div class="jmf-filter">
+      <!-- 商品品类输入（pill 50px、padding 4、后置下拉箭头；点击弹出品类下拉菜单） -->
+      <div class="jmf-input" role="button" aria-label="选择商品品类" aria-haspopup="listbox" aria-expanded="false" id="jmf-category">
+        <span class="jmf-input__text" id="jmf-category-text">商品品类</span>
+        <span class="jmf-input__arrow" aria-hidden="true"></span>
+        <!-- 下拉菜单（默认隐藏）：全部 / 陈皮 / 原木 / 蚕茧 -->
+        <ul class="jmf-menu" role="listbox" id="jmf-menu" hidden>
+          <li class="jmf-menu__item" role="option" data-cat="all">全部</li>
+          <li class="jmf-menu__item" role="option" data-cat="chenpi">陈皮</li>
+          <li class="jmf-menu__item" role="option" data-cat="mu">原木</li>
+          <li class="jmf-menu__item" role="option" data-cat="canjian">蚕茧</li>
+        </ul>
+      </div>
+      <!-- 垂直分割线：rgba(16,18,21,0.1) -->
+      <span class="jmf-divider" aria-hidden="true"></span>
+      <!-- 标签栏（横向可滚动） -->
+      <div class="jmf-tabs">
+        <button class="jmf-tab is-active" type="button" data-tab="all">全部<span class="jmf-tab__count">0</span></button>
+        <button class="jmf-tab" type="button" data-tab="enrolled">已报名<span class="jmf-tab__count">0</span></button>
+        <button class="jmf-tab" type="button" data-tab="in_progress">履约中<span class="jmf-tab__count">0</span></button>
+        <button class="jmf-tab" type="button" data-tab="done">已完成<span class="jmf-tab__count">0</span></button>
+      </div>
+    </div>
+
     <!-- ==================== 内容区 Container（flex:1 内部滚动） ==================== -->
     <main class="jm-scroll">
       <div class="jm-list" id="jm-list">
@@ -40,7 +65,7 @@
     }
   });
 
-  // 页头：变体 od 浅色 + 筛选标签栏（复用 order-filterbar / order-tab 样式）
+  // 页头：变体 od 浅色（筛选栏由页面自行构建，不复用 PageHeader.filter）
   PageHeader.mount({
     container: document.querySelector('.header-mount'),
     topbar: {
@@ -48,70 +73,105 @@
       title: '集采活动管理',
       right: 'wechat',
       left: { type: 'back', href: 'index.html' }
-    },
-    filter: {
-      tabs: [
-        { label: '全部', value: 'all', count: 0, active: true },
-        { label: '进行中', value: 'active', count: 0 },
-        { label: '已完成', value: 'done', count: 0 },
-        { label: '已取消', value: 'cancelled', count: 0 }
-      ],
-      search: false
     }
   });
 
-  // 模拟活动数据（复用 jc-card 结构：商品图 + 采购需求 + 参考起步价 + 截止时间 + 立刻报名）
+  // 状态配置（标签文字、标签背景、标签文字色、按钮内容）
+  var STATUS_CFG = {
+    deposit:     { label: '保证金待缴', bg: '#FFEDD5', color: '#F97316', btn: '' },
+    enrolled:    { label: '已报名',     bg: '#DCFCE7', color: '#16A34A', btn: '取消报名' },
+    in_progress: { label: '履约中',     bg: '#DBEAFE', color: '#3B82F6', btn: '订单查看' },
+    done:        { label: '已完成',     bg: '#F3F4F6', color: '#9CA3AF', btn: '' }
+  };
+
+  // 模拟活动数据（Figma 1076:43228 卡片：商品图 + 名称 + 产品规格 + 参考价格 + 截止时间 + 状态标签）
   var activities = [
-    { name: '大红 / 5年 /A级', status: 'active', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
-    { name: '大红 / 5年 /A级', status: 'active', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
-    { name: '大红 / 5年 /A级', status: 'done', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' },
-    { name: '大红 / 5年 /A级', status: 'cancelled', num: '5000.00', unit: 'kg', price: '300.00', deadline: '2026-10-20' }
+    { name: '大红 / 5年 /A级', status: 'deposit',     spec: '5年 /A级', price: '300.00', unit: 'kg', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'enrolled',    spec: '5年 /A级', price: '300.00', unit: 'kg', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'in_progress', spec: '5年 /A级', price: '300.00', unit: 'kg', deadline: '2026-10-20' },
+    { name: '大红 / 5年 /A级', status: 'done',        spec: '5年 /A级', price: '300.00', unit: 'kg', deadline: '2026-10-20' }
   ];
 
   function renderList(filter) {
     var list = document.getElementById('jm-list');
     var filtered = filter === 'all' ? activities : activities.filter(function (a) { return a.status === filter; });
     list.innerHTML = filtered.map(function (a) {
-      return '<article class="jc-card">' +
-        '<div class="jc-card__req">' +
-          '<div class="jc-card__thumb-wrap">' +
-            '<img class="jc-card__thumb" src="assets/jicai-goods.png" alt="' + a.name + '" />' +
-          '</div>' +
-          '<div class="jc-card__info">' +
-            '<p class="jc-card__name">' + a.name + '</p>' +
-            '<div class="jc-card__row">' +
-              '<span class="jc-card__label">采购需求总量: </span>' +
-              '<span class="jc-card__num">' + a.num + '</span><span class="jc-card__unit">' + a.unit + '</span>' +
+      var s = STATUS_CFG[a.status];
+      var btnHtml = s.btn
+        ? '<button class="jmc-btn-cancel" type="button">' + s.btn + '</button>'
+        : '';
+      return '<article class="jmc-card">' +
+        '<span class="jmc-tag" style="background:' + s.bg + ';color:' + s.color + '">' + s.label + '</span>' +
+        '<div class="jmc-body">' +
+          '<div class="jmc-thumb"><img class="jmc-thumb__img" src="assets/jicai-goods.webp" alt="' + a.name + '" /></div>' +
+          '<div class="jmc-info">' +
+            '<p class="jmc-name">' + a.name + '</p>' +
+            '<div class="jmc-row">' +
+              '<span class="jmc-row__label">产品规格: </span>' +
+              '<span class="jmc-row__value">' + a.spec + '</span>' +
             '</div>' +
-            '<div class="jc-card__row jc-card__row--price">' +
-              '<span class="jc-card__label">参考起步价: </span>' +
-              '<span class="jc-card__pricebox">' +
-                '<span class="jc-card__sym">¥</span>' +
-                '<span class="jc-card__price">' + a.price + '</span>' +
-                '<span class="jc-card__unit">元/' + a.unit + '</span>' +
+            '<div class="jmc-row">' +
+              '<span class="jmc-row__label">参考价格: </span>' +
+              '<span class="jmc-row__price">' +
+                '<span class="jmc-row__sym">¥</span>' +
+                '<span class="jmc-row__num">' + a.price + '</span>' +
+                '<span class="jmc-row__unit">元/' + a.unit + '</span>' +
               '</span>' +
             '</div>' +
           '</div>' +
         '</div>' +
-        '<footer class="jc-card__foot">' +
-          '<div class="jc-card__deadline">' +
-            '<span class="jc-card__dlabel">活动截止时间:</span>' +
-            '<span class="jc-card__dnum">' + a.deadline + '</span>' +
+        '<div class="jmc-foot">' +
+          '<div class="jmc-deadline">' +
+            '<span class="jmc-deadline__label">活动截止时间:</span>' +
+            '<span class="jmc-deadline__date">' + a.deadline + '</span>' +
           '</div>' +
-          '<button class="jc-card__btn" type="button">立刻报名</button>' +
-        '</footer>' +
+          btnHtml +
+          '<span class="jmc-arrow" aria-hidden="true"></span>' +
+        '</div>' +
       '</article>';
     }).join('');
   }
 
   renderList('all');
 
-  // 标签切换筛选
+  // 商品品类下拉菜单：点击切换显隐，选择后回填文字并收起
+  (function () {
+    var input = document.getElementById('jmf-category');
+    var menu = document.getElementById('jmf-menu');
+    var textEl = document.getElementById('jmf-category-text');
+    if (!input || !menu || !textEl) return;
+
+    function toggle(open) {
+      menu.hidden = !open;
+      input.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    input.addEventListener('click', function (e) {
+      e.stopPropagation();
+      toggle(menu.hidden);
+    });
+
+    menu.addEventListener('click', function (e) {
+      var item = e.target.closest('.jmf-menu__item');
+      if (!item) return;
+      textEl.textContent = item.textContent;
+      toggle(false);
+    });
+
+    // 点击其他区域关闭
+    document.addEventListener('click', function () {
+      toggle(false);
+    });
+  })();
+
+  // 标签切换筛选（新变体 jmf-tab）
   document.addEventListener('click', function (e) {
-    var tab = e.target.closest('.order-tab');
+    var tab = e.target.closest('.jmf-tab');
     if (!tab) return;
-    var value = tab.dataset.tab;
-    renderList(value);
+    document.querySelectorAll('.jmf-tab').forEach(function (b) {
+      b.classList.toggle('is-active', b === tab);
+    });
+    renderList(tab.dataset.tab);
   });
   </script>
 </body>

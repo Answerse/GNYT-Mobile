@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>桂农易通 - 亮码卖货</title>
+  <link rel="preload" href="assets/fonts/DINishCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/DINishCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/AlimamaShuHeiTi-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+  <!-- ============ 亮码卖货页（身份码，Figma 65:5894） ============ -->
+  <div class="page" id="page-code">
+    <!-- 顶栏（Header 组件：变体1 深色 + Logo + 微信按钮，由 PageHeader.mount 渲染） -->
+    <div class="header-mount" data-header="code"></div>
+    <main class="code-main">
+      <!-- 用户信息条 -->
+      <section class="code-user">
+        <div class="code-user__info">
+          <span class="code-user__name">陈婉彤</span>
+          <span class="code-user__phone">159 **** 0047</span>
+        </div>
+        <img class="code-user__curve" src="assets/icons/card-corner.svg" alt="" />
+      </section>
+      <!-- 二维码卡片 -->
+      <section class="code-card" aria-label="数农码">
+        <div class="code-card__qr">
+          <img class="code-card__qr-img" src="assets/icons/qr-code-2.svg" alt="数农码" />
+        </div>
+        <div class="code-card__serial">
+          <span class="code-card__serial-label">数农码编号</span>
+          <span class="code-card__serial-number">2131341231234</span>
+        </div>
+        <div class="code-card__fund">
+          <span class="code-card__fund-label">资金来源</span>
+          <div class="code-card__fund-banks">
+            <img class="code-card__fund-logo" src="assets/icons/logo-bohai-bank.svg" alt="渤海银行" />
+            <img class="code-card__fund-logo" src="assets/icons/logo-wezhong-bank.svg" alt="微众银行" />
+            <span class="text-arrow__icon text-arrow__icon--lg text-arrow--faint" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+      <!-- 统计卡片 -->
+      <section class="code-stats" aria-label="今日数据">
+        <div class="code-stats__item">
+          <div class="code-stats__top">
+            <span class="code-stats__label">今日订单 (单)</span>
+            <div class="code-stats__value">
+              <span class="code-stats__value-num">3</span>
+            </div>
+          </div>
+          <button class="code-stats__btn" type="button">
+            <img class="code-stats__btn-icon" src="assets/icons/icon-order-line.svg" alt="" />
+            <span>查看订单</span>
+            <span class="text-arrow__icon text-arrow--white" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="code-stats__item">
+          <div class="code-stats__top">
+            <span class="code-stats__label">今日收款 (元)</span>
+            <div class="code-stats__value">
+              <span class="code-stats__value-sym">¥</span>
+              <span class="code-stats__value-num">73134</span>
+            </div>
+          </div>
+          <button class="code-stats__btn" type="button">
+            <img class="code-stats__btn-icon" src="assets/icons/icon-notebook-line.svg" alt="" />
+            <span>收款账本</span>
+            <span class="text-arrow__icon text-arrow--white" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div><!-- /#page-code -->
+
+  <!-- 底部标签栏（内联，避免 fetch 模板额外请求） -->
+  <nav class="tabbar" aria-label="主导航">
+    <button class="tabbar__item" type="button" data-page="home">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-home-normal.svg" alt="首页" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-home-active.svg" alt="首页" />
+      </span>
+      <span class="tabbar__label">首页</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="order">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-order-normal.svg" alt="订单" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-order-active.svg" alt="订单" />
+      </span>
+      <span class="tabbar__label">订单</span>
+    </button>
+    <!-- 中间凸起"亮码卖货"主按钮 -->
+    <button class="tabbar__item tabbar__item--main" type="button" data-page="code">
+      <span class="tabbar__main-btn">
+        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
+      </span>
+      <span class="tabbar__label">亮码卖货</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="flow">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-flow-normal.svg" alt="收支" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-flow-active.svg" alt="收支" />
+      </span>
+      <span class="tabbar__label">收支</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="mine">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-mine-normal.svg" alt="我的" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-mine-active.svg" alt="我的" />
+      </span>
+      <span class="tabbar__label">我的</span>
+    </button>
+  </nav>
+
+  <!-- 公共脚本合并 app.js（defer：并行下载、不阻塞渲染；执行顺序保持依赖关系） -->
+  <script src="scripts/app.js" defer></script>
+  <script src="scripts/code.js" defer></script>
+</body>
+</html>

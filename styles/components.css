@@ -415,14 +415,14 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 /* 统一箭头：复用 assets/icons/chevron-right.svg（mask 取形 + currentColor 着色），默认 12px 向右 */
 .text-arrow__icon {
   display: inline-block;
-  width: 0.12rem;
-  height: 0.12rem;
+  width: 0.16rem;
+  height: 0.16rem;
   flex-shrink: 0;
   background-color: currentColor;
   -webkit-mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
   mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
 }
-/* 尺寸变体：默认 12px；大号 16px（明细展开等紧凑行） */
+/* 尺寸变体：默认 16px；保持 --lg 兼容 */
 .text-arrow__icon--lg {
   width: 0.16rem;
   height: 0.16rem;

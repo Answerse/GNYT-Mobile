@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>桂农易通 - 订单</title>
+  <link rel="preload" href="assets/fonts/DINishCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/DINishCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/AlimamaShuHeiTi-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+  <!-- ============ 订单页 ============ -->
+  <div class="page" id="page-order">
+    <!-- 页头组件（Figma 910:13227 顶栏 + 621:6341 筛选栏，固定在页头） -->
+    <div class="header-mount" data-header="order"></div>
+
+    <!-- 订单列表 -->
+    <div class="order-list">
+      <!-- 卡片 1：广西春林农贸责任有限公司 · 已完成 · 有收果明细 -->
+      <article class="order-card" data-status="done">
+        <span class="order-status order-status--done">已完成</span>
+        <p class="order-card__name">广西春林农贸责任有限公司</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品数量：</span>
+            <span class="order-info__value order-info__value--num">4</span>
+            <button class="order-goods__toggle text-arrow text-arrow--muted" type="button" data-toggle="od1" aria-expanded="true">
+              明细
+              <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="order-card__detail is-open" id="od1">
+            <div class="order-detail__row">
+              <span class="order-detail__idx">1</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">601</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9513.67</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">2</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">522</span><span class="order-detail__unit">公斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9054.27</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">3</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">418</span><span class="order-detail__unit">方</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8947.56</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">4</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">734</span><span class="order-detail__unit">斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8015.36</span></span>
+            </div>
+          </div>
+
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <button class="order-foot__btn" type="button">发票</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+
+      <!-- 卡片 2：李娉 · 待支付 · 无明细（商品名称 + 采购数量） -->
+      <article class="order-card" data-status="pending">
+        <span class="order-status order-status--pending">待支付</span>
+        <p class="order-card__name">李娉</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品名称：</span>
+            <span class="order-info__value">桂糖10/2022</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">采购数量：</span>
+            <span class="order-info__value">4 吨</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+
+      <!-- 卡片 3：郭明 · 待支付 · 有收果明细 -->
+      <article class="order-card" data-status="pending">
+        <span class="order-status order-status--pending">待支付</span>
+        <p class="order-card__name">郭明</p>
+
+        <div class="order-card__info">
+          <div class="order-info-row">
+            <span class="order-info__label">交易时间：</span>
+            <span class="order-info__value">2026-04-26 14:32:32</span>
+          </div>
+          <div class="order-info-row">
+            <span class="order-info__label">商品数量：</span>
+            <span class="order-info__value order-info__value--num">4</span>
+            <button class="order-goods__toggle text-arrow text-arrow--muted" type="button" data-toggle="od3" aria-expanded="false">
+              明细
+              <span class="text-arrow__icon text-arrow__icon--lg text-arrow__icon--triangle" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="order-card__detail" id="od3">
+            <div class="order-detail__row">
+              <span class="order-detail__idx">1</span>
+              <span class="order-detail__name">粤糖93/159</span>
+              <span class="order-detail__weight"><span class="order-detail__num">601</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9513.67</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">2</span>
+              <span class="order-detail__name">小青柑-10年以下</span>
+              <span class="order-detail__weight"><span class="order-detail__num">522</span><span class="order-detail__unit">公斤</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">9054.27</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">3</span>
+              <span class="order-detail__name">新台糖28号</span>
+              <span class="order-detail__weight"><span class="order-detail__num">418</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8947.56</span></span>
+            </div>
+            <div class="order-detail__row">
+              <span class="order-detail__idx">4</span>
+              <span class="order-detail__name">桂糖10/2022</span>
+              <span class="order-detail__weight"><span class="order-detail__num">734</span><span class="order-detail__unit">吨</span></span>
+              <span class="order-detail__price"><span class="order-detail__sym">¥</span><span class="order-detail__num">8015.36</span></span>
+            </div>
+          </div>
+
+          <div class="order-info-row">
+            <span class="order-info__label">订单金额：</span>
+            <span class="order-info__value order-info__value--amount"><span class="order-info__amount-sym">¥</span>9054.27</span>
+          </div>
+        </div>
+
+        <footer class="order-card__foot">
+          <button class="order-foot__btn" type="button">回执单</button>
+          <a class="order-foot__btn order-foot__btn--primary text-arrow text-arrow--primary" href="order-detail.html">详情
+            <span class="text-arrow__icon" aria-hidden="true"></span>
+          </a>
+        </footer>
+      </article>
+    </div>
+  </div><!-- /#page-order -->
+
+  <!-- 底部标签栏（内联，避免 fetch 模板额外请求） -->
+  <nav class="tabbar" aria-label="主导航">
+    <button class="tabbar__item" type="button" data-page="home">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-home-normal.svg" alt="首页" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-home-active.svg" alt="首页" />
+      </span>
+      <span class="tabbar__label">首页</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="order">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-order-normal.svg" alt="订单" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-order-active.svg" alt="订单" />
+      </span>
+      <span class="tabbar__label">订单</span>
+    </button>
+    <!-- 中间凸起"亮码卖货"主按钮 -->
+    <button class="tabbar__item tabbar__item--main" type="button" data-page="code">
+      <span class="tabbar__main-btn">
+        <img class="tabbar__main-icon" src="assets/icons/tab-qr.svg" alt="亮码卖货" />
+      </span>
+      <span class="tabbar__label">亮码卖货</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="flow">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-flow-normal.svg" alt="收支" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-flow-active.svg" alt="收支" />
+      </span>
+      <span class="tabbar__label">收支</span>
+    </button>
+    <button class="tabbar__item" type="button" data-page="mine">
+      <span class="tabbar__icon">
+        <img class="tabbar__icon-img tabbar__icon-img--normal" src="assets/icons/tab-mine-normal.svg" alt="我的" />
+        <img class="tabbar__icon-img tabbar__icon-img--active" src="assets/icons/tab-mine-active.svg" alt="我的" />
+      </span>
+      <span class="tabbar__label">我的</span>
+    </button>
+  </nav>
+
+  <!-- 公共脚本合并 app.js（defer：并行下载、不阻塞渲染；执行顺序保持依赖关系） -->
+  <script src="scripts/app.js" defer></script>
+  <script src="scripts/order.js" defer></script>
+</body>
+</html>
