@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>集采订单详情 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai-order-detail.css" />
+</head>
+<body>
+  <!-- ==================== App Shell：Header + Container ==================== -->
+  <div class="jod-page">
+
+    <!-- Header 挂载点（od 二级页头） -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 内容区 Container ==================== -->
+    <main class="jod-scroll" id="jod-scroll">
+      <!-- 订单详情由 JS 渲染 -->
+    </main>
+
+  </div>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script>
+  PageHeader.mount({
+    container: document.querySelector('.header-mount'),
+    topbar: { variant: 'od', title: '集采订单详情', right: 'wechat', left: { type: 'back', href: 'jicai-order.html' } }
+  });
+
+  // ==================== 状态配置 ====================
+  var STATUS_CFG = {
+    pending:     { label: '待确认',   cls: 'pending',     desc: '订单已生成，待买卖双方确认', activity: '待确认' },
+    confirmed:   { label: '待缴定金', cls: 'confirmed',   desc: '订单已确认，待缴纳定金',     activity: '履约中' },
+    in_progress: { label: '履约中',   cls: 'in_progress', desc: '定金已缴，待确认收货',       activity: '履约中' },
+    received:    { label: '待付尾款', cls: 'received',    desc: '已收货，待支付尾款',         activity: '履约中' },
+    done:        { label: '已完成',   cls: 'done',        desc: '已完成，货款已分账',         activity: '已完成' }
+  };
+
+  // 模拟订单数据（与列表页一致）
+  var orders = [
+    { id: 1, no: 'JC202610200001', buyer: '广西春林农贸责任有限公司', seller: '广西农资代采服务有限公司', amount: '50000.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'pending' },
+    { id: 2, no: 'JC202610200002', buyer: '南宁汇丰贸易有限公司',     seller: '广西农资代采服务有限公司', amount: '32000.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'confirmed' },
+    { id: 3, no: 'JC202610200003', buyer: '柳州瑞鑫商贸有限公司',     seller: '广西农资代采服务有限公司', amount: '28600.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'in_progress' },
+    { id: 4, no: 'JC202610200004', buyer: '桂林合丰农产品有限公司',   seller: '广西农资代采服务有限公司', amount: '15400.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'received' },
+    { id: 5, no: 'JC202610200005', buyer: '北海康源食品有限公司',     seller: '广西农资代采服务有限公司', amount: '9600.00',  activity: '2026 浦北陈皮秋采定点采购活动', status: 'done' }
+  ];
+
+  // 从 URL 取 id
+  var id = Number(new URLSearchParams(location.search).get('id')) || 1;
+  var order = orders.filter(function (o) { return o.id === id; })[0] || orders[0];
+  var s = STATUS_CFG[order.status];
+  var deposit = (parseFloat(order.amount) * 0.1).toFixed(2);   // 定金：10%
+  var balance = (parseFloat(order.amount) * 0.9).toFixed(2);   // 尾款：90%
+
+  document.getElementById('jod-scroll').innerHTML =
+    // 状态头
+    '<section class="jod-card jod-status">' +
+      '<span class="jod-status__tag jod-status__tag--' + s.cls + '">' + s.label + '</span>' +
+      '<p class="jod-status__desc">' + s.desc + '</p>' +
+    '</section>' +
+    // 订单信息
+    '<section class="jod-card">' +
+      '<h2 class="jod-card__title">订单信息</h2>' +
+      '<div class="jod-rows">' +
+        '<div class="jod-row"><span class="jod-row__label">订单编号</span><span class="jod-row__value jod-row__value--num">' + order.no + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">买方</span><span class="jod-row__value">' + order.buyer + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">卖方</span><span class="jod-row__value">' + order.seller + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">订单总金额</span><span class="jod-row__value jod-row__value--amount">¥' + order.amount + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">关联报名记录</span><span class="jod-row__value">' + order.activity + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">活动状态</span><span class="jod-row__value">' + s.activity + '</span></div>' +
+      '</div>' +
+    '</section>' +
+    // 合同
+    '<section class="jod-card jod-contract">' +
+      '<h2 class="jod-card__title">合同</h2>' +
+      '<button class="text-arrow text-arrow--primary" type="button">查看合同<span class="text-arrow__icon" aria-hidden="true"></span></button>' +
+    '</section>' +
+    // 支付信息
+    '<section class="jod-card">' +
+      '<h2 class="jod-card__title">支付信息</h2>' +
+      '<div class="jod-rows">' +
+        '<div class="jod-row"><span class="jod-row__label">定金</span><span class="jod-row__value jod-row__value--amount">¥' + deposit + '</span></div>' +
+        '<div class="jod-row"><span class="jod-row__label">尾款</span><span class="jod-row__value jod-row__value--amount">¥' + balance + '</span></div>' +
+      '</div>' +
+    '</section>' +
+    '<div class="jod-safe-bottom"></div>';
+  </script>
+</body>
+</html>

@@ -1,3 +1,7 @@
+/* 覆盖顶栏默认的底部边框（集采管理页无需分割线） */
+.jm-page .od-topbar__nav {
+  border-bottom: none;
+}
 /* 集采活动管理页（jicai-manage.html）— App Shell：Header + Container */
 .jm-page {
   width: 100%;
@@ -5,7 +9,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #F2F3F5;
+  background: var(--c-bg-3);
 }
 
 /* 内容区：flex:1 内部滚动 */
@@ -14,14 +18,14 @@
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0.16rem;
+  padding: 0.08rem;
 }
 
 /* 活动卡片列表（复用 main.css 的 order-card 样式） */
 .jm-list {
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
+  gap: 0.08rem;
 }
 
 /* =====================================================================
@@ -33,7 +37,7 @@
   align-items: center;
   gap: 0.08rem;
   padding: 0 0.08rem 0.16rem;
-  background: #F2F3F5;
+  background: var(--c-bg-3);
 }
 
 /* 商品品类输入：pill 50px、padding 4、gap 4，无背景色，相对定位（下拉菜单锚点） */

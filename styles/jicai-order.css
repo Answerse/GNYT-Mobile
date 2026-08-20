@@ -1,0 +1,153 @@
+/* =====================================================================
+   集采订单列表页（jicai-order.html）
+   App Shell：.jo-page(flex column) → Header(.header-mount) + Container(.jo-scroll)
+   卡片复刻 jicai-manage 的 jmc-card 模式（独立 joc-* 类名），背景色用 --c-bg-3
+   ===================================================================== */
+
+/* ---------- App Shell 骨架 ---------- */
+.jo-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--c-bg-3);
+}
+
+/* 内容区：flex:1 内部滚动 */
+.jo-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.08rem;
+}
+.jo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+/* =====================================================================
+   订单卡片（新变体 joc-*，Figma 集采订单：5 个字段 + 状态标签 + 操作按钮）
+   ===================================================================== */
+.joc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  padding: 0.16rem;
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  flex-shrink: 0;
+}
+
+/* 状态标签：右上角绝对定位（与 jmc-tag 一致，圆角 0/0/8/8） */
+.joc-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.02rem 0.08rem;
+  border-radius: 0 0 0 0.08rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  white-space: nowrap;
+}
+.joc-tag--pending     { background: #F3F4F6; color: #9CA3AF; }
+.joc-tag--confirmed   { background: #FFEDD5; color: #F97316; }
+.joc-tag--in_progress { background: #DBEAFE; color: #3B82F6; }
+.joc-tag--received    { background: #FEF3C7; color: #B45309; }
+.joc-tag--done        { background: #DCFCE7; color: #16A34A; }
+
+/* 字段区 */
+.joc-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+/* 字段行：标签左、值右（两端对齐，与 jmc-row 一致） */
+.joc-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text-sub);
+}
+.joc-row__label {
+  flex-shrink: 0;
+  color: var(--c-text-sub);
+}
+.joc-row__value {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  color: var(--c-text);
+}
+/* 订单编号：西文数字（DINish 400） */
+.joc-row__value--num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-weight: 400;
+}
+/* 订单总金额：西文5级标题（DINish 20/700） */
+.joc-row__value--amount {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem;
+  font-weight: 700;
+  line-height: 1.075;
+  color: var(--c-text);
+}
+
+/* 底栏：左端查看合同 + 右端操作按钮（space-between），顶部描边分隔 */
+.joc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.12rem;
+  border-top: 0.005rem solid var(--c-stroke-5);
+}
+/* 右端按钮组：右对齐 */
+.joc-foot__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.08rem;
+}
+/* 操作按钮：pill 32 高、圆角 40，浅灰底（与 jmc-btn-cancel 一致） */
+.joc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 0.32rem;
+  padding: 0 0.16rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: var(--c-stroke-5);
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text);
+  flex-shrink: 0;
+}
+/* 主操作（订单确认 / 定金支付 / 确认收货 / 尾款支付）：绿底白字 */
+.joc-btn--primary {
+  background: var(--c-primary);
+  color: #F9FAFB;
+}
+/* 查看详情：纯图标链接，无背景无 padding */
+.joc-btn--icon {
+  padding: 0;
+  background: transparent;
+}
+.joc-btn--icon img {
+  display: block;
+  width: 0.16rem;
+  height: 0.16rem;
+  background-color: var(--c-icon-50);
+  -webkit-mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+  mask: url("../assets/icons/chevron-right.svg") no-repeat center / contain;
+}

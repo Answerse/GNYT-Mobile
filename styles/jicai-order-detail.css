@@ -1,0 +1,126 @@
+/* =====================================================================
+   集采订单详情页（jicai-order-detail.html）
+   App Shell：.jod-page(flex column) → Header(.header-mount) + Container(.jod-scroll)
+   卡片复用 jicai-order 列表的字段行模式（独立 jod-* 类名）
+   ===================================================================== */
+
+/* ---------- App Shell 骨架 ---------- */
+.jod-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--c-bg-3);
+}
+
+/* 内容区：flex:1 内部滚动 */
+.jod-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.08rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+/* ---------- 通用卡片 ---------- */
+.jod-card {
+  background: #FFFFFF;
+  border-radius: 0.08rem;
+  padding: 0.16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  flex-shrink: 0;
+}
+.jod-card__title {
+  font-size: 0.18rem;
+  font-weight: 630;
+  color: var(--c-text);
+}
+
+/* ---------- 状态头：状态标签 + 描述 ---------- */
+.jod-status {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.12rem;
+}
+.jod-status__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.02rem 0.08rem;
+  border-radius: 0.04rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  white-space: nowrap;
+}
+.jod-status__tag--pending     { background: #F3F4F6; color: #9CA3AF; }
+.jod-status__tag--confirmed   { background: #FFEDD5; color: #F97316; }
+.jod-status__tag--in_progress { background: #DBEAFE; color: #3B82F6; }
+.jod-status__tag--received    { background: #FEF3C7; color: #B45309; }
+.jod-status__tag--done        { background: #DCFCE7; color: #16A34A; }
+.jod-status__desc {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text-sub);
+}
+
+/* ---------- 字段行（与列表页 joc-row 一致） ---------- */
+.jod-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+.jod-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.02rem;
+  font-size: 0.14rem;
+  font-weight: 330;
+  line-height: 1.326;
+  color: var(--c-text-sub);
+}
+.jod-row__label {
+  flex-shrink: 0;
+  color: var(--c-text-sub);
+}
+.jod-row__value {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  color: var(--c-text);
+}
+.jod-row__value--num {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-weight: 400;
+}
+.jod-row__value--amount {
+  font-family: "DINish Condensed", "PingFang SC", sans-serif;
+  font-size: 0.2rem;
+  font-weight: 700;
+  line-height: 1.075;
+  color: var(--c-text);
+}
+
+/* ---------- 合同卡：标题 + 查看合同（text-arrow 组件）两端对齐 ---------- */
+.jod-contract {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.jod-contract .jod-card__title {
+  margin: 0;
+}
+
+/* 底部安全间距 */
+.jod-safe-bottom {
+  height: 0.32rem;
+  flex-shrink: 0;
+}

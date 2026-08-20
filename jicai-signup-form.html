@@ -141,13 +141,13 @@
       <div class="modal__texts">
         <p class="modal__title modal__title--sub">请输入支付密码</p>
       </div>
-      <div class="jsf-pwd-inputs" id="jsf-pwd-inputs">
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
-        <input class="jsf-pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+      <div class="modal__pwd-inputs" id="jsf-pwd-inputs">
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
       </div>
       <div class="modal__actions">
         <button class="btn btn--fill btn--l" type="button" id="jsf-pwd-confirm">确定</button>
@@ -179,7 +179,7 @@
     });
 
     // ========== 密码输入弹窗逻辑 ==========
-    var pwdInputs = document.querySelectorAll('#jsf-pwd-inputs .jsf-pwd-input');
+    var pwdInputs = document.querySelectorAll('#jsf-pwd-inputs .modal__pwd-input');
 
     function openPwdModal() {
       // 清空并重置

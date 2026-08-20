@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>集采订单 - 桂农易通</title>
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/jicai-order.css" />
+  <link rel="stylesheet" href="styles/modal.css" />
+</head>
+<body>
+  <!-- ==================== App Shell：Header + Container（DESIGN.md §1.1） ==================== -->
+  <div class="jo-page">
+
+    <!-- Header 挂载点（PageHeader 渲染 od 二级页头，flex-shrink:0 锁定顶部） -->
+    <div class="header-mount"></div>
+
+    <!-- ==================== 内容区 Container（flex:1 内部滚动） ==================== -->
+    <main class="jo-scroll">
+      <div class="jo-list" id="jo-list">
+        <!-- 集采订单卡片由 JS 动态渲染 -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ==================== 确认收货弹窗（Figma：提示"请确认您已收到商品。"，点击【确认】完成收货） ==================== -->
+  <div class="modal" id="jo-receive-modal" aria-hidden="true">
+    <div class="modal__mask"></div>
+    <div class="modal__card modal__card--narrow">
+      <div class="modal__texts">
+        <p class="modal__title modal__title--sub">请确认您已收到商品。</p>
+      </div>
+      <div class="modal__actions">
+        <button class="btn btn--fill btn--l" type="button" id="jo-receive-confirm">确认</button>
+        <button class="btn btn--outline btn--outline--muted btn--l" type="button" id="jo-receive-cancel">取消</button>
+      </div>
+    </div>
+    <button class="modal__close" type="button" aria-label="关闭" id="jo-receive-close">
+      <img src="assets/icons/ic-c-191.svg" alt="" />
+    </button>
+  </div>
+
+  <!-- ==================== 支付密码弹窗（复用组件：modal__pwd-inputs / modal__pwd-input，定金支付/尾款支付共用） ==================== -->
+  <div class="modal" id="jo-pwd-modal" aria-hidden="true">
+    <div class="modal__mask"></div>
+    <div class="modal__card modal__card--narrow">
+      <div class="modal__texts">
+        <p class="modal__title modal__title--sub">请输入支付密码</p>
+      </div>
+      <div class="modal__pwd-inputs" id="jo-pwd-inputs">
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+        <input class="modal__pwd-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off" />
+      </div>
+      <div class="modal__actions">
+        <button class="btn btn--fill btn--l" type="button" id="jo-pwd-confirm">确定</button>
+        <button class="btn btn--outline btn--outline--muted btn--l" type="button" id="jo-pwd-cancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 合同弹窗（占位：合同内容待补充） ==================== -->
+  <div class="modal" id="jo-contract-modal" aria-hidden="true">
+    <div class="modal__mask"></div>
+    <div class="modal__card modal__card--narrow">
+      <div class="modal__texts">
+        <p class="modal__title modal__title--sub">合同</p>
+        <p class="modal__text">桂农易通集采购销合同（示例占位，正式合同内容待补充）</p>
+      </div>
+      <div class="modal__actions">
+        <button class="btn btn--fill btn--l" type="button" id="jo-contract-confirm">知道了</button>
+      </div>
+    </div>
+    <button class="modal__close" type="button" aria-label="关闭" id="jo-contract-close">
+      <img src="assets/icons/ic-c-191.svg" alt="" />
+    </button>
+  </div>
+
+  <script src="scripts/topbar.js"></script>
+  <script src="scripts/page-header.js"></script>
+  <script src="scripts/wechat-button.js"></script>
+  <script src="scripts/modal.js"></script>
+  <script>
+  // ==================== 页头（od 二级页头：返回 + 居中标题 + 微信按钮） ====================
+  PageHeader.mount({
+    container: document.querySelector('.header-mount'),
+    topbar: { variant: 'od', title: '集采订单', right: 'wechat', left: { type: 'back', href: 'mine.html' } }
+  });
+
+  // ==================== 弹窗挂载 ====================
+  Modal.mount('#jo-receive-modal');
+  Modal.mount('#jo-pwd-modal');
+  Modal.mount('#jo-contract-modal');
+
+  // ==================== 状态配置（标签文字 + 对应操作按钮） ====================
+  var STATUS_CFG = {
+    pending:     { label: '待确认',   cls: 'pending' },
+    confirmed:   { label: '待缴定金', cls: 'confirmed' },
+    in_progress: { label: '履约中',   cls: 'in_progress' },
+    received:    { label: '待付尾款', cls: 'received' },
+    done:        { label: '已完成',   cls: 'done' }
+  };
+  // 操作按钮 → 点击后的下一个状态
+  var ACTION_CFG = {
+    confirm: { label: '订单确认', next: 'confirmed' },   // 订单确认：集采活动状态设置为"履约中"
+    deposit: { label: '定金支付', next: 'in_progress' }, // 定金支付：打开支付页面
+    receive: { label: '确认收货', next: 'received' },    // 确认收货：完成收货
+    balance: { label: '尾款支付', next: 'done' }         // 尾款支付：完成后订单状态变为"已完成"，触发分账
+  };
+  // 各状态可用的主操作（查看合同 / 查看详情 所有状态常驻）
+  var ORDER_ACTIONS = {
+    pending:     ['confirm'],
+    confirmed:   ['deposit'],
+    in_progress: ['receive'],
+    received:    ['balance'],
+    done:        []
+  };
+
+  // 模拟订单数据
+  var orders = [
+    { id: 1, no: 'JC202610200001', buyer: '广西春林农贸责任有限公司', seller: '广西农资代采服务有限公司', amount: '50000.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'pending' },
+    { id: 2, no: 'JC202610200002', buyer: '南宁汇丰贸易有限公司',     seller: '广西农资代采服务有限公司', amount: '32000.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'confirmed' },
+    { id: 3, no: 'JC202610200003', buyer: '柳州瑞鑫商贸有限公司',     seller: '广西农资代采服务有限公司', amount: '28600.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'in_progress' },
+    { id: 4, no: 'JC202610200004', buyer: '桂林合丰农产品有限公司',   seller: '广西农资代采服务有限公司', amount: '15400.00', activity: '2026 浦北陈皮秋采定点采购活动', status: 'received' },
+    { id: 5, no: 'JC202610200005', buyer: '北海康源食品有限公司',     seller: '广西农资代采服务有限公司', amount: '9600.00',  activity: '2026 浦北陈皮秋采定点采购活动', status: 'done' }
+  ];
+
+  var list = document.getElementById('jo-list');
+
+  function renderList() {
+    list.innerHTML = orders.map(function (o) {
+      var s = STATUS_CFG[o.status];
+      var actionBtns = (ORDER_ACTIONS[o.status] || []).map(function (key) {
+        return '<button class="joc-btn joc-btn--primary" type="button" data-action="' + key + '" data-id="' + o.id + '">' + ACTION_CFG[key].label + '</button>';
+      }).join('');
+      return '<article class="joc-card" data-id="' + o.id + '">' +
+        '<div class="joc-rows">' +
+          '<div class="joc-row"><span class="joc-row__label">订单编号</span><span class="joc-row__value joc-row__value--num">' + o.no + '</span></div>' +
+          '<div class="joc-row"><span class="joc-row__label">买方</span><span class="joc-row__value">' + o.buyer + '</span></div>' +
+          '<div class="joc-row"><span class="joc-row__label">卖方</span><span class="joc-row__value">' + o.seller + '</span></div>' +
+          '<div class="joc-row"><span class="joc-row__label">订单总金额</span><span class="joc-row__value joc-row__value--amount">¥' + o.amount + '</span></div>' +
+          '<div class="joc-row"><span class="joc-row__label">关联报名记录</span><span class="joc-row__value">' + o.activity + '</span></div>' +
+        '</div>' +
+        '<footer class="joc-foot">' +
+          '<button class="joc-btn" type="button" data-action="contract" data-id="' + o.id + '">查看合同</button>' +
+          '<div class="joc-foot__right">' +
+          actionBtns +
+          '<a class="joc-btn joc-btn--icon" href="jicai-order-detail.html?id=' + o.id + '"><img src="assets/icons/chevron-right.svg" alt="查看详情" /></a>' +
+          '</div>' +
+        '</footer>' +
+      '</article>';
+    }).join('');
+  }
+
+  renderList();
+
+  // ==================== 订单卡片操作（事件委托） ====================
+  var pendingOrderId = null;   // 当前支付弹窗对应的订单
+  var pendingAction = null;    // 当前支付弹窗对应的动作（deposit / balance）
+
+  function getOrder(id) {
+    for (var i = 0; i < orders.length; i++) {
+      if (orders[i].id === id) return orders[i];
+    }
+    return null;
+  }
+
+  list.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var id = Number(btn.dataset.id);
+    var order = getOrder(id);
+    if (!order) return;
+    var action = btn.dataset.action;
+
+    switch (action) {
+      case 'contract':
+        // 查看合同（占位弹窗）
+        Modal.open('#jo-contract-modal');
+        break;
+      case 'confirm':
+        // 订单确认：集采活动状态设置为"履约中"，订单进入待缴定金
+        order.status = ACTION_CFG.confirm.next;
+        renderList();
+        break;
+      case 'deposit':
+      case 'balance':
+        // 定金支付 / 尾款支付：打开支付密码弹窗
+        pendingOrderId = id;
+        pendingAction = action;
+        openPwdModal();
+        break;
+      case 'receive':
+        // 确认收货：弹出确认提示
+        pendingOrderId = id;
+        Modal.open('#jo-receive-modal');
+        break;
+    }
+  });
+
+  // ========== 确认收货弹窗 ==========
+  document.getElementById('jo-receive-confirm').addEventListener('click', function () {
+    // 完成收货 → 订单进入"待付尾款"（此时显示【尾款支付】）
+    var order = getOrder(pendingOrderId);
+    if (order) order.status = ACTION_CFG.receive.next;
+    pendingOrderId = null;
+    Modal.close('#jo-receive-modal');
+    renderList();
+  });
+  document.getElementById('jo-receive-cancel').addEventListener('click', function () {
+    pendingOrderId = null;
+    Modal.close('#jo-receive-modal');
+  });
+  document.getElementById('jo-receive-close').addEventListener('click', function () {
+    pendingOrderId = null;
+    Modal.close('#jo-receive-modal');
+  });
+
+  // ========== 支付密码弹窗 ==========
+  var pwdInputs = document.querySelectorAll('#jo-pwd-inputs .modal__pwd-input');
+
+  function openPwdModal() {
+    pwdInputs.forEach(function (input) { input.value = ''; });
+    Modal.open('#jo-pwd-modal');
+    setTimeout(function () { pwdInputs[0].focus(); }, 100);
+  }
+
+  pwdInputs.forEach(function (input, idx) {
+    input.addEventListener('input', function () {
+      if (this.value && idx < pwdInputs.length - 1) {
+        pwdInputs[idx + 1].focus();
+      }
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Backspace' && !this.value && idx > 0) {
+        pwdInputs[idx - 1].focus();
+      }
+    });
+  });
+
+  document.getElementById('jo-pwd-confirm').addEventListener('click', function () {
+    var order = getOrder(pendingOrderId);
+    if (order && pendingAction) {
+      order.status = ACTION_CFG[pendingAction].next;
+      // 尾款支付完成后：订单状态变为"已完成"，触发分账
+    }
+    pendingOrderId = null;
+    pendingAction = null;
+    Modal.close('#jo-pwd-modal');
+    renderList();
+  });
+  document.getElementById('jo-pwd-cancel').addEventListener('click', function () {
+    pendingOrderId = null;
+    pendingAction = null;
+    Modal.close('#jo-pwd-modal');
+  });
+
+  // ========== 合同弹窗 ==========
+  document.getElementById('jo-contract-confirm').addEventListener('click', function () {
+    Modal.close('#jo-contract-modal');
+  });
+  document.getElementById('jo-contract-close').addEventListener('click', function () {
+    Modal.close('#jo-contract-modal');
+  });
+  </script>
+</body>
+</html>

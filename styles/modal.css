@@ -153,3 +153,37 @@
   width: 100%;
   height: 100%;
 }
+
+/* ---------- 窄卡片（密码等无插画弹窗，裁切渐变溢出） ---------- */
+.modal__card--narrow {
+  padding: 0.32rem 0.24rem;
+  gap: 0.24rem;
+  overflow: hidden;
+}
+
+/* ---------- 支付密码输入（6 位逐位输入，Figma 支付密码弹窗） ---------- */
+.modal__pwd-inputs {
+  display: flex;
+  gap: 0.12rem;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.modal__pwd-input {
+  width: 0.44rem;
+  height: 0.52rem;
+  border: 0.01rem solid var(--c-border);
+  border-radius: 0.08rem;
+  background: #FFFFFF;
+  text-align: center;
+  font-family: "DINish Condensed", sans-serif;
+  font-size: 0.24rem;
+  font-weight: 700;
+  color: var(--c-text);
+  outline: none;
+  caret-color: var(--c-primary);
+  transition: border-color 0.2s ease;
+}
+.modal__pwd-input:focus {
+  border-color: var(--c-primary);
+}

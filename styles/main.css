@@ -1460,13 +1460,40 @@ body {
 .mine-wallet {
   position: relative;
   padding: 0.16rem;
-  border-radius: 0.08rem;
+  /* border-radius: 0.08rem; */
   min-height: 1.16rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;   /* 内容贴卡片底部（提现按钮右下角） */
+  background: transparent;
 }
-.mine-wallet__notched {
+
+.mine-wallet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #fff;
+  border-radius: 0.08rem;
+  clip-path: polygon(
+    0% 0%,
+    60.17% 0%,
+    63.21% 0%,
+    66.41% 1.45%,
+    69.39% 4.04%,
+    72.39% 7.16%,
+    83.09% 17.16%,
+    84.67% 18.57%,
+    97.77% 17.24%,
+    100% 17.24%,
+    100% 20.69%,
+    100% 34.48%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/* .mine-wallet__notched {
   position: absolute;
   top: 0;
   left: 0;
@@ -1474,7 +1501,7 @@ body {
   height: 100%;
   z-index: 0;
   display: block;
-}
+} */
 /* 余额明细按钮（Figma 929:51091：透明底、白字、白箭头，叠卡片右上缺口，左直右圆角 8；
    文字+箭头样式由 text-arrow 组件提供，此处仅保留定位与外形） */
 .mine-wallet__balance {

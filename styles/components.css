@@ -30,29 +30,72 @@
   font-display: swap;
 }
 
-/* ---------- 色板 Token ---------- */
+/* ---------- 色板 Token（Figma variables Light 模式，单源） ---------- */
 :root {
-  --c-primary: #16A34A;
-  --c-primary-deep: #15803D;
-  --c-lime: #BEF264;
-  --c-bg: #EBF2FC;
-  --c-bg-1: #FFFFFF;          /* Figma variables bg-1（分段控件按钮底） */
-  --c-bg-2: #F2F9FF;          /* Figma variables bg-2（浅蓝） */
-  --c-bg-3: #EBF2FC;          /* Figma variables bg-3（页面背景浅蓝灰） */
+  /* === Background（Figma: Background.*） === */
+  --c-bg-1: #FFFFFF;
+  --c-bg-2: #F2F9FF;
+  --c-bg-3: #EBF2FC;
+  --c-bg-4: #E1E8F2;
+  --c-bg: #EBF2FC;                     /* 兼容旧写法，等同 bg-3 */
   --c-white: #FFFFFF;
-  --c-text: #111827;
-  --c-text-sub: #6B7280;
-  --c-text-light: #9CA3AF;    /* 更浅的次要文字（placeholder 等） */
-  --c-green-50: #F0FDF4;
-  --c-border: #E5E7EB;
-  --c-stroke-5: rgba(16, 18, 21, 0.05);    /* Figma variables Stroke/Neutral/5（#101215 @5%） */
-  --c-stroke-10: rgba(16, 18, 21, 0.1);   /* Figma variables Stroke/Neutral/10（#101215 @10%） */
-  /* 状态色（对应 DESIGN.md 语义 Token：Fill.Status.*） */
-  --c-info: #3B82F6;          /* Colors.Blue.500（Info.Default） */
-  --c-info-soft: #93C5FD;     /* Colors.Blue.300 */
-  --c-warning: #F97316;       /* Colors.Orange.500（Warning.Default） */
-  --c-warning-soft: #FDBA74;  /* Colors.Orange.300 */
-  --c-danger: #C94747;        /* 必填星号 / 删除等警示红 */
+
+  /* === Text（Figma: Text.Neutral.*） === */
+  --c-text: #111827;                    /* Text.Neutral.Main = Gray.900 */
+  --c-text-sub: #6B7280;               /* Text.Neutral.Sub = Gray.500 */
+  --c-text-info: #9CA3AF;              /* Text.Neutral.Info = Gray.400 */
+  --c-text-light: #9CA3AF;             /* 兼容旧写法，等同 info */
+  --c-text-button: #F9FAFB;            /* Text.Neutral.Button = Gray.50 */
+  --c-text-inverse: #FFFFFF;           /* Text.Neutral.Inverse = Neutral-R.100 */
+
+  /* === Text.Status（Figma: Text.Status.*） === */
+  --c-text-status-primary: #16A34A;    /* Green.600 */
+  --c-text-status-secondary: #84CC16;  /* Lime.500 */
+  --c-text-status-success: #3B82F6;    /* Blue.500 */
+  --c-text-status-info: #8B5CF6;       /* Violet.500 */
+  --c-text-status-warning: #F97316;    /* Orange.500 */
+  --c-text-status-danger: #EF4444;     /* Red.500 */
+
+  /* === Icon（Figma: Icon.Neutral.*） === */
+  --c-icon-10: rgba(16, 18, 21, 0.1);
+  --c-icon-30: rgba(16, 18, 21, 0.3);
+  --c-icon-50: rgba(16, 18, 21, 0.5);
+  --c-icon-100: #101215;
+  --c-icon-inverse: #FFFFFF;
+
+  /* === Icon.Status（Figma: Icon.Status.*） === */
+  --c-icon-status-button: #101215;     /* Neutral.100 */
+  --c-icon-status-primary: #16A34A;    /* Green.600 */
+  --c-icon-status-secondary: #84CC16;  /* Lime.500 */
+  --c-icon-status-success: #3B82F6;    /* Blue.500 */
+  --c-icon-status-info: #8B5CF6;       /* Violet.500 */
+  --c-icon-status-warning: #F97316;    /* Orange.500 */
+  --c-icon-status-danger: #EF4444;     /* Red.500 */
+
+  /* === Stroke（Figma: Stroke.*） === */
+  --c-stroke-0: transparent;
+  --c-stroke-5: rgba(16, 18, 21, 0.05);
+  --c-stroke-10: rgba(16, 18, 21, 0.1);
+  --c-stroke-20: rgba(16, 18, 21, 0.2);
+
+  /* === Fill（Figma: Fill.*） === */
+  --c-primary: #16A34A;                /* Fill.Primary.600 = Green.600 */
+  --c-primary-deep: #15803D;           /* Fill.Primary.700 = Green.700 */
+  --c-lime: #BEF264;                   /* Fill.Secondary.300 = Lime.300 */
+  --c-green-50: #F0FDF4;               /* Fill.Primary.50 = Green.50 */
+  --c-border: #E5E7EB;                 /* 兼容旧写法 = Gray.200 */
+
+  /* === Fill.Status（Figma: Fill.Status.*） === */
+  --c-info: #3B82F6;                   /* Fill.Status.Success = Blue.500 */
+  --c-info-soft: #93C5FD;              /* Blue.300 */
+  --c-warning: #F97316;                /* Fill.Status.Warning = Orange.500 */
+  --c-warning-soft: #FDBA74;           /* Orange.300 */
+  --c-danger: #EF4444;                 /* Fill.Status.Danger = Red.500 */
+
+  /* === Overlay（Figma: Overlay.*） === */
+  --c-overlay-40: rgba(0, 0, 0, 0.4);
+  --c-overlay-60: rgba(0, 0, 0, 0.6);
+
   /* 渐变背景 Token */
   --bg-gradient-hero: linear-gradient(180deg, #16A34A 40.25%, #EBF2FC 100%);
   --bg-gradient-jicai: linear-gradient(213deg, #DCFCE7 0%, #FFFFFF 100%);
@@ -246,7 +289,7 @@ input { font: inherit; border: none; outline: none; background: transparent; }
 .od-topbar__nav {
   position: relative;
   height: 0.72rem;
-  border-bottom: 0.005rem solid #E5E6EB;
+  border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
