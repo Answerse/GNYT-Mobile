@@ -2102,41 +2102,6 @@ body {
   z-index: 0;
   display: block;
 }
-/* 服务商版钱包真实缺角（Figma 573:7119）：
-   白底层用 clip-path 直接切掉右上楔形 → 真实镂空，透出背后渐变头图（非同色伪缺角）
-   缺口边界用 calc(100% - Xrem) 固定：容器变宽时仅中间白底拉伸，缺口/圆角尺寸不变 */
-#page-mine-provider .mine-wallet::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  background: #FFFFFF;
-  clip-path: polygon(
-    0.08rem 0,
-    0.0693rem 0.04rem,
-    0.04rem 0.0693rem,
-    0 0.08rem,
-    0 calc(100% - 0.08rem),
-    0.04rem calc(100% - 0.0693rem),
-    0.0693rem calc(100% - 0.04rem),
-    0.08rem 100%,
-    calc(100% - 0.08rem) 100%,
-    calc(100% - 0.04rem) calc(100% - 0.0693rem),
-    calc(100% - 0.0693rem) calc(100% - 0.04rem),
-    100% calc(100% - 0.08rem),
-    100% 0.4rem,
-    100% 0.28rem,
-    calc(100% - 0.08rem) 0.28rem,
-    calc(100% - 0.08rem) 0.2rem,
-    calc(100% - 0.99rem) 0.2rem,
-    calc(100% - 1.10rem) 0.153rem,
-    calc(100% - 1.21rem) 0.047rem,
-    calc(100% - 1.43rem) 0
-  );
-}
 
 /* 余额明细按钮（Figma 929:51091：透明底、白字、白箭头，叠卡片右上缺口，左直右圆角 8；
    文字+箭头样式由 text-arrow 组件提供，此处仅保留定位与外形） */

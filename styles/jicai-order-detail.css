@@ -42,36 +42,6 @@
   color: var(--c-text);
 }
 
-/* ---------- 状态头：状态标签 + 描述 ---------- */
-.jod-status {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.12rem;
-}
-.jod-status__tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.02rem 0.08rem;
-  border-radius: 0.04rem;
-  font-size: 0.14rem;
-  font-weight: 330;
-  line-height: 1.326;
-  white-space: nowrap;
-}
-.jod-status__tag--pending     { background: #F3F4F6; color: #9CA3AF; }
-.jod-status__tag--confirmed   { background: #FFEDD5; color: #F97316; }
-.jod-status__tag--in_progress { background: #DBEAFE; color: #3B82F6; }
-.jod-status__tag--received    { background: #FEF3C7; color: #B45309; }
-.jod-status__tag--done        { background: #DCFCE7; color: #16A34A; }
-.jod-status__desc {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.14rem;
-  font-weight: 330;
-  line-height: 1.326;
-  color: var(--c-text-sub);
-}
-
 /* ---------- 字段行（与列表页 joc-row 一致） ---------- */
 .jod-rows {
   display: flex;
